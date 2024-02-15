@@ -66,7 +66,7 @@ const createProduct = async (p, product) => {
     client.release();
   }
 };
-console.log('GET TO THA CHOPPA');
+console.log('GET TO THA CHOPPA 50 PACES TO YOUR WEST');
 // const insertAccounts = async (p, n) => {
 //   const client = await p.connect();
 //   console.log("Hey! You successfully connected to your CockroachDB cluster.");
