@@ -8,12 +8,12 @@
       }
     },
     "Resources": {
-      "AuthorizationFunction": {
+      "authorization-lambda": {
         "Type": "AWS::Lambda::Function",
         "Properties": {
           "Code": {},
-          "FunctionName": "YourLambdaFunctionName",
-          "Handler": "your_module.your_handler_function",
+          "FunctionName": "authorization-lambda",
+          "Handler": "lambda_function.lambda_handler",
           "Runtime": "python3.8",
           "MemorySize": 256,
           "Environment": {
@@ -27,12 +27,12 @@
     "Outputs": {
       "LambdaFunctionArn": {
         "Description": "ARN of the Authorization Function Lambda",
-        "Value": { "Fn::GetAtt": ["AuthorizationFunction", "Arn"] },
+        "Value": { "Fn::GetAtt": ["authorization-lambda", "Arn"] },
         "Export": { "Name": "YourExportedLambdaArn" }
       },
       "LambdaFunctionName": {
         "Description": "Name of the Authorization Function Lambda",
-        "Value": { "Ref": "AuthorizationFunction" },
+        "Value": { "Ref": "authorization-lambda" },
         "Export": { "Name": "YourExportedLambdaName" }
       }
     }
