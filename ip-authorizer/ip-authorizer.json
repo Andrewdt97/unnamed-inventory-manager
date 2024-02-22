@@ -28,12 +28,12 @@
       "LambdaFunctionArn": {
         "Description": "ARN of the Authorization Function Lambda",
         "Value": { "Fn::GetAtt": ["authorization-lambda", "Arn"] },
-        "Export": { "Name": "YourExportedLambdaArn" }
+        "Export": { "Name": "authorization-lambda-arn" }
       },
       "LambdaFunctionName": {
         "Description": "Name of the Authorization Function Lambda",
         "Value": { "Ref": "authorization-lambda" },
-        "Export": { "Name": "YourExportedLambdaName" }
+        "Export": { "Name": "authorization-lambda-function" }
       }
     }
   }
