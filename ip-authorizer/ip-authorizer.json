@@ -1,0 +1,40 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "CloudFormation template for Authorization Function",
+    "Parameters": {
+      "ParameterName": {
+        "Type": "String",
+        "Description": "The name of the parameter in AWS Systems Manager Parameter Store containing the IP range"
+      }
+    },
+    "Resources": {
+      "AuthorizationFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "Code": {},
+          "FunctionName": "YourLambdaFunctionName",
+          "Handler": "your_module.your_handler_function",
+          "Runtime": "python3.8",
+          "MemorySize": 256,
+          "Environment": {
+            "Variables": {
+              "IP_RANGE": { "Fn::Sub": "${SSMParameterValue}" } 
+            }
+          }
+        }
+      }
+    },
+    "Outputs": {
+      "LambdaFunctionArn": {
+        "Description": "ARN of the Authorization Function Lambda",
+        "Value": { "Fn::GetAtt": ["AuthorizationFunction", "Arn"] },
+        "Export": { "Name": "YourExportedLambdaArn" }
+      },
+      "LambdaFunctionName": {
+        "Description": "Name of the Authorization Function Lambda",
+        "Value": { "Ref": "AuthorizationFunction" },
+        "Export": { "Name": "YourExportedLambdaName" }
+      }
+    }
+  }
+  
