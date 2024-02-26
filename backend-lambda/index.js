@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
-var Format = require('pg-format');
-
+import userService from './services/userService';
+import productService from './services/productService';
 let pool;
 
 const headers = {
@@ -8,83 +8,6 @@ const headers = {
   'Content-Type': 'application/json',
 };
 
-const getUsers = async (p) => {
-  const client = await p.connect();
-  console.log('Initializing table...');
-  try {
-    return await client.query(`SELECT * FROM user`);
-  } catch (err) {
-    console.log(err.stack);
-  } finally {
-    client.release();
-  }
-};
-
-const getAllProducts = async (p) => {
-  const client = await p.connect();
-  try {
-    return await client.query(`SELECT * FROM product`);
-  } catch (err) {
-    console.log(err.stack);
-  } finally {
-    client.release();
-  }
-};
-
-const updateProduct = async (p, id, product) => {
-  const client = await p.connect();
-  try {
-    let sets = [];
-    for (let key in product) {
-      sets.push(Format('%I = %L', key, product[key]));
-    }
-
-    let setStrings = sets.join(',');
-
-    const sql = Format('UPDATE product SET %s WHERE id = %L', setStrings, id);
-    const result = await client.query(query);
-  } catch (err) {
-    console.log(err.stack);
-  } finally {
-    client.release();
-  }
-};
-
-const createProduct = async (p, product) => {
-  const client = await p.connect();
-  try {
-    const sql = Format(
-      'INSERT INTO product (%I) VALUES (%L)',
-      Object.keys(product),
-      Object.values(product)
-    );
-    console.info('create sql', sql);
-    return await client.query(sql);
-  } catch (err) {
-    console.log(err.stack);
-  } finally {
-    client.release();
-  }
-};
-// const insertAccounts = async (p, n) => {
-//   const client = await p.connect();
-//   console.log("Hey! You successfully connected to your CockroachDB cluster.");
-//   try {
-//     while (n > 0) {
-//       const balanceValue = [Math.floor(Math.random() * 1000)];
-//       await client.query(
-//         "INSERT INTO accounts (id, balance) VALUES (DEFAULT, $1)",
-//         balanceValue
-//       );
-//       n -= 1;
-//       console.log(`Created new account with balance ${balanceValue}.`);
-//     }
-//   } catch (err) {
-//     console.log(err.stack);
-//   } finally {
-//     client.release();
-//   }
-// };
 
 exports.handler = async (event, context) => {
   console.info('event', event);
@@ -105,9 +28,9 @@ exports.handler = async (event, context) => {
 
   if (event.path === '/products') {
     if (event.httpMethod === 'GET') {
-      response = await getAllProducts(pool);
+      response = await productService.getAllProducts(pool);
     } else if (event.httpMethod === 'POST') {
-      response = await createProduct(pool, JSON.parse(event.body));
+      response = await productService.createProduct(pool, JSON.parse(event.body));
     }
     // create product
   } else if (event.path.includes('/product/')) {
@@ -117,7 +40,7 @@ exports.handler = async (event, context) => {
   } else if (event.path === '/products/to-floor') {
     // make items on floor
   } else if (event.path === '/users') {
-    response = await getUsers(pool);
+    response = await userService.getUsers(pool);
   }
 
   if (response === undefined) {
