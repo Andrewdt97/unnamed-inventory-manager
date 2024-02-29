@@ -5,7 +5,7 @@ const getAllProducts = async (p) => {
   try {
     return await client.query(`SELECT * FROM product`);
   } catch (err) {
-    console.log(err.stack);
+    console.error(err);
   } finally {
     client.release();
   }
