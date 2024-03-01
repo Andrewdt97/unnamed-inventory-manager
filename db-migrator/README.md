@@ -8,4 +8,4 @@ DATABASE_URL: Url used to connect to the cockroach db instance
 ## How to use
 1. Edit code
 2. Run `npm i`
-3. Run `node app.js`
+3. Run `node app.js <ENV>` where `local` will attempt to connect to a local database and `prod` will use the environment variable
