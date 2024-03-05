@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+
+  IPAuthorizerLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ipAuthorizer.handler
+      Runtime: python3.8
+      MemorySize: 256
+      CodeUri: ./ip-authorizer
+
+  BackendLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: backend.handler
+      Runtime: nodejs14.x
+      MemorySize: 256
+      CodeUri: ./backend-lambda
+      Environment:
+        Variables:
+          DATABASE_URL: "secure_method_to_import_database_url"
+
+Outputs:
+  APIGatewayInvokeURL:
+    Description: "Invoke URL for the API Gateway endpoint"
+    Value: !Sub "https://${MyAPI}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+  BackendLambdaFunctionArn:
+    Description: "ARN of the backend Lambda function"
+    Value: !GetAtt BackendLambdaFunction.Arn
+  IPAuthorizerLambdaFunctionArn:
+    Description: "ARN of the IP authorizer Lambda function"
+    Value: !GetAtt IPAuthorizerLambdaFunction.Arn
