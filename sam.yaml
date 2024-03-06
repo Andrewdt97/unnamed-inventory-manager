@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
@@ -10,21 +10,24 @@ Resources:
   IPAuthorizerLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: ipAuthorizer.handler
+      Handler: lambda_function.lambda_handler
       Runtime: python3.8
       MemorySize: 256
       CodeUri: ./ip-authorizer
+      Environment:
+        Variables:
+          DATABASE_URL: "sarn:aws:ssm:us-east-1:728040749730:parameter/ip-range"
 
   BackendLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: backend.handler
-      Runtime: nodejs14.x
+      Handler: index.exports.handler
+      Runtime: nodejs20.x
       MemorySize: 256
       CodeUri: ./backend-lambda
       Environment:
         Variables:
-          DATABASE_URL: "secure_method_to_import_database_url"
+          DATABASE_URL: "arn:aws:ssm:us-east-1:728040749730:parameter/database-url"
 
 Outputs:
   APIGatewayInvokeURL:
