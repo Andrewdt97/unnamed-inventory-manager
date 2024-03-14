@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform:
+  - AWS::LanguageExtensions
+  - AWS::Serverless-2016-10-31
+
+Description: >
+  Create cloud formation stack for restapi, ip authorizer lambda, backend lambda
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+
+Parameters:
+  IP_RANGE:
+    Type: String
+    Description: "IP range for authorization"
+    Default: "IP_RANGE"
+  DATABASE_URL:
+    Type: String
+    Description: "URL for the database connection"
+    Default: "DATABASE_CONNECTION_URL"
+
+Resources:
+  IPAuthorizerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./ip-authorizer
+      Environment:
+        Variables:
+          IP_RANGE: !Ref IP_RANGE
+
+  BackendLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      CodeUri: ./backend-lambda
+      Environment:
+        Variables:
+          DATABASE_URL: !Ref DATABASE_URL
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /myendpoint
+            Method: get
+
+  RESTAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Auth:
+        DefaultAuthorizer: IPAuthorizerLambdaFunction
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: "RESTAPI"
+        paths:
+          /myendpoint:
+            get:
+              responses:
+                "200":
+                  description: "Successful response for GET request"
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
+                httpMethod: "GET"
+                type: "aws_proxy"
+            post:
+              responses:
+                "200":
+                  description: "Successful response for POST request"
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
+                httpMethod: "POST"
+                type: "aws_proxy"
+        responses:
+          "4XX":
+            description: Default response for 4xx errors
+          "5XX":
+            description: Default response for 5xx errors
+        x-amazon-apigateway-gateway-responses:
+          DEFAULT_4XX:
+            responseTemplates:
+              application/json: '{"message": "Client Error: {statusCode}"}'
+          DEFAULT_5XX:
+            responseTemplates:
+              application/json: '{"message": "Server Error: {statusCode}"}'
+
+Outputs:
+  APIGatewayInvokeURL:
+    Description: "Invoke URL for the API Gateway endpoint"
+    Value: !Sub "https://${RESTAPI}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+  IPAuthorizerLambdaFunctionArn:
+    Description: "ARN of the IP authorizer Lambda"
+    Value: !GetAtt IPAuthorizerLambda.Arn
+  BackendLambdaFunctionArn:
+    Description: "ARN of the Backend Lambda"
+    Value: !GetAtt BackendLambda.Arn

@@ -29,18 +29,10 @@ def check_ip(IP_ADDRESS, IP_RANGE):
 
 
 def lambda_handler(event, context):
-    print(event)
     IP_ADDRESS = event["requestContext"]["identity"]["sourceIp"]
     IP_RANGE = ast.literal_eval(os.environ.get("IP_RANGE", "[]"))
     VALID_IP = check_ip(IP_ADDRESS, IP_RANGE)
-    API_ID = event["requestContext"]["apiId"]
-    ACC_ID = event["requestContext"]["accountId"]
-    METHOD = event["requestContext"]["httpMethod"]
-    STAGE = event["requestContext"]["stage"]
-    ROUTE = event["requestContext"]["path"]
-    print(VALID_IP)
     if VALID_IP:
-
         response = {
             "principalId": "user",
             "policyDocument": {
