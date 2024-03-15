@@ -15,11 +15,11 @@ Parameters:
   IP_RANGE:
     Type: String
     Description: "IP range for authorization"
-    Default: "IP_RANGE"
+    Default: "{{resolve:ssm:ip-range:1}}"
   DATABASE_URL:
     Type: String
     Description: "URL for the database connection"
-    Default: "DATABASE_CONNECTION_URL"
+    Default: "{{resolve:ssm:database-url:1}}"
 
 Resources:
   IPAuthorizerLambda:
@@ -48,7 +48,7 @@ Resources:
             Path: /myendpoint
             Method: get
 
-  RESTAPI:
+  RestApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
@@ -57,7 +57,7 @@ Resources:
       DefinitionBody:
         swagger: "2.0"
         info:
-          title: "RESTAPI"
+          title: "RestApi"
         paths:
           /myendpoint:
             get:
@@ -92,7 +92,7 @@ Resources:
 Outputs:
   APIGatewayInvokeURL:
     Description: "Invoke URL for the API Gateway endpoint"
-    Value: !Sub "https://${RESTAPI}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
   IPAuthorizerLambdaFunctionArn:
     Description: "ARN of the IP authorizer Lambda"
     Value: !GetAtt IPAuthorizerLambda.Arn
