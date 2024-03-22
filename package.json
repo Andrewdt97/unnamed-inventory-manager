@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "authlocalinvoke": "sam local invoke IPAuthorizerLambda --event ip-authorizer/event.json --env-vars ip-authorizer/env.json",
-    "backlocalinvoke": "sam local invoke BackendLambda --event backend-lambda/event.json --env-vars backend-lambda/env.json",
+    "authlocalinvoke": "sam local invoke IPAuthorizerLambda --event event.json --env-vars env.json",
+    "backlocalinvoke": "sam local invoke BackendLambda --event event.json --env-vars env.json",
     "apilocalinvoke": "sam local start-api --env-vars env.json"
   },
   "author": "",

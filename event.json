@@ -1,0 +1,10 @@
+{
+  "requestContext": {
+    "identity": {
+      "accountId": "test-accountId",
+      "apiKey": "test-apiKey",
+      "sourceIp": "127.0.0.1"
+    },
+    "apiId": "test-apiId"
+  }
+}

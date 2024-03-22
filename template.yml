@@ -13,13 +13,13 @@ Globals:
 
 Parameters:
   IP_RANGE:
-    Type: String
+    Type: AWS::SSM:Parameter::Value<String>
     Description: "IP range for authorization"
-    Default: "{{resolve:ssm:ip-range:1}}"
+    Default: ip-range
   DATABASE_URL:
-    Type: String
+    Type: AWS::SSM:Parameter::Value<String>
     Description: "URL for the database connection"
-    Default: "{{resolve:ssm:database-url:1}}"
+    Default: database-url
 
 Resources:
   IPAuthorizerLambda:
