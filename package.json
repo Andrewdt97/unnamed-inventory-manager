@@ -1,0 +1,14 @@
+{
+  "name": "unnamed-inventory-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "authlocalinvoke": "sam local invoke IPAuthorizerLambda --event event.json --env-vars env.json",
+    "backlocalinvoke": "sam local invoke BackendLambda --event event.json --env-vars env.json",
+    "apilocalinvoke": "sam local start-api --env-vars env.json"
+  },
+  "author": "",
+  "license": "ISC"
+}
