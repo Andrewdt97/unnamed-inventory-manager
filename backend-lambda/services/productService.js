@@ -1,4 +1,4 @@
-const Format = require('pg-format');
+import Format from "pg-format";
 
 const getAllProducts = async (p) => {
   const client = await p.connect();
@@ -17,12 +17,12 @@ const updateProduct = async (p, id, product) => {
   try {
     let sets = [];
     for (let key in product) {
-      sets.push(Format('%I = %L', key, product[key]));
+      sets.push(Format("%I = %L", key, product[key]));
     }
 
-    let setStrings = sets.join(',');
+    let setStrings = sets.join(",");
 
-    const sql = Format('UPDATE product SET %s WHERE id = %L', setStrings, id);
+    const sql = Format("UPDATE product SET %s WHERE id = %L", setStrings, id);
     const result = await client.query(query);
   } catch (err) {
     console.log(err.stack);
@@ -36,11 +36,11 @@ const createProduct = async (p, product) => {
   const client = await p.connect();
   try {
     const sql = Format(
-      'INSERT INTO product (%I) VALUES (%L)',
+      "INSERT INTO product (%I) VALUES (%L)",
       Object.keys(product),
       Object.values(product)
     );
-    console.info('create sql', sql);
+    console.info("create sql", sql);
     return await client.query(sql);
   } catch (err) {
     console.log(err.stack);

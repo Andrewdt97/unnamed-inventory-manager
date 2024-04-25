@@ -1,6 +1,7 @@
 {
   "name": "examples-aws-lambda",
   "version": "1.0.0",
+  "type": "module",
   "description": "A simple node.JS AWS Lambda function that connects to CockroachDB",
   "main": "index.js",
   "license": "Apache-2.0",
