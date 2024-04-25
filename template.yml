@@ -59,7 +59,7 @@ Resources:
         info:
           title: "RestApi"
         paths:
-          /myendpoint:
+          /products:
             get:
               responses:
                 "200":

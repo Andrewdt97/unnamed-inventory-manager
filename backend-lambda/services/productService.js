@@ -1,13 +1,17 @@
 import Format from "pg-format";
-
-const getAllProducts = async (p) => {
-  const client = await p.connect();
+const getAllProducts = async (pool) => {
+  let client;
   try {
-    return await client.query(`SELECT * FROM product`);
-  } catch (err) {
-    console.error(err);
+    client = await pool.connect();
+    const result = await client.query("SELECT * FROM products");
+    return result.rows;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
   } finally {
-    client.release();
+    if (client) {
+      client.release(); // Release the client back to the pool
+    }
   }
 };
 

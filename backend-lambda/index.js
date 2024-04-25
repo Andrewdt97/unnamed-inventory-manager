@@ -14,10 +14,11 @@ export const handler = async (event, context) => {
   try {
     if (!pool) {
       const connectionString = process.env.DATABASE_URL;
+      console.log(connectionString);
       pool = new pg.Pool({
         connectionString,
-        application_name: "$ docs_lambda_node",
-        max: 1,
+        // application_name: "$ docs_lambda_node",
+        max: 3,
       });
     }
   } catch (e) {
