@@ -3,7 +3,8 @@ const getAllProducts = async (pool) => {
   let client;
   try {
     client = await pool.connect();
-    const result = await client.query("SELECT * FROM products");
+    const result = await client.query("SELECT * FROM product");
+    console.log("RESULT", result);
     return result.rows;
   } catch (error) {
     console.error("Error executing query:", error);

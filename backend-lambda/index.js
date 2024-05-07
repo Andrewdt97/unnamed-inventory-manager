@@ -52,9 +52,6 @@ export const handler = async (event, context) => {
   return {
     headers,
     statusCode: 200,
-    body:
-      typeof response?.rows === "string"
-        ? response?.rows
-        : JSON.stringify(response?.rows),
+    body: typeof response === "string" ? response : JSON.stringify(response),
   };
 };
