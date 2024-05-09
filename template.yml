@@ -32,21 +32,21 @@ Resources:
         Variables:
           IP_RANGE: !Ref IP_RANGE
 
-  BackendLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.handler
-      Runtime: nodejs20.x
-      CodeUri: ./backend-lambda
-      Environment:
-        Variables:
-          DATABASE_URL: !Ref DATABASE_URL
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /myendpoint
-            Method: get
+BackendLambda:
+  Type: AWS::Serverless::Function
+  Properties:
+    Handler: index.handler
+    Runtime: nodejs20.x
+    CodeUri: ./backend-lambda
+    Environment:
+      Variables:
+        DATABASE_URL: !Ref DATABASE_URL
+    Events:
+      Api:
+        Type: Api
+        Properties:
+          Path: /
+          Method: ANY
 
   RestApi:
     Type: AWS::Serverless::Api

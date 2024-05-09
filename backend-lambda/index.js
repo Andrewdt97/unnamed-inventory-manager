@@ -30,10 +30,8 @@ export const handler = async (event, context) => {
     if (event.httpMethod === "GET") {
       response = await productService.getAllProducts(pool);
     } else if (event.httpMethod === "POST") {
-      response = await productService.createProduct(
-        pool,
-        JSON.parse(event.body)
-      );
+      let product = event.body;
+      response = await productService.createProduct(pool, product);
     }
     // create product
   } else if (event.path.includes("/product")) {
