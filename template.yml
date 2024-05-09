@@ -63,7 +63,7 @@ Resources:
             get:
               responses:
                 "200":
-                  description: "Successful response for GET request"
+                  description: "Successful response for GET products request"
               x-amazon-apigateway-integration:
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
                 httpMethod: "GET"
@@ -71,23 +71,20 @@ Resources:
             post:
               responses:
                 "200":
-                  description: "Successful response for POST request"
+                  description: "Successful response for POST products request"
               x-amazon-apigateway-integration:
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
                 httpMethod: "POST"
                 type: "aws_proxy"
-        responses:
-          "4XX":
-            description: Default response for 4xx errors
-          "5XX":
-            description: Default response for 5xx errors
-        x-amazon-apigateway-gateway-responses:
-          DEFAULT_4XX:
-            responseTemplates:
-              application/json: '{"message": "Client Error: {statusCode}"}'
-          DEFAULT_5XX:
-            responseTemplates:
-              application/json: '{"message": "Server Error: {statusCode}"}'
+          /product:
+            post:
+              responses:
+                "200":
+                  description: "Successful response for POST single product request"
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
+                httpMethod: "POST"
+                type: "aws_proxy"
 
 Outputs:
   APIGatewayInvokeURL:

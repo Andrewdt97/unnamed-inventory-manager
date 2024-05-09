@@ -36,7 +36,9 @@ export const handler = async (event, context) => {
       );
     }
     // create product
-  } else if (event.path.includes("/product/")) {
+  } else if (event.path.includes("/product")) {
+    let product = event.body;
+    response = await productService.createProduct(pool, product);
     // update product
   } else if (event.path === "/products/sold") {
     // mark products sold
