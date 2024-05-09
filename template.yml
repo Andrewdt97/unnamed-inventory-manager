@@ -60,7 +60,7 @@ BackendLambda:
           title: "RestApi"
         paths:
           /products:
-            get:
+            get: &getProducts
               responses:
                 "200":
                   description: "Successful response for GET products request"
@@ -68,7 +68,7 @@ BackendLambda:
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
                 httpMethod: "GET"
                 type: "aws_proxy"
-            post:
+            post: &postProducts
               responses:
                 "200":
                   description: "Successful response for POST products request"
@@ -77,14 +77,11 @@ BackendLambda:
                 httpMethod: "POST"
                 type: "aws_proxy"
           /product:
-            post:
-              responses:
-                "200":
-                  description: "Successful response for POST single product request"
-              x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
-                httpMethod: "POST"
-                type: "aws_proxy"
+            post: *postProducts
+          /products/sold:
+            post: *postProducts
+          /products/to-floor:
+            post: *postProducts
 
 Outputs:
   APIGatewayInvokeURL:
