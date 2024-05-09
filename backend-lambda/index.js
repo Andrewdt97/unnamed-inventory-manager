@@ -9,6 +9,8 @@ const headers = {
 };
 
 export const handler = async (event, context) => {
+  const body =
+    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   console.info("event", event);
   console.info("context", context);
   try {
@@ -35,8 +37,7 @@ export const handler = async (event, context) => {
     }
     // create product
   } else if (event.path.includes("/product")) {
-    let product = event.body;
-    response = await productService.createProduct(pool, product);
+    response = await productService.createProduct(pool, body);
     // update product
   } else if (event.path === "/products/sold") {
     // mark products sold
