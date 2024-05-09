@@ -36,10 +36,11 @@ export const handler = async (event, context) => {
       response = await productService.createProduct(pool, product);
     }
     // create product
-  } else if (event.path.includes("/product")) {
+  } else if (event.path === "/product") {
     response = await productService.createProduct(pool, body);
     // update product
   } else if (event.path === "/products/sold") {
+    response = await productService.updateProduct(pool, body.product_id, body);
     // mark products sold
   } else if (event.path === "/products/to-floor") {
     // make items on floor
