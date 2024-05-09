@@ -27,7 +27,7 @@ export const handler = async (event, context) => {
     console.error(JSON.stringify(e));
   }
   let response;
-
+  // get all products
   if (event.path === "/products") {
     if (event.httpMethod === "GET") {
       response = await productService.getAllProducts(pool);
@@ -35,15 +35,16 @@ export const handler = async (event, context) => {
       let product = event.body;
       response = await productService.createProduct(pool, product);
     }
-    // create product
+    // create new product
   } else if (event.path === "/product") {
     response = await productService.createProduct(pool, body);
-    // update product
+    // update a product as sold
   } else if (event.path === "/products/sold") {
     response = await productService.updateProduct(pool, body.product_id, body);
-    // mark products sold
-  } else if (event.path === "/products/to-floor") {
     // make items on floor
+  } else if (event.path === "/products/to-floor") {
+    response = await productService.updateProduct(pool, body.product_id, body);
+    // get all users
   } else if (event.path === "/users") {
     response = await userService.getUsers(pool);
   }

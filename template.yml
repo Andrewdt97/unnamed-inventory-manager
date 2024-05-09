@@ -82,6 +82,15 @@ Resources:
             post: *postProducts
           /products/to-floor:
             post: *postProducts
+        /users:
+          get:
+            responses:
+              "200":
+                description: "Successful response for GET users request"
+            x-amazon-apigateway-integration:
+              uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
+              httpMethod: "GET"
+              type: "aws_proxy"
 
 Outputs:
   APIGatewayInvokeURL:
