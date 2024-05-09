@@ -16,35 +16,23 @@ const getAllProducts = async (pool) => {
   }
 };
 
+// NOTE: This function is untested against cockroach
 const updateProduct = async (p, id, product) => {
   const client = await p.connect();
   try {
     let sets = [];
-    let values = [];
     for (let key in product) {
-      if (key === "sold_date") {
-        // If key is 'sold_date', set it to the current date and time
-        sets.push(`${key} = $${sets.length + 1}`);
-        values.push(new Date().toISOString()); // Add current date and time to values array
-      } else {
-        // Otherwise, use the product[key] value
-        sets.push(`${key} = $${sets.length + 1}`);
-        values.push(product[key]);
-      }
+      sets.push(Format("%I = %L", key, product[key]));
     }
 
     let setStrings = sets.join(",");
 
-    // Construct the parameterized SQL query
-    const sql = `UPDATE product SET ${setStrings} WHERE product_id = $${
-      values.length + 1
-    }`;
-
-    // Add the product_id value to the end of the values array
-    values.push(id);
-
-    // Execute the parameterized query with the values array
-    const result = await client.query(sql, values);
+    const sql = Format(
+      "UPDATE product SET %s WHERE product_id = %L",
+      setStrings,
+      id
+    );
+    const result = await client.query(sql);
     return result;
   } catch (err) {
     console.log(err.stack);
