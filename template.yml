@@ -65,7 +65,7 @@ Resources:
                 "200":
                   description: "Successful response for GET products request"
               x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
                 httpMethod: "GET"
                 type: "aws_proxy"
             post: &postProducts
@@ -73,7 +73,7 @@ Resources:
                 "200":
                   description: "Successful response for POST products request"
               x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
                 httpMethod: "POST"
                 type: "aws_proxy"
           /product:
@@ -82,15 +82,15 @@ Resources:
             post: *postProducts
           /products/to-floor:
             post: *postProducts
-        /users:
-          get:
-            responses:
-              "200":
-                description: "Successful response for GET users request"
-            x-amazon-apigateway-integration:
-              uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
-              httpMethod: "GET"
-              type: "aws_proxy"
+          /users:
+            get:
+              responses:
+                "200":
+                  description: "Successful response for GET users request"
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
+                httpMethod: "GET"
+                type: "aws_proxy"
 
 Outputs:
   APIGatewayInvokeURL:
