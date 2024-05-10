@@ -43,3 +43,5 @@ out
 
 */env.json
 */event.json
+
+.aws-sam
