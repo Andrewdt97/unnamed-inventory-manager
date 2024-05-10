@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform:
+- AWS::LanguageExtensions
+- AWS::Serverless-2016-10-31
+Description: 'Create cloud formation stack for restapi, ip authorizer lambda, backend
+  lambda
+
+  '
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+Parameters:
+  IPRANGE:
+    Type: AWS::SSM::Parameter::Value
+    Description: IP range for authorization
+    Default: ip-range
+  DATABASEURL:
+    Type: AWS::SSM::Parameter::Value
+    Description: URL for the database connection
+    Default: database-url
+Resources:
+  IPAuthorizerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      CodeUri: IPAuthorizerLambda
+      Environment:
+        Variables:
+          IP_RANGE:
+            Ref: IPRANGE
+    Metadata:
+      SamResourceId: IPAuthorizerLambda
+  BackendLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      CodeUri: BackendLambda
+      Environment:
+        Variables:
+          DATABASE_URL:
+            Ref: DATABASEURL
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+    Metadata:
+      SamResourceId: BackendLambda
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Auth:
+        DefaultAuthorizer: IPAuthorizerLambdaFunction
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title: RestApi
+        paths:
+          /products:
+            get:
+              responses:
+                '200':
+                  description: Successful response for GET products request
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations
+                httpMethod: GET
+                type: aws_proxy
+            post:
+              responses:
+                '200':
+                  description: Successful response for POST products request
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+          /product:
+            post:
+              responses:
+                '200':
+                  description: Successful response for POST products request
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+          /products/sold:
+            post:
+              responses:
+                '200':
+                  description: Successful response for POST products request
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+          /products/to-floor:
+            post:
+              responses:
+                '200':
+                  description: Successful response for POST products request
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+          /users:
+            get:
+              responses:
+                '200':
+                  description: Successful response for GET users request
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations
+                httpMethod: GET
+                type: aws_proxy
+Outputs:
+  APIGatewayInvokeURL:
+    Description: Invoke URL for the API Gateway endpoint
+    Value:
+      Fn::Sub: https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/
+  IPAuthorizerLambdaFunctionArn:
+    Description: ARN of the IP authorizer Lambda
+    Value:
+      Fn::GetAtt:
+      - IPAuthorizerLambda
+      - Arn
+  BackendLambdaFunctionArn:
+    Description: ARN of the Backend Lambda
+    Value:
+      Fn::GetAtt:
+      - BackendLambda
+      - Arn

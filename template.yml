@@ -11,12 +11,15 @@ Globals:
     Timeout: 30
     MemorySize: 256
 
+# Caleb TODO: Use the link below to resolve the parameters type issue:
+# https://stackoverflow.com/questions/65961753/aws-sam-parameter-store-how-to-select-parameter-for-the-deployment-into-diffe
+
 Parameters:
-  IP_RANGE:
+  IPRANGE:
     Type: AWS::SSM:Parameter::Value<String>
     Description: "IP range for authorization"
     Default: ip-range
-  DATABASE_URL:
+  DATABASEURL:
     Type: AWS::SSM:Parameter::Value<String>
     Description: "URL for the database connection"
     Default: database-url
@@ -30,7 +33,7 @@ Resources:
       CodeUri: ./ip-authorizer
       Environment:
         Variables:
-          IP_RANGE: !Ref IP_RANGE
+          IP_RANGE: !Ref IPRANGE
 
   BackendLambda:
     Type: AWS::Serverless::Function
@@ -40,7 +43,7 @@ Resources:
       CodeUri: ./backend-lambda
       Environment:
         Variables:
-          DATABASE_URL: !Ref DATABASE_URL
+          DATABASE_URL: !Ref DATABASEURL
       Events:
         Api:
           Type: Api

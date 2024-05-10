@@ -1,0 +1,19 @@
+{
+  "requestContext": {
+    "identity": {
+      "accountId": "test-accountId",
+      "apiKey": "test-apiKey",
+      "sourceIp": "127.0.0.1"
+    },
+    "apiId": "test-apiId"
+  },
+  "path": "/product",
+  "httpMethod": "GET",
+  "body": {
+    "product_id": "5",
+    "business_id": "1",
+    "category_id": "1",
+    "same": "Winter Coat",
+    "size": "Large"
+  }
+}
