@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform:
-  - AWS::LanguageExtensions
   - AWS::Serverless-2016-10-31
 
 Description: >
@@ -11,21 +10,28 @@ Globals:
     Timeout: 30
     MemorySize: 256
 
-# Caleb TODO: Use the link below to resolve the parameters type issue:
-# https://stackoverflow.com/questions/65961753/aws-sam-parameter-store-how-to-select-parameter-for-the-deployment-into-diffe
-
 Parameters:
-  IPRANGE:
-    Type: AWS::SSM:Parameter::Value<String>
+  IpRange:
+    Type: AWS::SSM::Parameter::Value<String>
     Description: "IP range for authorization"
-    Default: ip-range
-  DATABASEURL:
-    Type: AWS::SSM:Parameter::Value<String>
+    Default: "ip-range"
+  DatabaseUrl:
+    Type: AWS::SSM::Parameter::Value<String>
     Description: "URL for the database connection"
-    Default: database-url
+    Default: "database-url"
+
+# TODO: Change bucket names???
+Mappings:
+  StagesMap:
+    staging:
+      ConfigBucket: "staging-bucket-name"
+      ConfigKey: "source-data-key-path"
+    prod:
+      ConfigBucket: "prod-bucket-name"
+      ConfigKey: "source-data-key-path"
 
 Resources:
-  IPAuthorizerLambda:
+  IpAuthorizerLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambda_function.lambda_handler
@@ -33,7 +39,7 @@ Resources:
       CodeUri: ./ip-authorizer
       Environment:
         Variables:
-          IP_RANGE: !Ref IPRANGE
+          IP_RANGE: !Ref IpRange
 
   BackendLambda:
     Type: AWS::Serverless::Function
@@ -43,7 +49,7 @@ Resources:
       CodeUri: ./backend-lambda
       Environment:
         Variables:
-          DATABASE_URL: !Ref DATABASEURL
+          DATABASE_URL: !Ref DatabaseUrl
       Events:
         Api:
           Type: Api
@@ -56,7 +62,7 @@ Resources:
     Properties:
       StageName: prod
       Auth:
-        DefaultAuthorizer: IPAuthorizerLambdaFunction
+        DefaultAuthorizer: IpAuthorizerLambdaFunction
       DefinitionBody:
         swagger: "2.0"
         info:
@@ -96,12 +102,12 @@ Resources:
                 type: "aws_proxy"
 
 Outputs:
-  APIGatewayInvokeURL:
+  ApiGatewayInvokeURL:
     Description: "Invoke URL for the API Gateway endpoint"
     Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
-  IPAuthorizerLambdaFunctionArn:
+  IpAuthorizerLambdaFunctionArn:
     Description: "ARN of the IP authorizer Lambda"
-    Value: !GetAtt IPAuthorizerLambda.Arn
+    Value: !GetAtt IpAuthorizerLambda.Arn
   BackendLambdaFunctionArn:
     Description: "ARN of the Backend Lambda"
     Value: !GetAtt BackendLambda.Arn
