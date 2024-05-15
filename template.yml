@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform:
-  - AWS::LanguageExtensions
   - AWS::Serverless-2016-10-31
 
 Description: >
@@ -10,19 +9,39 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 256
+  standardImplementation:
+    responses:
+      "200":
+        description: "Successful response"
+      "400":
+        description: "Bad request"
+    x-amazon-apigateway-integration:
+      uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
+      httpMethod: "POST"
+      type: "aws_proxy"
 
 Parameters:
-  IP_RANGE:
-    Type: AWS::SSM:Parameter::Value<String>
+  IpRange:
+    Type: AWS::SSM::Parameter::Value<String>
     Description: "IP range for authorization"
-    Default: ip-range
-  DATABASE_URL:
-    Type: AWS::SSM:Parameter::Value<String>
+    Default: "ip-range"
+  DatabaseUrl:
+    Type: AWS::SSM::Parameter::Value<String>
     Description: "URL for the database connection"
-    Default: database-url
+    Default: "database-url"
+
+# TODO: Change bucket names???
+Mappings:
+  StagesMap:
+    staging:
+      ConfigBucket: "staging-bucket-name"
+      ConfigKey: "source-data-key-path"
+    prod:
+      ConfigBucket: "prod-bucket-name"
+      ConfigKey: "source-data-key-path"
 
 Resources:
-  IPAuthorizerLambda:
+  IpAuthorizerLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambda_function.lambda_handler
@@ -30,7 +49,7 @@ Resources:
       CodeUri: ./ip-authorizer
       Environment:
         Variables:
-          IP_RANGE: !Ref IP_RANGE
+          IP_RANGE: !Ref IpRange
 
   BackendLambda:
     Type: AWS::Serverless::Function
@@ -40,62 +59,38 @@ Resources:
       CodeUri: ./backend-lambda
       Environment:
         Variables:
-          DATABASE_URL: !Ref DATABASE_URL
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /myendpoint
-            Method: get
+          DATABASE_URL: !Ref DatabaseUrl
 
   RestApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
       Auth:
-        DefaultAuthorizer: IPAuthorizerLambdaFunction
+        DefaultAuthorizer: !Ref IpAuthorizerLambdaFunction
       DefinitionBody:
         swagger: "2.0"
         info:
           title: "RestApi"
         paths:
-          /myendpoint:
-            get:
-              responses:
-                "200":
-                  description: "Successful response for GET request"
-              x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
-                httpMethod: "GET"
-                type: "aws_proxy"
-            post:
-              responses:
-                "200":
-                  description: "Successful response for POST request"
-              x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambdaFunctionArn}/invocations"
-                httpMethod: "POST"
-                type: "aws_proxy"
-        responses:
-          "4XX":
-            description: Default response for 4xx errors
-          "5XX":
-            description: Default response for 5xx errors
-        x-amazon-apigateway-gateway-responses:
-          DEFAULT_4XX:
-            responseTemplates:
-              application/json: '{"message": "Client Error: {statusCode}"}'
-          DEFAULT_5XX:
-            responseTemplates:
-              application/json: '{"message": "Server Error: {statusCode}"}'
+          /products:
+            get: *standardImplementation
+            post: *standardImplementation
+          /product:
+            put: *standardImplementation
+          /products/sold:
+            put: *standardImplementation
+          /products/to-floor:
+            post: *standardImplementation
+          /users:
+            get: *standardImplementation
 
 Outputs:
-  APIGatewayInvokeURL:
+  ApiGatewayInvokeURL:
     Description: "Invoke URL for the API Gateway endpoint"
     Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
-  IPAuthorizerLambdaFunctionArn:
+  IpAuthorizerLambdaFunctionArn:
     Description: "ARN of the IP authorizer Lambda"
-    Value: !GetAtt IPAuthorizerLambda.Arn
+    Value: !GetAtt IpAuthorizerLambda.Arn
   BackendLambdaFunctionArn:
     Description: "ARN of the Backend Lambda"
     Value: !GetAtt BackendLambda.Arn

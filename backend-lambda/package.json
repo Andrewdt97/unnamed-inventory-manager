@@ -15,7 +15,7 @@
     "jest": "^29.4.3"
   },
   "dependencies": {
-    "pg-format": "^1.0.4",
-    "pg": "latest"
+    "pg": "^8.11.5",
+    "pg-format": "^1.0.4"
   }
 }

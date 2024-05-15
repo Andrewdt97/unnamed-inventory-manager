@@ -9,6 +9,8 @@ const headers = {
 };
 
 export const handler = async (event, context) => {
+  const body =
+    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   console.info("event", event);
   console.info("context", context);
   try {
@@ -16,8 +18,7 @@ export const handler = async (event, context) => {
       const connectionString = process.env.DATABASE_URL;
       pool = new pg.Pool({
         connectionString,
-        application_name: "$ docs_lambda_node",
-        max: 1,
+        max: 3,
       });
     }
   } catch (e) {
@@ -26,22 +27,27 @@ export const handler = async (event, context) => {
   let response;
 
   if (event.path === "/products") {
+    // get all products
     if (event.httpMethod === "GET") {
       response = await productService.getAllProducts(pool);
     } else if (event.httpMethod === "POST") {
-      response = await productService.createProduct(
-        pool,
-        JSON.parse(event.body)
-      );
+      const product = body;
+      response = await productService.createProduct(pool, product);
     }
-    // create product
-  } else if (event.path.includes("/product/")) {
-    // update product
-  } else if (event.path === "/products/sold") {
-    // mark products sold
-  } else if (event.path === "/products/to-floor") {
+  } else if (event.path === "/product" && event.httpMethod === "PUT") {
+    // create new product
+    response = await productService.updateProduct(pool, body);
+  } else if (event.path === "/products/sold" && event.httpMethod === "PUT") {
+    // update a product as sold
+    response = await productService.updateProduct(pool, body.product_id, body);
+  } else if (
+    event.path === "/products/to-floor" &&
+    event.httpMethod === "POST"
+  ) {
     // make items on floor
-  } else if (event.path === "/users") {
+    response = await productService.updateProduct(pool, body.product_id, body);
+  } else if (event.path === "/users" && event.httpMethod === "GET") {
+    // get all users
     response = await userService.getUsers(pool);
   }
 
@@ -51,9 +57,6 @@ export const handler = async (event, context) => {
   return {
     headers,
     statusCode: 200,
-    body:
-      typeof response?.rows === "string"
-        ? response?.rows
-        : JSON.stringify(response?.rows),
+    body: typeof response === "string" ? response : JSON.stringify(response),
   };
 };

@@ -1,13 +1,18 @@
 import Format from "pg-format";
-
-const getAllProducts = async (p) => {
-  const client = await p.connect();
+const getAllProducts = async (pool) => {
+  let client;
   try {
-    return await client.query(`SELECT * FROM product`);
-  } catch (err) {
-    console.error(err);
+    client = await pool.connect();
+    const result = await client.query("SELECT * FROM product");
+    console.log("RESULT", result);
+    return result.rows;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
   } finally {
-    client.release();
+    if (client) {
+      client.release(); // Release the client back to the pool
+    }
   }
 };
 
@@ -22,8 +27,13 @@ const updateProduct = async (p, id, product) => {
 
     let setStrings = sets.join(",");
 
-    const sql = Format("UPDATE product SET %s WHERE id = %L", setStrings, id);
-    const result = await client.query(query);
+    const sql = Format(
+      "UPDATE product SET %s WHERE product_id = %L",
+      setStrings,
+      id
+    );
+    const result = await client.query(sql);
+    return result;
   } catch (err) {
     console.log(err.stack);
   } finally {
