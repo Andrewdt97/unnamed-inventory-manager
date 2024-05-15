@@ -9,6 +9,16 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 256
+  standardImplementation:
+    responses:
+      "200":
+        description: "Successful response"
+      "400":
+        description: "Bad request"
+    x-amazon-apigateway-integration:
+      uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
+      httpMethod: "POST"
+      type: "aws_proxy"
 
 Parameters:
   IpRange:
@@ -50,56 +60,29 @@ Resources:
       Environment:
         Variables:
           DATABASE_URL: !Ref DatabaseUrl
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /
-            Method: ANY
 
   RestApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
       Auth:
-        DefaultAuthorizer: IpAuthorizerLambdaFunction
+        DefaultAuthorizer: !Ref IpAuthorizerLambdaFunction
       DefinitionBody:
         swagger: "2.0"
         info:
           title: "RestApi"
         paths:
           /products:
-            get: &getProducts
-              responses:
-                "200":
-                  description: "Successful response for GET products request"
-              x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
-                httpMethod: "GET"
-                type: "aws_proxy"
-            post: &postProducts
-              responses:
-                "200":
-                  description: "Successful response for POST products request"
-              x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
-                httpMethod: "POST"
-                type: "aws_proxy"
+            get: *standardImplementation
+            post: *standardImplementation
           /product:
-            post: *postProducts
+            put: *standardImplementation
           /products/sold:
-            post: *postProducts
+            put: *standardImplementation
           /products/to-floor:
-            post: *postProducts
+            post: *standardImplementation
           /users:
-            get:
-              responses:
-                "200":
-                  description: "Successful response for GET users request"
-              x-amazon-apigateway-integration:
-                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
-                httpMethod: "GET"
-                type: "aws_proxy"
+            get: *standardImplementation
 
 Outputs:
   ApiGatewayInvokeURL:

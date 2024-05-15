@@ -13,16 +13,16 @@ import uuid
 import ast
 
 
-def check_ip(IP_ADDRESS, IPRANGE):
+def check_ip(IP_ADDRESS, IP_RANGE):
     VALID_IP = False
-    cidr_blocks = list(filter(lambda element: "/" in element, IPRANGE))
+    cidr_blocks = list(filter(lambda element: "/" in element, IP_RANGE))
     if cidr_blocks:
         for cidr in cidr_blocks:
             net = ip_network(cidr)
             VALID_IP = ip_address(IP_ADDRESS) in net
             if VALID_IP:
                 break
-    if not VALID_IP and IP_ADDRESS in IPRANGE:
+    if not VALID_IP and IP_ADDRESS in IP_RANGE:
         VALID_IP = True
 
     return VALID_IP
@@ -30,8 +30,8 @@ def check_ip(IP_ADDRESS, IPRANGE):
 
 def lambda_handler(event, context):
     IP_ADDRESS = event["requestContext"]["identity"]["sourceIp"]
-    IPRANGE = ast.literal_eval(os.environ.get("IP_RANGE", "[]"))
-    VALID_IP = check_ip(IP_ADDRESS, IPRANGE)
+    IP_RANGE = ast.literal_eval(os.environ.get("IP_RANGE", "[]"))
+    VALID_IP = check_ip(IP_ADDRESS, IP_RANGE)
     if VALID_IP:
         response = {
             "principalId": "user",

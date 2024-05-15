@@ -15,11 +15,9 @@ export const handler = async (event, context) => {
   console.info("context", context);
   try {
     if (!pool) {
-      const connectionString = process.env.DATABASEURL;
-      console.log(connectionString);
+      const connectionString = process.env.DATABASE_URL;
       pool = new pg.Pool({
         connectionString,
-        // application_name: "$ docs_lambda_node",
         max: 3,
       });
     }
@@ -32,21 +30,37 @@ export const handler = async (event, context) => {
     if (event.httpMethod === "GET") {
       response = await productService.getAllProducts(pool);
     } else if (event.httpMethod === "POST") {
-      let product = event.body;
+      const product = body;
       response = await productService.createProduct(pool, product);
     }
     // create new product
   } else if (event.path === "/product") {
-    response = await productService.createProduct(pool, body);
+    if (event.httpMethod === "PUT") {
+      response = await productService.updateProduct(pool, body);
+    }
     // update a product as sold
   } else if (event.path === "/products/sold") {
-    response = await productService.updateProduct(pool, body.product_id, body);
+    if (event.httpMethod === "PUT") {
+      response = await productService.updateProduct(
+        pool,
+        body.product_id,
+        body
+      );
+    }
     // make items on floor
   } else if (event.path === "/products/to-floor") {
-    response = await productService.updateProduct(pool, body.product_id, body);
+    if (event.httpMethod === "POST") {
+      response = await productService.updateProduct(
+        pool,
+        body.product_id,
+        body
+      );
+    }
     // get all users
   } else if (event.path === "/users") {
-    response = await userService.getUsers(pool);
+    if (event.httpMethod === "GET") {
+      response = await userService.getUsers(pool);
+    }
   }
 
   if (response === undefined) {
