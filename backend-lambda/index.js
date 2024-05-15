@@ -25,42 +25,30 @@ export const handler = async (event, context) => {
     console.error(JSON.stringify(e));
   }
   let response;
-  // get all products
+
   if (event.path === "/products") {
+    // get all products
     if (event.httpMethod === "GET") {
       response = await productService.getAllProducts(pool);
     } else if (event.httpMethod === "POST") {
       const product = body;
       response = await productService.createProduct(pool, product);
     }
+  } else if (event.path === "/product" && event.httpMethod === "PUT") {
     // create new product
-  } else if (event.path === "/product") {
-    if (event.httpMethod === "PUT") {
-      response = await productService.updateProduct(pool, body);
-    }
+    response = await productService.updateProduct(pool, body);
+  } else if (event.path === "/products/sold" && event.httpMethod === "PUT") {
     // update a product as sold
-  } else if (event.path === "/products/sold") {
-    if (event.httpMethod === "PUT") {
-      response = await productService.updateProduct(
-        pool,
-        body.product_id,
-        body
-      );
-    }
+    response = await productService.updateProduct(pool, body.product_id, body);
+  } else if (
+    event.path === "/products/to-floor" &&
+    event.httpMethod === "POST"
+  ) {
     // make items on floor
-  } else if (event.path === "/products/to-floor") {
-    if (event.httpMethod === "POST") {
-      response = await productService.updateProduct(
-        pool,
-        body.product_id,
-        body
-      );
-    }
+    response = await productService.updateProduct(pool, body.product_id, body);
+  } else if (event.path === "/users" && event.httpMethod === "GET") {
     // get all users
-  } else if (event.path === "/users") {
-    if (event.httpMethod === "GET") {
-      response = await userService.getUsers(pool);
-    }
+    response = await userService.getUsers(pool);
   }
 
   if (response === undefined) {
