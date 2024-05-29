@@ -50,6 +50,12 @@ Resources:
       Environment:
         Variables:
           DATABASE_URL: !Ref DatabaseUrl
+      Events:
+        RestApi:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
 
   RestApi:
     Type: AWS::Serverless::Api
@@ -68,6 +74,8 @@ Resources:
                 description: "Successful response"
               "400":
                 description: "Bad request"
+              "500":
+                description: "Server error"
             x-amazon-apigateway-integration:
               uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendLambda.Arn}/invocations"
               httpMethod: "POST"
