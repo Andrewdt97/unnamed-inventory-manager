@@ -19,11 +19,6 @@ export const handler = async (event, context) => {
       console.log(process.env);
       pool = new pg.Pool({
         connectionString: connectionString,
-        user: process.env.user,
-        database: process.env.database,
-        host: process.env.host,
-        password: process.env.password,
-        port: process.env.port,
       });
     }
   } catch (e) {
