@@ -4,7 +4,7 @@ const getAllProducts = async (pool) => {
   try {
     client = await pool.connect();
     const result = await client.query(
-      "SELECT * FROM product LIMIT 20 OFFSET 100"
+      "SELECT * FROM product LIMIT limit_var OFFSET offset_var"
     );
     console.log("RESULT", result);
     return result.rows;

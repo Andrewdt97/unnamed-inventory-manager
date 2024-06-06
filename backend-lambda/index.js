@@ -26,6 +26,10 @@ export const handler = async (event, context) => {
   }
   let response;
 
+  // Caleb TODO
+  // 1) Check console log for event object properties
+  // 2) Use queryStringParameters() to get limit and offset to pass into sql query (convert data type if needed)
+
   if (event.path === "/products") {
     // get all products
     if (event.httpMethod === "GET") {
