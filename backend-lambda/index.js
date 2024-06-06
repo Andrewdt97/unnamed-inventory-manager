@@ -16,7 +16,6 @@ export const handler = async (event, context) => {
   try {
     if (!pool) {
       const connectionString = process.env.DATABASE_URL;
-      console.log(process.env);
       pool = new pg.Pool({
         connectionString: connectionString,
       });
