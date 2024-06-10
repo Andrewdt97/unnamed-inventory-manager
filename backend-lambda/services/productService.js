@@ -1,10 +1,12 @@
 import Format from "pg-format";
-const getAllProducts = async (pool) => {
+const getAllProducts = async (pool, limit, offset) => {
   let client;
   try {
     client = await pool.connect();
     const result = await client.query(
-      "SELECT * FROM product LIMIT limit_var OFFSET offset_var"
+      `SELECT * FROM product LIMIT ?0 OFFSET ?1`,
+      limit,
+      offset
     );
     console.log("RESULT", result);
     return result.rows;
