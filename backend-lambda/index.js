@@ -17,8 +17,7 @@ export const handler = async (event, context) => {
     if (!pool) {
       const connectionString = process.env.DATABASE_URL;
       pool = new pg.Pool({
-        connectionString,
-        max: 3,
+        connectionString: connectionString,
       });
     }
   } catch (e) {
