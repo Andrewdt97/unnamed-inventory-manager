@@ -4,9 +4,8 @@ const getAllProducts = async (pool, limit, offset) => {
   try {
     client = await pool.connect();
     const result = await client.query(
-      `SELECT * FROM product LIMIT ?0 OFFSET ?1`,
-      limit,
-      offset
+      `SELECT * FROM product LIMIT $1 OFFSET $2`,
+      [limit, offset]
     );
     console.log("RESULT", result);
     return result.rows;

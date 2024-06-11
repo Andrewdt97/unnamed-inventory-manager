@@ -25,20 +25,11 @@ export const handler = async (event, context) => {
   }
   let response;
 
-  const limit = event["multiValueQueryStringParameters"]["limit"][0];
-  const offset = event["multiValueQueryStringParameters"]["offset"][0];
-
-  /* Caleb TODO
-    Task 1) Check console log for event object properties:
-    Resolution 1) event { multiValueQueryStringParameters: { limit: [ '_' ], offset: [ '_' ] } }
-
-    Task 2) Use queryStringParameters() to get limit and offset to pass into sql query (convert data type if needed)
-    Resolution 2) 
-  */
-
   if (event.path === "/products") {
     // get all products
     if (event.httpMethod === "GET") {
+      const limit = event["multiValueQueryStringParameters"]["limit"][0];
+      const offset = event["multiValueQueryStringParameters"]["offset"][0];
       response = await productService.getAllProducts(pool, limit, offset);
     } else if (event.httpMethod === "POST") {
       const product = body;
