@@ -1,4 +1,4 @@
-import { productService, getAllProducts } from "./productService";
+import { productService } from "./productService";
 
 const querySpy = jest.fn();
 
@@ -29,12 +29,12 @@ describe("Product Service", () => {
 
   it("should select a limited number of products", () => {
     // Setup
-    const querySpy = jest.fn().mockResolvedValue([{ id: 1, name: "product1" }]);
+    querySpy.mockResolvedValueOnce([{ id: 1, name: "product1" }]);
     limit = 1;
     offset = 1;
 
     // Run
-    const res = productService.getAllProducts(mockPool, params);
+    const pagRes = productService.getAllProducts(mockPool, params);
 
     // Assert
     expect(querySpy).toHaveBeenCalledWith(
@@ -42,7 +42,7 @@ describe("Product Service", () => {
       limit,
       offset
     );
-    expect(res).toContainEqual({ id: 1, name: "product1" });
+    expect(pagRes).toContainEqual({ id: 1, name: "product1" });
     expect(releaseSpy).toHaveBeenCalled();
   });
 });
