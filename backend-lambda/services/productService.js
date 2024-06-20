@@ -13,7 +13,8 @@ const getAllProducts = async (pool, limit, offset) => {
   const query = `SELECT * FROM product LIMIT $1 OFFSET $2`;
   const params = [limit, offset];
 
-  return clientService(pool, query, params);
+  const result = await clientService(pool, query, params);
+  return result.rows;
 };
 
 // NOTE: This function is untested against cockroach

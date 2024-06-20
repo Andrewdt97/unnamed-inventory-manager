@@ -4,7 +4,7 @@ const clientService = async (pool, query, params) => {
     client = await pool.connect();
     const result = await client.query(query, params);
     console.log("RESULT", result);
-    return result.rows != null ? result.rows : result;
+    return result;
   } catch (error) {
     console.error("Error executing query:", error);
     throw error;
