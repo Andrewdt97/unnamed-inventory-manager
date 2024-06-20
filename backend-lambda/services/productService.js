@@ -1,5 +1,13 @@
 import Format from "pg-format";
 const getAllProducts = async (pool, limit, offset) => {
+  if (typeof pool !== "object" || pool === null) {
+    throw new Error("Pool must be an object");
+  }
+
+  if (isNaN(limit) || isNaN(offset)) {
+    throw new Error("Limit and offset must be numbers");
+  }
+
   let client;
   try {
     client = await pool.connect();
