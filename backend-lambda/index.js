@@ -31,24 +31,27 @@ export const handler = async (event, context) => {
       const limit = event.queryStringParameters.limit;
       const offset = event.queryStringParameters.offset;
       response = await productService.getAllProducts(pool, limit, offset);
-    } else if (event.httpMethod === "POST") {
+    }
+    // create a product
+    else if (event.httpMethod === "POST") {
       const product = body;
       response = await productService.createProduct(pool, product);
     }
-  } else if (event.path === "/product" && event.httpMethod === "PUT") {
-    // create new product
+  }
+  // update a product
+  else if (event.path === "/product" && event.httpMethod === "PUT") {
     response = await productService.updateProduct(pool, body);
-  } else if (event.path === "/products/sold" && event.httpMethod === "PUT") {
-    // update a product as sold
+  }
+  // update a product as sold
+  else if (event.path === "/products/sold" && event.httpMethod === "PUT") {
     response = await productService.updateProduct(pool, body.product_id, body);
-  } else if (
-    event.path === "/products/to-floor" &&
-    event.httpMethod === "POST"
-  ) {
-    // make items on floor
+  }
+  // make items on floor
+  else if (event.path === "/products/to-floor" && event.httpMethod === "POST") {
     response = await productService.updateProduct(pool, body.product_id, body);
-  } else if (event.path === "/users" && event.httpMethod === "GET") {
-    // get all users
+  }
+  // get all users
+  else if (event.path === "/users" && event.httpMethod === "GET") {
     response = await userService.getUsers(pool);
   }
 

@@ -1,0 +1,18 @@
+const clientService = async (pool, query, params) => {
+  let client;
+  try {
+    client = await pool.connect();
+    const result = await client.query(query, params);
+    console.log("RESULT", result);
+    return result.rows != null ? result.rows : result;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+};
+
+module.exports = clientService;
