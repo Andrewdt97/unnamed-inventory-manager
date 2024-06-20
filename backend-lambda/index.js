@@ -28,7 +28,9 @@ export const handler = async (event, context) => {
   if (event.path === "/products") {
     // get all products
     if (event.httpMethod === "GET") {
-      response = await productService.getAllProducts(pool);
+      const limit = event.queryStringParameters.limit;
+      const offset = event.queryStringParameters.offset;
+      response = await productService.getAllProducts(pool, limit, offset);
     } else if (event.httpMethod === "POST") {
       const product = body;
       response = await productService.createProduct(pool, product);

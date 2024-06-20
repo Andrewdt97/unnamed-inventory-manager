@@ -10,5 +10,8 @@
     "apilocalinvoke": "sam local start-api --env-vars backend-lambda/env.json"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
 }
