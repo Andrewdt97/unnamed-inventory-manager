@@ -15,4 +15,13 @@ const clientService = async (pool, query, params) => {
   }
 };
 
-module.exports = clientService;
+function poolCheck(pool) {
+  if (typeof pool !== "object" || pool === null) {
+    throw new Error("Pool must be an object");
+  }
+}
+
+module.exports = {
+  clientService: clientService,
+  poolCheck: poolCheck,
+};

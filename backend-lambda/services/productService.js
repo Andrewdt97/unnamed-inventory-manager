@@ -1,10 +1,8 @@
 import Format from "pg-format";
-const clientService = require("./productServiceHelpers");
+const { clientService, poolCheck } = require("./productServiceHelpers");
 
 const getAllProducts = async (pool, limit, offset) => {
-  if (typeof pool !== "object" || pool === null) {
-    throw new Error("Pool must be an object");
-  }
+  poolCheck(pool);
 
   if (isNaN(limit) || isNaN(offset)) {
     throw new Error("Limit and offset must be numbers");
@@ -19,6 +17,8 @@ const getAllProducts = async (pool, limit, offset) => {
 
 // NOTE: This function is untested against cockroach
 const updateProduct = async (pool, id, product) => {
+  poolCheck(pool);
+
   let sets = [];
   for (let key in product) {
     sets.push(Format("%I = %L", key, product[key]));
@@ -34,6 +34,8 @@ const updateProduct = async (pool, id, product) => {
 
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
+  poolCheck(pool);
+
   const query = "INSERT INTO product (%I) VALUES (%L)";
   const params = [Object.keys(product), Object.values(product)];
 
