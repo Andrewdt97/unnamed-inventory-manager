@@ -1,4 +1,4 @@
-const clientService = async (pool, query, params) => {
+async function clientService(pool, query, params) {
   let client;
   try {
     client = await pool.connect();
@@ -13,7 +13,7 @@ const clientService = async (pool, query, params) => {
       client.release();
     }
   }
-};
+}
 
 function poolCheck(pool) {
   if (typeof pool !== "object" || pool === null) {
@@ -21,7 +21,4 @@ function poolCheck(pool) {
   }
 }
 
-module.exports = {
-  clientService: clientService,
-  poolCheck: poolCheck,
-};
+export default { poolCheck, clientService };

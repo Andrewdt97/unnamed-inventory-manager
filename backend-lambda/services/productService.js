@@ -1,5 +1,6 @@
 import Format from "pg-format";
-const { clientService, poolCheck } = require("./productServiceHelpers");
+import productServiceHelpers from "./productServiceHelpers.js";
+const { clientService, poolCheck } = productServiceHelpers;
 
 const getAllProducts = async (pool, limit, offset) => {
   poolCheck(pool);
