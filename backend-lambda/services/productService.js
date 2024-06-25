@@ -37,7 +37,7 @@ const updateProduct = async (pool, id, product) => {
 const createProduct = async (pool, product) => {
   poolCheck(pool);
 
-  const query = "INSERT INTO product (%I) VALUES (%L)";
+  const query = "INSERT INTO product ($1) VALUES ($2)";
   const params = [Object.keys(product), Object.values(product)];
 
   clientService(pool, query, params);

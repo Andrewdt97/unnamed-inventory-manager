@@ -34,7 +34,7 @@ export const handler = async (event, context) => {
     }
     // create a product
     else if (event.httpMethod === "POST") {
-      const product = body;
+      product = body;
       response = await productService.createProduct(pool, product);
     }
   }
