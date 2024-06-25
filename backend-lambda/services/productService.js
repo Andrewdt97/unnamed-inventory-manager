@@ -40,6 +40,9 @@ const createProduct = async (pool, product) => {
   const query = "INSERT INTO product ($1) VALUES ($2)";
   const params = [Object.keys(product), Object.values(product)];
 
+  console.log("KEYS", Object.keys(product));
+  console.log("VALUES", Object.values(product));
+
   clientService(pool, query, params);
 };
 

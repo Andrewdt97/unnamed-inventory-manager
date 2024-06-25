@@ -13,6 +13,8 @@ export const handler = async (event, context) => {
     typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   console.info("event", event);
   console.info("context", context);
+  // Log the parsed body in a formatted way
+  console.info(body);
   try {
     if (!pool) {
       const connectionString = process.env.DATABASE_URL;
@@ -34,8 +36,7 @@ export const handler = async (event, context) => {
     }
     // create a product
     else if (event.httpMethod === "POST") {
-      product = body;
-      response = await productService.createProduct(pool, product);
+      response = await productService.createProduct(pool, body);
     }
   }
   // update a product
