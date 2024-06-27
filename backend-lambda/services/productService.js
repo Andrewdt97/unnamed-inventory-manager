@@ -1,6 +1,6 @@
 import Format from "pg-format";
 import productServiceHelpers from "./productServiceHelpers.js";
-const { clientService, poolCheck } = productServiceHelpers;
+const { clientService, poolCheck, productCheck } = productServiceHelpers;
 
 const getAllProducts = async (pool, limit, offset) => {
   poolCheck(pool);
@@ -35,17 +35,18 @@ const updateProduct = async (pool, id, product) => {
 
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
-  poolCheck(pool);
-
   const values = Object.values(product);
   const keys = Object.keys(product);
   const params = keys.map((_, index) => values[index]);
+
+  await poolCheck(pool);
+  await productCheck(product, keys);
 
   const query = `INSERT INTO product (${keys.join(", ")}) VALUES (${keys
     .map((_, index) => `$${index + 1}`)
     .join(", ")})`;
 
-  clientService(pool, query, params);
+  return clientService(pool, query, params);
 };
 
 export default { getAllProducts, createProduct, updateProduct };

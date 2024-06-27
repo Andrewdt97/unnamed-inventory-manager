@@ -21,4 +21,10 @@ function poolCheck(pool) {
   }
 }
 
-export default { poolCheck, clientService };
+function productCheck(product, keys) {
+  if (typeof product !== "object" || keys.length == 0) {
+    throw new Error("Product must be an object and cannot be empty");
+  }
+}
+
+export default { poolCheck, clientService, productCheck };
