@@ -68,4 +68,38 @@ describe("Product Service", () => {
       ).rejects.toThrow("Limit and offset must be numbers");
     });
   });
+
+  describe("Create new product", () => {
+    it("should create a new product", async () => {
+      const product = querySpy.mockResolvedValueOnce({
+        rows: [
+          {
+            product_id: 7,
+            business_id: 1,
+            category_id: 2,
+            name: "Summer shorts",
+          },
+        ],
+      });
+
+      const params = Object.values(product);
+      const keys = Object.keys(product);
+
+      const res = await productService.createProduct(mockPool, product);
+
+      expect(querySpy).toHaveBeenCalledWith(
+        `INSERT INTO product (${keys.join(", ")}) VALUES (${keys
+          .map((_, index) => `$${index + 1}`)
+          .join(", ")})`,
+        params
+      );
+      expect(res).toEqual({
+        product_id: 7,
+        business_id: 1,
+        category_id: 1,
+        name: "Summer shorts",
+      });
+      expect(releaseSpy).toHaveBeenCalled();
+    });
+  });
 });

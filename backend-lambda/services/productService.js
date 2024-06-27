@@ -37,8 +37,9 @@ const updateProduct = async (pool, id, product) => {
 const createProduct = async (pool, product) => {
   poolCheck(pool);
 
-  const params = Object.values(product);
+  const values = Object.values(product);
   const keys = Object.keys(product);
+  const params = keys.map((_, index) => values[index]);
 
   const query = `INSERT INTO product (${keys.join(", ")}) VALUES (${keys
     .map((_, index) => `$${index + 1}`)
