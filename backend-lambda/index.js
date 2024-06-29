@@ -27,6 +27,9 @@ export const handler = async (event, context) => {
   }
   let response;
 
+  // define path string to check for product_id in updateProduct
+  const path = event.path;
+
   if (event.path === "/products") {
     // get all products
     if (event.httpMethod === "GET") {
@@ -39,17 +42,23 @@ export const handler = async (event, context) => {
       response = await productService.createProduct(pool, body);
     }
   }
+
   // update a product
   else if (event.path === "/product" && event.httpMethod === "PUT") {
-    response = await productService.updateProduct(pool, body);
+    response = await productService.updateProduct(pool, productId, body, path);
   }
   // update a product as sold
   else if (event.path === "/products/sold" && event.httpMethod === "PUT") {
-    response = await productService.updateProduct(pool, body.product_id, body);
+    response = await productService.updateProduct(pool, productId, body, path);
   }
   // make items on floor
   else if (event.path === "/products/to-floor" && event.httpMethod === "POST") {
-    response = await productService.updateProduct(pool, body.product_id, body);
+    response = await productService.updateProduct(
+      pool,
+      body.product_id,
+      body,
+      path
+    );
   }
   // get all users
   else if (event.path === "/users" && event.httpMethod === "GET") {

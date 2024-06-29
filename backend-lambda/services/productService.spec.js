@@ -1,4 +1,5 @@
 import productService from "./productService.js";
+import Format from "pg-format";
 
 const querySpy = jest.fn();
 const releaseSpy = jest.fn();
