@@ -51,21 +51,17 @@ const updateProduct = async (pool, id, product) => {
 
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
-  const values = Object.values(product);
-  const keys = Object.keys(product);
-  const params = keys.map((_, index) => values[index]);
+  const keys = Object.keys(product).join(", ");
+  const values = Object.values(product).join(", ");
+  const params = [keys, values];
+
+  console.log(keys);
+  console.log(values);
 
   poolCheck(pool);
   productCheck(product, keys);
 
-  /* 
-Caleb TODO: Ensure query is safe, regardless of pg purifying and create different setStrings for keys/values
-to then use in the queryand clientServce(params) variable requirement
-  */
-
-  const query = `INSERT INTO product (${keys.join(", ")}) VALUES (${keys
-    .map((_, index) => `$${index + 1}`)
-    .join(", ")})`;
+  const query = Format(`INSERT INTO product (%L) VALUES (%I)`, keys, values);
 
   return clientService(pool, query, params);
 };

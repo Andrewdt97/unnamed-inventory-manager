@@ -50,24 +50,10 @@ export const handler = async (event, context) => {
     response = await productService.updateProduct(pool, body.product_id, body);
   }
 
-  // update a product as sold
-  else if (path === "/products/sold" && httpMethod === "PUT") {
-    response = await productService.updateProduct(
-      pool,
-      body.product_id,
-      body,
-      path
-    );
-  }
-
   // make items on floor
   else if (path === "/products/to-floor" && httpMethod === "POST") {
-    response = await productService.updateProduct(
-      pool,
-      body.product_id,
-      body,
-      path
-    );
+    await validate.validateProductId(event.pathParameters.product_id);
+    response = await productService.updateProduct(pool, body.product_id, body);
   }
 
   // get all users
