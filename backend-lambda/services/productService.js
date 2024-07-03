@@ -18,23 +18,12 @@ const getAllProducts = async (pool, limit, offset) => {
 };
 
 // NOTE: This function is untested against cockroach
-const updateProduct = async (pool, id, product, path) => {
+const updateProduct = async (pool, id, product) => {
   const values = Object.values(product);
   const keys = Object.keys(product);
 
-  // Make sure product_id is in the path, if not send unfound error
-  if (!path.includes("product_id")) {
-    response = {
-      statusCode: 400,
-      body: JSON.stringify({ message: "Product ID not found in path" }),
-    };
-  }
-
-  // Check to make sure id (product_id) is in the database
-  productIdCheck(id);
-
   // Creates keys and values array then maps them to one long-ass string ->
-  // 'name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024''
+  // ex: 'name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024''
   const setString = keys
     .map((key, index) => Format("%I = %L", key, values[index]))
     .join(", ");
@@ -44,6 +33,7 @@ const updateProduct = async (pool, id, product, path) => {
   This is because the pg library formats the query so that the long-ass string is put into it before
   it is passed to clientService ->
   
+  ex:
   UPDATE product SET name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024'
   WHERE product_id = $1
 
@@ -55,7 +45,8 @@ const updateProduct = async (pool, id, product, path) => {
   poolCheck(pool);
   productCheck(product, keys);
 
-  return clientService(pool, query, params);
+  const res = await clientService(pool, query, params);
+  return res?.rowCount;
 };
 
 // NOTE: This function is untested against cockroach

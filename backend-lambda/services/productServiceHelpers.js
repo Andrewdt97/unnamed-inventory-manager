@@ -27,23 +27,4 @@ function productCheck(product, keys) {
   }
 }
 
-async function productIdCheck(id) {
-  let client;
-  const query = `SELECT product FROM products WHERE product_id = $1`;
-  const params = [id];
-
-  try {
-    client = await pool.connect();
-    await client.query(query, params);
-    return true;
-  } catch (error) {
-    console.error("Product doesn't exist", error);
-    throw error;
-  } finally {
-    if (client) {
-      client.release();
-    }
-  }
-}
-
-export default { poolCheck, clientService, productCheck, productIdCheck };
+export default { poolCheck, clientService, productCheck };
