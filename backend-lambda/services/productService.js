@@ -52,8 +52,9 @@ const updateProduct = async (pool, id, product) => {
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
   const keys = Object.keys(product).join(", ");
-  const values = Object.values(product).join(", ");
-  const params = [keys, values];
+  const values = Object.values(product);
+  // Creates a set of placeholders that matches the count of values
+  const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
 
   console.log(keys);
   console.log(values);
@@ -61,9 +62,14 @@ const createProduct = async (pool, product) => {
   poolCheck(pool);
   productCheck(product, keys);
 
-  const query = Format(`INSERT INTO product (%L) VALUES (%I)`, keys, values);
+  const query = `INSERT INTO product (${keys}) VALUES (${placeholders})`;
 
-  return clientService(pool, query, params);
+  /* 
+  Execute the query with only the provided values.
+  The query will look like: INSERT INTO (product product_id, business_id, category_id, description) VALUES ($1, $2, $3, $4)
+  */
+  const res = await clientService(pool, query, values);
+  return res?.rowCount;
 };
 
 export default { getAllProducts, createProduct, updateProduct };
