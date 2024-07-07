@@ -74,39 +74,27 @@ describe("Product Service", () => {
     it("should create a new product", async () => {
       // Setup
       const product = {
-        rows: [
-          {
-            product_id: 7,
-            business_id: 1,
-            category_id: 2,
-            name: "Summer shorts",
-          },
-        ],
+        product_id: 7,
+        business_id: 1,
+        category_id: 2,
+        name: "Summer shorts",
       };
 
-      querySpy.mockResolvedValueOnce(product);
+      querySpy.mockResolvedValueOnce({ rowCount: 1 });
 
+      const keys = Object.keys(product).join(", ");
       const values = Object.values(product);
-      const keys = Object.keys(product);
+      const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
 
       // Run
       const res = await productService.createProduct(mockPool, product);
 
       // Assert
       expect(querySpy).toHaveBeenCalledWith(
-        `INSERT INTO product (${keys.join(", ")}) VALUES (${keys
-          .map((_, index) => `$${index + 1}`)
-          .join(", ")})`,
+        `INSERT INTO product (${keys}) VALUES (${placeholders})`,
         values
       );
-      expect(res.rows).toEqual([
-        {
-          business_id: 1,
-          category_id: 2,
-          name: "Summer shorts",
-          product_id: 7,
-        },
-      ]);
+      expect(res).toEqual(1);
       expect(releaseSpy).toHaveBeenCalled();
     });
 
@@ -143,21 +131,149 @@ describe("Product Service", () => {
           },
         ],
       };
-      querySpy.mockResolvedValue(product);
-      const poolMock = "test-type";
-      const productEmpty = {};
-      const productWrongDataType = 5;
+
+      const productMockEmpty = {};
+      const productMockType = 5;
+
+      // Run & Assert
+      await expect(
+        productService.createProduct(mockPool, productMockEmpty)
+      ).rejects.toThrow("Product must be an object and cannot be empty");
+      await expect(
+        productService.createProduct(mockPool, productMockType)
+      ).rejects.toThrow("Product must be an object and cannot be empty");
+    });
+
+    it("should throw an error if pool is not an object", async () => {
+      // Setup
+      const product = {
+        rows: [
+          {
+            product_id: 7,
+            business_id: 1,
+            category_id: 2,
+            name: "Summer shorts",
+          },
+        ],
+      };
+
+      const poolMock = 3;
 
       // Run & Assert
       await expect(
         productService.createProduct(poolMock, product)
       ).rejects.toThrow("Pool must be an object");
+    });
+  });
+
+  describe("Update Product", () => {
+    it("should update a product", async () => {
+      // Setup
+      const product = {
+        rows: [
+          {
+            product_id: 7,
+            business_id: 1,
+            category_id: 2,
+            name: "Summer shorts",
+          },
+        ],
+      };
+      const values = Object.values(product);
+      const keys = Object.keys(product);
+      const setString = keys
+        .map((key, index) => Format("%I = %L", key, values[index]))
+        .join(", ");
+      const id = product.product_id;
+      querySpy.mockResolvedValueOnce(product);
+
+      // Run
+      const result = await productService.updateProduct(mockPool, id, product);
+
+      // Expect
+      expect(querySpy).toHaveBeenCalledWith(
+        `UPDATE product SET ${setString} WHERE product_id = $1`,
+        [id]
+      );
+      expect(result).toEqual([
+        {
+          product_id: 7,
+          business_id: 1,
+          category_id: 2,
+          name: "Summer shorts",
+        },
+      ]);
+    });
+
+    it("should throw an error executing the query", async () => {
+      // Setup
+      const product = {
+        rows: [
+          {
+            product_id: 7,
+            business_id: 1,
+            category_id: 2,
+            name: "Summer shorts",
+          },
+        ],
+      };
+      const id = product.product_id;
+
+      // Run & Assert
+      querySpy.mockRejectedValueOnce(new Error("Error executing query:"));
+
+      // Run & Assert
       await expect(
-        productService.createProduct(mockPool, productEmpty)
+        productService.updateProduct(mockPool, id, product)
+      ).rejects.toThrow("Error executing query:");
+      expect(releaseSpy).toHaveBeenCalled();
+    });
+
+    it("should throw an error if product is not an object or an empty object", async () => {
+      // Setup
+      const product = {
+        rows: [
+          {
+            product_id: 7,
+            business_id: 1,
+            category_id: 2,
+            name: "Summer shorts",
+          },
+        ],
+      };
+      const id = product.product_id;
+      const productMockEmpty = {};
+      const productMockType = 5;
+
+      // Run & Assert
+      await expect(
+        productService.updateProduct(mockPool, id, productMockEmpty)
       ).rejects.toThrow("Product must be an object and cannot be empty");
       await expect(
-        productService.createProduct(mockPool, productWrongDataType)
+        productService.updateProduct(mockPool, id, productMockType)
       ).rejects.toThrow("Product must be an object and cannot be empty");
+    });
+
+    it("should throw an error if pool is not an object", async () => {
+      // Setup
+      const product = {
+        rows: [
+          {
+            product_id: 7,
+            business_id: 1,
+            category_id: 2,
+            name: "Summer shorts",
+          },
+        ],
+      };
+      const id = product.product_id;
+
+      const poolMock = 3;
+
+      // Run & Assert
+      await expect(
+        productService.updateProduct(poolMock, id, product)
+      ).rejects.toThrow("Pool must be an object");
     });
   });
 });

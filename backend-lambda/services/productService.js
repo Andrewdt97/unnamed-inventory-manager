@@ -19,6 +19,9 @@ const getAllProducts = async (pool, limit, offset) => {
 
 // NOTE: This function is untested against cockroach
 const updateProduct = async (pool, id, product) => {
+  poolCheck(pool);
+  productCheck(product);
+
   const values = Object.values(product);
   const keys = Object.keys(product);
 
@@ -42,11 +45,8 @@ const updateProduct = async (pool, id, product) => {
   const query = `UPDATE product SET ${setString} WHERE product_id = $1`;
   const params = [id];
 
-  poolCheck(pool);
-  productCheck(product, keys);
-
   const res = await clientService(pool, query, params);
-  return res?.rowCount;
+  return res?.rows;
 };
 
 // NOTE: This function is untested against cockroach
@@ -55,9 +55,6 @@ const createProduct = async (pool, product) => {
   const values = Object.values(product);
   // Creates a set of placeholders that matches the count of values
   const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
-
-  console.log(keys);
-  console.log(values);
 
   poolCheck(pool);
   productCheck(product, keys);

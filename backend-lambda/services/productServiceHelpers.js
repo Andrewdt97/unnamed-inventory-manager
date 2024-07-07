@@ -21,8 +21,8 @@ function poolCheck(pool) {
   }
 }
 
-function productCheck(product, keys) {
-  if (typeof product !== "object" || keys.length == 0) {
+function productCheck(product) {
+  if (typeof product !== "object" || Object.keys(product).length === 0) {
     throw new Error("Product must be an object and cannot be empty");
   }
 }
