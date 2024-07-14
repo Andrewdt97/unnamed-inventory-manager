@@ -81,17 +81,14 @@ describe("Product Service", () => {
       };
 
       querySpy.mockResolvedValueOnce({ rowCount: 1 });
-
-      const keys = Object.keys(product).join(", ");
       const values = Object.values(product);
-      const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
 
       // Run
       const res = await productService.createProduct(mockPool, product);
 
       // Assert
       expect(querySpy).toHaveBeenCalledWith(
-        `INSERT INTO product (${keys}) VALUES (${placeholders})`,
+        `INSERT INTO product (product_id, business_id, category_id, name) VALUES ($1, $2, $3, $4)`,
         values
       );
       expect(res).toEqual(1);
@@ -169,40 +166,22 @@ describe("Product Service", () => {
   describe("Update Product", () => {
     it("should update a product", async () => {
       // Setup
+      const id = 1;
       const product = {
-        rows: [
-          {
-            product_id: 7,
-            business_id: 1,
-            category_id: 2,
-            name: "Summer shorts",
-          },
-        ],
+        name: "Summer shorts",
       };
-      const values = Object.values(product);
-      const keys = Object.keys(product);
-      const setString = keys
-        .map((key, index) => Format("%I = %L", key, values[index]))
-        .join(", ");
-      const id = product.product_id;
+
       querySpy.mockResolvedValueOnce(product);
 
       // Run
-      const result = await productService.updateProduct(mockPool, id, product);
+      await productService.updateProduct(mockPool, id, product);
 
       // Expect
       expect(querySpy).toHaveBeenCalledWith(
-        `UPDATE product SET ${setString} WHERE product_id = $1`,
+        `UPDATE product SET name = 'Summer shorts' WHERE product_id = $1`,
         [id]
       );
-      expect(result).toEqual([
-        {
-          product_id: 7,
-          business_id: 1,
-          category_id: 2,
-          name: "Summer shorts",
-        },
-      ]);
+      expect(releaseSpy).toHaveBeenCalled();
     });
 
     it("should throw an error executing the query", async () => {

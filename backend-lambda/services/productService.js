@@ -1,7 +1,6 @@
 import Format from "pg-format";
 import productServiceHelpers from "./productServiceHelpers.js";
-const { clientService, poolCheck, productCheck, productIdCheck } =
-  productServiceHelpers;
+const { clientService, poolCheck, productCheck } = productServiceHelpers;
 
 const getAllProducts = async (pool, limit, offset) => {
   poolCheck(pool);
@@ -45,20 +44,22 @@ const updateProduct = async (pool, id, product) => {
   const query = `UPDATE product SET ${setString} WHERE product_id = $1`;
   const params = [id];
 
-  const res = await clientService(pool, query, params);
-  return res?.rows;
+  await clientService(pool, query, params);
+  return;
 };
 
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
+  // Assign keys and values variables
   const keys = Object.keys(product).join(", ");
   const values = Object.values(product);
-  // Creates a set of placeholders that matches the count of values
-  const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
 
+  // Check that pool and product are appropriate data types/values
   poolCheck(pool);
   productCheck(product, keys);
 
+  // Create a set of placeholders that matches the count of values and construct the query
+  const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
   const query = `INSERT INTO product (${keys}) VALUES (${placeholders})`;
 
   /* 

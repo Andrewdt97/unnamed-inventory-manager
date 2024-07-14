@@ -17,8 +17,6 @@ export const handler = async (event, context) => {
   const httpMethod = event.httpMethod;
   console.info("event", event);
   console.info("context", context);
-  // Log the parsed body in a formatted way
-  console.info(body);
   try {
     if (!pool) {
       const connectionString = process.env.DATABASE_URL;
@@ -45,13 +43,7 @@ export const handler = async (event, context) => {
   }
 
   // update a product
-  else if (path.includes("/product/") && httpMethod === "PUT") {
-    await validate.validateProductId(event.pathParameters.product_id);
-    response = await productService.updateProduct(pool, body.product_id, body);
-  }
-
-  // make items on floor
-  else if (path === "/products/to-floor" && httpMethod === "POST") {
+  else if (path.startsWith("/product/") && httpMethod === "PUT") {
     await validate.validateProductId(event.pathParameters.product_id);
     response = await productService.updateProduct(pool, body.product_id, body);
   }

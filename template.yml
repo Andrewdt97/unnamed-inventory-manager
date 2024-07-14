@@ -84,8 +84,6 @@ Resources:
             post: *standardImplementation
           /product/{product_id}:
             put: *standardImplementation
-          /products/to-floor:
-            post: *standardImplementation
           /users:
             get: *standardImplementation
 

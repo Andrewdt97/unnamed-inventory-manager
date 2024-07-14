@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-cli-js": "^2.2.3",
     "jest": "^29.7.0"
   }
 }
