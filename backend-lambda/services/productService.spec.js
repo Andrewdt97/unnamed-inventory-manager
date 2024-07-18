@@ -88,7 +88,7 @@ describe("Product Service", () => {
 
       // Assert
       expect(querySpy).toHaveBeenCalledWith(
-        `INSERT INTO product (product_id, business_id, category_id, name) VALUES ($1, $2, $3, $4)`,
+        `INSERT INTO product (product_id, business_id, category_id, name) VALUES (7, 1, 2, "Summer shorts")`,
         values
       );
       expect(res).toEqual(1);

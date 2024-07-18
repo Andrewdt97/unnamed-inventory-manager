@@ -1,22 +1,29 @@
-import Format from "pg-format";
+import format from "pg-format";
 import productServiceHelpers from "./productServiceHelpers.js";
 const { clientService, poolCheck, productCheck } = productServiceHelpers;
 
 const getAllProducts = async (pool, limit, offset) => {
+  // Check that pool is the right data type
   poolCheck(pool);
 
+  // Check that limit & offset parameters are numbers
   if (isNaN(limit) || isNaN(offset)) {
     throw new Error("Limit and offset must be numbers");
   }
 
-  const query = `SELECT * FROM product LIMIT $1 OFFSET $2`;
-  const params = [limit, offset];
+  // Assign query
+  const query = {
+    name: "getAllProducts",
+    text: `SELECT * FROM product LIMIT $1 OFFSET $2`,
+    values: [limit, offset],
+  };
 
-  const result = await clientService(pool, query, params);
+  // Pass pool & query to clientService to connect to database & execute query
+  const result = await clientService(pool, query);
   return result.rows;
 };
 
-// NOTE: This function is untested against cockroach
+// // NOTE: This function is untested against cockroach
 const updateProduct = async (pool, id, product) => {
   poolCheck(pool);
   productCheck(product);
@@ -24,50 +31,41 @@ const updateProduct = async (pool, id, product) => {
   const values = Object.values(product);
   const keys = Object.keys(product);
 
-  // Creates keys and values array then maps them to one long-ass string ->
-  // ex: 'name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024''
-  const setString = keys
-    .map((key, index) => Format("%I = %L", key, values[index]))
-    .join(", ");
+  //   // Creates keys and values array then maps them to one long-ass string ->
+  //   // ex: 'name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024''
+  let sets = [];
+  for (let key in product) {
+    sets.push(format("%I = %L", key, product[key]));
+  }
 
-  /* 
-  The setString does not require a placeholder in the query nor to be in the parameters variable.
-  This is because the pg library formats the query so that the long-ass string is put into it before
-  it is passed to clientService ->
-  
-  ex:
-  UPDATE product SET name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024'
-  WHERE product_id = $1
+  let setStrings = sets.join(",");
 
-  The product_id value is the only placeholder used here with postgres's $1 placeholder syntax
-  */
-  const query = `UPDATE product SET ${setString} WHERE product_id = $1`;
-  const params = [id];
+  const query = format(
+    "UPDATE product SET %s WHERE product_id = %L",
+    setStrings,
+    id
+  );
 
-  await clientService(pool, query, params);
+  await clientService(pool, query);
   return;
 };
 
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
-  // Assign keys and values variables
-  const keys = Object.keys(product).join(", ");
-  const values = Object.values(product);
-
   // Check that pool and product are appropriate data types/values
   poolCheck(pool);
-  productCheck(product, keys);
+  productCheck(product);
 
-  // Create a set of placeholders that matches the count of values and construct the query
-  const placeholders = values.map((_, i) => `$${i + 1}`).join(", ");
-  const query = `INSERT INTO product (${keys}) VALUES (${placeholders})`;
+  // Assign keys/values
+  let keys = Object.keys(product);
+  let values = Object.values(product);
 
-  /* 
-  Execute the query with only the provided values.
-  The query will look like: INSERT INTO (product product_id, business_id, category_id, description) VALUES ($1, $2, $3, $4)
-  */
-  const res = await clientService(pool, query, values);
+  // Assign query & parameters
+  const query = format(`INSERT INTO product (%I) VALUES (%L)`, keys, values);
+
+  // Await result
+  const res = await clientService(pool, query);
   return res?.rowCount;
 };
 
-export default { getAllProducts, createProduct, updateProduct };
+export default { getAllProducts, updateProduct, createProduct };

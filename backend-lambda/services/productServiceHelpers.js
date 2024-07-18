@@ -1,8 +1,8 @@
-async function clientService(pool, query, params) {
+async function clientService(pool, query) {
   let client;
   try {
     client = await pool.connect();
-    const result = await client.query(query, params);
+    const result = await client.query(query);
     console.log("RESULT", result);
     return result;
   } catch (error) {
