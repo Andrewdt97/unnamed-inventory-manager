@@ -69,10 +69,13 @@ const createProduct = async (pool, product) => {
 };
 
 const deleteProduct = async (pool, id) => {
+  // Check pool for object type
   poolCheck(pool);
 
+  // Format query
   const query = format("DELETE FROM product WHERE product_id = $1", id);
 
+  // Pass pool & query to client service to connect to database & execute query
   await clientService(pool, query);
 };
 
