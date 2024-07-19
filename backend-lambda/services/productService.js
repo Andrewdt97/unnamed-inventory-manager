@@ -1,43 +1,71 @@
-import Format from "pg-format";
-const clientService = require("./productServiceHelpers");
+import format from "pg-format";
+import productServiceHelpers from "./productServiceHelpers.js";
+const { clientService, poolCheck, productCheck } = productServiceHelpers;
 
 const getAllProducts = async (pool, limit, offset) => {
-  if (typeof pool !== "object" || pool === null) {
-    throw new Error("Pool must be an object");
-  }
+  // Check that pool is the right data type
+  poolCheck(pool);
 
+  // Check that limit & offset parameters are numbers
   if (isNaN(limit) || isNaN(offset)) {
     throw new Error("Limit and offset must be numbers");
   }
 
-  const query = `SELECT * FROM product LIMIT $1 OFFSET $2`;
-  const params = [limit, offset];
+  // Assign query
+  const query = {
+    name: "getAllProducts",
+    text: `SELECT * FROM product LIMIT $1 OFFSET $2`,
+    values: [limit, offset],
+  };
 
-  const result = await clientService(pool, query, params);
+  // Pass pool & query to clientService to connect to database & execute query
+  const result = await clientService(pool, query);
   return result.rows;
 };
 
-// NOTE: This function is untested against cockroach
+// // NOTE: This function is untested against cockroach
 const updateProduct = async (pool, id, product) => {
+  poolCheck(pool);
+  productCheck(product);
+
+  const values = Object.values(product);
+  const keys = Object.keys(product);
+
+  //   // Creates keys and values array then maps them to one long-ass string ->
+  //   // ex: 'name = 'purple jumpsuit', size = 'Medium', description = 'comes with pockets', sold_date = '6.29.2024''
   let sets = [];
   for (let key in product) {
-    sets.push(Format("%I = %L", key, product[key]));
+    sets.push(format("%I = %L", key, product[key]));
   }
 
   let setStrings = sets.join(",");
 
-  const query = "UPDATE product SET %s WHERE product_id = %L";
-  const params = [setStrings, id];
+  const query = format(
+    "UPDATE product SET %s WHERE product_id = %L",
+    setStrings,
+    id
+  );
 
-  return clientService(pool, query, params);
+  await clientService(pool, query);
+  return;
 };
 
 // NOTE: This function is untested against cockroach
 const createProduct = async (pool, product) => {
-  const query = "INSERT INTO product (%I) VALUES (%L)";
-  const params = [Object.keys(product), Object.values(product)];
+  // Check that pool and product are appropriate data types/values
+  poolCheck(pool);
+  productCheck(product);
 
-  clientService(pool, query, params);
+  // Assign keys/values
+  let keys = Object.keys(product);
+  let values = Object.values(product);
+
+  // Assign query & parameters
+  const query = format(`INSERT INTO product (%I) VALUES (%L)`, keys, values);
+
+  // Await result
+  const res = await clientService(pool, query);
+  return res?.rowCount;
 };
 
-export default { getAllProducts, createProduct, updateProduct };
+export default { getAllProducts, updateProduct, createProduct };

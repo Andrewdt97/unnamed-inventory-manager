@@ -82,12 +82,8 @@ Resources:
                 httpMethod: "POST"
                 type: "aws_proxy"
             post: *standardImplementation
-          /product:
+          /product/{product_id}:
             put: *standardImplementation
-          /products/sold:
-            put: *standardImplementation
-          /products/to-floor:
-            post: *standardImplementation
           /users:
             get: *standardImplementation
 
