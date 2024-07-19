@@ -68,4 +68,12 @@ const createProduct = async (pool, product) => {
   return res?.rowCount;
 };
 
-export default { getAllProducts, updateProduct, createProduct };
+const deleteProduct = async (pool, id) => {
+  poolCheck(pool);
+
+  const query = format("DELETE FROM product WHERE product_id = $1", id);
+
+  await clientService(pool, query);
+};
+
+export default { getAllProducts, updateProduct, createProduct, deleteProduct };

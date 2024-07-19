@@ -42,6 +42,12 @@ export const handler = async (event, context) => {
     }
   }
 
+  // delete a product
+  else if (path.startsWith("/product/delete") && httpMethod === "DELETE") {
+    await validate.validateProductId(event.pathParameters.product_id);
+    response = await productService.deleteProduct(pool, body.product_id);
+  }
+
   // update a product
   else if (path.startsWith("/product/") && httpMethod === "PUT") {
     await validate.validateProductId(event.pathParameters.product_id);
