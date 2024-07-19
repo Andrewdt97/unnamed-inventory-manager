@@ -1,5 +1,5 @@
 import productService from "./productService.js";
-import Format from "pg-format";
+import format from "pg-format";
 
 const querySpy = jest.fn();
 const releaseSpy = jest.fn();
@@ -27,10 +27,11 @@ describe("Product Service", () => {
       const res = await productService.getAllProducts(mockPool, limit, offset);
 
       // Assert
-      expect(querySpy).toHaveBeenCalledWith(
-        "SELECT * FROM product LIMIT $1 OFFSET $2",
-        [limit, offset]
-      );
+      expect(querySpy).toHaveBeenCalledWith({
+        name: "getAllProducts",
+        text: "SELECT * FROM product LIMIT $1 OFFSET $2",
+        values: [2, 1],
+      });
       expect(res).toEqual([{ test: "test" }]);
       expect(releaseSpy).toHaveBeenCalled();
     });
@@ -88,8 +89,7 @@ describe("Product Service", () => {
 
       // Assert
       expect(querySpy).toHaveBeenCalledWith(
-        `INSERT INTO product (product_id, business_id, category_id, name) VALUES (7, 1, 2, "Summer shorts")`,
-        values
+        "INSERT INTO product (product_id,business_id,category_id,name) VALUES ('7','1','2','Summer shorts')"
       );
       expect(res).toEqual(1);
       expect(releaseSpy).toHaveBeenCalled();
@@ -178,8 +178,7 @@ describe("Product Service", () => {
 
       // Expect
       expect(querySpy).toHaveBeenCalledWith(
-        `UPDATE product SET name = 'Summer shorts' WHERE product_id = $1`,
-        [id]
+        "UPDATE product SET name = 'Summer shorts' WHERE product_id = '1'"
       );
       expect(releaseSpy).toHaveBeenCalled();
     });
