@@ -81,6 +81,8 @@ const deleteProduct = async (pool, id) => {
 
   // Pass pool & query to client service to connect to database & execute query
   await clientService(pool, query);
+
+  return "Product Deleted";
 };
 
 export default { getAllProducts, updateProduct, createProduct, deleteProduct };
