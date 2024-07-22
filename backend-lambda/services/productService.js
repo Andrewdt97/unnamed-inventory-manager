@@ -73,7 +73,11 @@ const deleteProduct = async (pool, id) => {
   poolCheck(pool);
 
   // Format query
-  const query = format("DELETE FROM product WHERE product_id = $1", id);
+  const query = {
+    name: "deleteProduct",
+    text: `DELETE FROM product WHERE product_id = $1`,
+    values: [id],
+  };
 
   // Pass pool & query to client service to connect to database & execute query
   await clientService(pool, query);
