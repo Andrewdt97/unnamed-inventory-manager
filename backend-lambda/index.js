@@ -44,19 +44,19 @@ export const handler = async (event, context) => {
 
   // delete a product
   else if (path.includes("/product/delete") && httpMethod === "DELETE") {
-    await validate.validateProductId(event.pathParameters.product_id);
+    const id = await validate.validateProductId(event.pathParameters.product_id);
     response = await productService.deleteProduct(
       pool,
-      event.pathParameters.product_id
+      id
     );
   }
 
   // update a product
   else if (path.startsWith("/product/") && httpMethod === "PUT") {
-    await validate.validateProductId(event.pathParameters.product_id);
+    const id = await validate.validateProductId(event.pathParameters.product_id);
     response = await productService.updateProduct(
       pool,
-      event.pathParameters.product_id,
+      id,
       body
     );
   }
