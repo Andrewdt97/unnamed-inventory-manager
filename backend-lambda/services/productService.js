@@ -43,7 +43,7 @@ const updateProduct = async (pool, id, product) => {
   const query = format(
     "UPDATE product SET %s WHERE product_id = %L",
     setStrings,
-    parseInt(id)
+    id
   );
 
   await clientService(pool, query);
@@ -76,7 +76,7 @@ const deleteProduct = async (pool, id) => {
   const query = {
     name: "deleteProduct",
     text: `DELETE FROM product WHERE product_id = $1`,
-    values: [parseInt(id)],
+    values: [id],
   };
 
   // Pass pool & query to client service to connect to database & execute query
