@@ -13,8 +13,8 @@ const getAllCategories = async (pool, limit, offset) => {
 
     // Assign query
     const query = {
-        name: "getAllProducts",
-        text: `SELECT * FROM product LIMIT $1 OFFSET $2`,
+        name: "getAllCategories",
+        text: `SELECT * FROM category LIMIT $1 OFFSET $2`,
         values: [limit, offset],
         };
 
