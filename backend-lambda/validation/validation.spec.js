@@ -5,7 +5,7 @@ describe("Validate Product Id", () => {
     // Setup
     const id = 1;
     // Run & Expect
-    expect(validation.validateProductId(id)).toEqual(undefined);
+    expect(validation.validateProductId(id)).toEqual(1);
   });
 
   it("should throw an error if productId is not in path", async () => {
