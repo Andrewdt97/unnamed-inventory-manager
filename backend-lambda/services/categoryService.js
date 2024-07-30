@@ -2,6 +2,23 @@ import format from "pg-format";
 import serviceHelpers from "./serviceHelpers.js";
 const { clientService, poolCheck, categoryCheck } = serviceHelpers;
 
+const createCategory = async (pool, category) => {
+  // Check that pool and product are appropriate data types/values
+  poolCheck(pool);
+  categoryCheck(category);
+
+  // Assign keys/values
+  let keys = Object.keys(category);
+  let values = Object.values(category);
+
+  // Assign query & parameters
+  const query = format(`INSERT INTO category (%I) VALUES (%L)`, keys, values);
+
+  // Await result
+  const res = await clientService(pool, query);
+  return res?.rowCount;
+};
+
 const getAllCategories = async (pool, limit, offset) => {
   // Check that pool is the right data type
   poolCheck(pool);
@@ -21,10 +38,6 @@ const getAllCategories = async (pool, limit, offset) => {
     // Pass pool & query to clientService to connect to database & execute query
     const result = await clientService(pool, query);
     return result.rows;
-}
-
-const createCategory = async () => {
-
 }
 
 const updateCategory = async () => {

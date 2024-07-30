@@ -16,6 +16,78 @@ describe("Category Service", () => {
       jest.clearAllMocks();
     });
 
+    describe("Create New Category", () => {
+      it("should create a new category", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Store",
+        };
+  
+        querySpy.mockResolvedValueOnce({ rowCount: 1 });
+  
+        // Run
+        const res = await categoryService.createCategory(mockPool, category);
+  
+        // Assert
+        expect(querySpy).toHaveBeenCalledWith(
+          "INSERT INTO category (category_id,name) VALUES ('1','Store')"
+        );
+        expect(res).toEqual(1);
+        expect(releaseSpy).toHaveBeenCalled();
+      });
+  
+      it("should throw an error and release client", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Store",
+        };
+
+        querySpy.mockRejectedValueOnce(new Error("Error executing query:"));
+  
+        // Run & Assert
+        await expect(
+          categoryService.createCategory(mockPool, category)
+        ).rejects.toThrow("Error executing query:");
+        expect(releaseSpy).toHaveBeenCalled();
+      });
+  
+      it("should throw an error if product is not an object or an empty object", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Store",
+        };
+  
+        const categoryMockEmpty = {};
+        const categoryMockType = 5;
+  
+        // Run & Assert
+        await expect(
+          categoryService.createCategory(mockPool, categoryMockEmpty)
+        ).rejects.toThrow("Category must be an object and cannot be empty");
+        await expect(
+          categoryService.createCategory(mockPool, categoryMockType)
+        ).rejects.toThrow("Category must be an object and cannot be empty");
+      });
+  
+      it("should throw an error if pool is not an object", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Store",
+        };
+  
+        const poolMock = 3;
+  
+        // Run & Assert
+        await expect(
+          categoryService.createCategory(poolMock, category)
+        ).rejects.toThrow("Pool must be an object");
+      });
+    });
+
     describe("Get All Categories", () => {
         it("should select all categories", async () => {
             // Setup
