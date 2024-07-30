@@ -3,7 +3,7 @@ import serviceHelpers from "./serviceHelpers.js";
 const { clientService, poolCheck, categoryCheck } = serviceHelpers;
 
 const createCategory = async (pool, category) => {
-  // Check that pool and product are appropriate data types/values
+  // Check that pool and category are appropriate data types/values
   poolCheck(pool);
   categoryCheck(category);
 

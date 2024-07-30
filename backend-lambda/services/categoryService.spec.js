@@ -53,7 +53,7 @@ describe("Category Service", () => {
       expect(releaseSpy).toHaveBeenCalled();
     });
 
-    it("should throw an error if product is not an object or an empty object", async () => {
+    it("should throw an error if category is not an object or an empty object", async () => {
       // Setup
       const category = {
         category_id: 1,
