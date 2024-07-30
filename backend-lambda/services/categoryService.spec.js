@@ -142,4 +142,77 @@ describe("Category Service", () => {
             ).rejects.toThrow("Limit and offset must be numbers");
         });
     });
+
+    describe("Update Category", () => {
+      it("should update a category", async () => {
+        // Setup
+        const id = 1;
+        const category = {
+          name: "Summer",
+        };
+  
+        querySpy.mockResolvedValueOnce(category);
+  
+        // Run
+        await categoryService.updateCategory(mockPool, id, category);
+  
+        // Expect
+        expect(querySpy).toHaveBeenCalledWith(
+          "UPDATE category SET name = 'Summer' WHERE category_id = '1'"
+        );
+        expect(releaseSpy).toHaveBeenCalled();
+      });
+  
+      it("should throw an error executing the query", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Summer"
+        };
+        const id = category.category_id;
+        querySpy.mockRejectedValueOnce(new Error("Error executing query:"));
+  
+        // Run & Assert
+        await expect(
+          categoryService.updateCategory(mockPool, id, category)
+        ).rejects.toThrow("Error executing query:");
+        expect(releaseSpy).toHaveBeenCalled();
+      });
+  
+      it("should throw an error if category is not an object or an empty object", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Summer"
+        };
+
+        const id = category.category_id;
+        const categoryMockEmpty = {};
+        const categoryMockType = 5;
+  
+        // Run & Assert
+        await expect(
+          categoryService.updateCategory(mockPool, id, categoryMockEmpty)
+        ).rejects.toThrow("Category must be an object and cannot be empty");
+        await expect(
+          categoryService.updateCategory(mockPool, id, categoryMockType)
+        ).rejects.toThrow("Category must be an object and cannot be empty");
+      });
+  
+      it("should throw an error if pool is not an object", async () => {
+        // Setup
+        const category = {
+          category_id: 1,
+          name: "Summer"
+        };
+        const id = category.category_id;
+  
+        const poolMock = 3;
+  
+        // Run & Assert
+        await expect(
+          categoryService.updateCategory(poolMock, id, category)
+        ).rejects.toThrow("Pool must be an object");
+      });
+    });
 });

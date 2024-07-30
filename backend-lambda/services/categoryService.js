@@ -40,9 +40,26 @@ const getAllCategories = async (pool, limit, offset) => {
     return result.rows;
 }
 
-const updateCategory = async () => {
+const updateCategory = async (pool, id, category) => {
+  poolCheck(pool);
+  categoryCheck(category);
 
-}
+  let sets = [];
+  for (let key in category) {
+    sets.push(format("%I = %L", key, category[key]));
+  }
+
+  let setStrings = sets.join(",");
+
+  const query = format(
+    "UPDATE category SET %s WHERE category_id = %L",
+    setStrings,
+    id
+  );
+
+  await clientService(pool, query);
+  return;
+};
 
 const deleteCategory = async () => {
     
