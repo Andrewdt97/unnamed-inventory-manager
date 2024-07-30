@@ -27,4 +27,10 @@ function productCheck(product) {
   }
 }
 
-export default { poolCheck, clientService, productCheck };
+function categoryCheck(category) {
+  if (typeof category !== "object" || Object.keys(category).length === 0) {
+    throw new Error("Category must be an object and cannot be empty");
+  }
+}
+
+export default { poolCheck, clientService, productCheck, categoryCheck };
