@@ -68,4 +68,21 @@ const createProduct = async (pool, product) => {
   return res?.rowCount;
 };
 
-export default { getAllProducts, updateProduct, createProduct };
+const deleteProduct = async (pool, id) => {
+  // Check pool for object type
+  poolCheck(pool);
+
+  // Format query
+  const query = {
+    name: "deleteProduct",
+    text: `DELETE FROM product WHERE product_id = $1`,
+    values: [id],
+  };
+
+  // Pass pool & query to client service to connect to database & execute query
+  await clientService(pool, query);
+
+  return "Product Deleted";
+};
+
+export default { getAllProducts, updateProduct, createProduct, deleteProduct };

@@ -82,7 +82,6 @@ describe("Product Service", () => {
       };
 
       querySpy.mockResolvedValueOnce({ rowCount: 1 });
-      const values = Object.values(product);
 
       // Run
       const res = await productService.createProduct(mockPool, product);
@@ -196,8 +195,6 @@ describe("Product Service", () => {
         ],
       };
       const id = product.product_id;
-
-      // Run & Assert
       querySpy.mockRejectedValueOnce(new Error("Error executing query:"));
 
       // Run & Assert
@@ -252,6 +249,49 @@ describe("Product Service", () => {
       await expect(
         productService.updateProduct(poolMock, id, product)
       ).rejects.toThrow("Pool must be an object");
+    });
+  });
+
+  describe("Delete Product", () => {
+    it("should delete a product & release client", async () => {
+      // Setup
+      const id = 1;
+      querySpy.mockResolvedValueOnce("Product Deleted");
+
+      // Run
+      const res = await productService.deleteProduct(mockPool, id);
+
+      // Expect
+      expect(querySpy).toHaveBeenCalledWith({
+        name: "deleteProduct",
+        text: `DELETE FROM product WHERE product_id = $1`,
+        values: [id],
+      });
+      expect(res).toEqual("Product Deleted");
+      expect(releaseSpy).toHaveBeenCalled();
+    });
+
+    it("should throw an error executing the query & release client", async () => {
+      // Setup
+      const id = 1;
+      querySpy.mockRejectedValueOnce(new Error("Error executing query:"));
+
+      // Run & Expect
+      await expect(productService.deleteProduct(mockPool, id)).rejects.toThrow(
+        "Error executing query:"
+      );
+      expect(releaseSpy).toHaveBeenCalled();
+    });
+
+    it("should throw an error if pool is not an object", async () => {
+      // Setup
+      const id = 1;
+      const poolMock = 3;
+
+      // Run & Assert
+      await expect(productService.updateProduct(poolMock, id)).rejects.toThrow(
+        "Pool must be an object"
+      );
     });
   });
 });

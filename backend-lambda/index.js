@@ -42,10 +42,23 @@ export const handler = async (event, context) => {
     }
   }
 
+  // delete a product
+  else if (path.includes("/product/delete") && httpMethod === "DELETE") {
+    const id = await validate.validateProductId(event.pathParameters.product_id);
+    response = await productService.deleteProduct(
+      pool,
+      id
+    );
+  }
+
   // update a product
   else if (path.startsWith("/product/") && httpMethod === "PUT") {
-    await validate.validateProductId(event.pathParameters.product_id);
-    response = await productService.updateProduct(pool, body.product_id, body);
+    const id = await validate.validateProductId(event.pathParameters.product_id);
+    response = await productService.updateProduct(
+      pool,
+      id,
+      body
+    );
   }
 
   // get all users

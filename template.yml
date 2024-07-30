@@ -84,6 +84,8 @@ Resources:
             post: *standardImplementation
           /product/{product_id}:
             put: *standardImplementation
+          /product/delete/{product_id}:
+            delete: *standardImplementation
           /users:
             get: *standardImplementation
 
