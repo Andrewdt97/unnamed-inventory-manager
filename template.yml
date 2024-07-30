@@ -88,6 +88,13 @@ Resources:
             delete: *standardImplementation
           /users:
             get: *standardImplementation
+          /categories:
+            get: *standardImplementation
+            post: *standardImplementation
+          /category/{category_id}:
+            put: *standardImplementation
+          /category/delete/{category_id}:
+            delete: *standardImplementation
 
 Outputs:
   ApiGatewayInvokeURL:
