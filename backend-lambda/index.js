@@ -45,54 +45,44 @@ export const handler = async (event, context) => {
 
   // delete a product
   else if (path.includes("/product/delete") && httpMethod === "DELETE") {
-    const id = await validate.validateProductId(event.pathParameters.product_id);
-    response = await productService.deleteProduct(
-      pool,
-      id
+    const id = await validate.validateProductId(
+      event.pathParameters.product_id
     );
+    response = await productService.deleteProduct(pool, id);
   }
 
   // update a product
   else if (path.startsWith("/product/") && httpMethod === "PUT") {
-    const id = await validate.validateProductId(event.pathParameters.product_id);
-    response = await productService.updateProduct(
-      pool,
-      id,
-      body
+    const id = await validate.validateProductId(
+      event.pathParameters.product_id
     );
-  }
-
-  else if (path === '/categories') {
+    response = await productService.updateProduct(pool, id, body);
+  } else if (path === "/categories") {
     // create a category
     if (httpMethod === "POST") {
       response = await categoryService.createCategory(pool, body);
     }
-    
+
     // read all categories
     else if (httpMethod === "GET") {
-      const limit = event.queryStringParameters.limit;
-      const offset = event.queryStringParameters.offset;
-      response = await categoryService.getAllCategories(pool, limit, offset);
+      response = await categoryService.getAllCategories(pool);
     }
   }
 
   // update a category
-  else if (path.startsWith('/category/') && httpMethod === "PUT") {
-    const id = await validate.validateCategoryId(event.pathParameters.category_id);
-    response = await categoryService.updateCategory(
-      pool,
-      id,
-      body
+  else if (path.startsWith("/category/") && httpMethod === "PUT") {
+    const id = await validate.validateCategoryId(
+      event.pathParameters.category_id
     );
+    response = await categoryService.updateCategory(pool, id, body);
   }
 
   // delete a category
   else if (path.includes("/category/delete") && httpMethod === "DELETE") {
-    const id = await validate.validateCategoryId(event.pathParameters.category_id);
-    response = await categoryService.deleteCategory(
-      pool,
-      id
+    const id = await validate.validateCategoryId(
+      event.pathParameters.category_id
     );
+    response = await categoryService.deleteCategory(pool, id);
   }
 
   // get all users

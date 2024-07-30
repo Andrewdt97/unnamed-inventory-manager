@@ -19,26 +19,17 @@ const createCategory = async (pool, category) => {
   return res?.rowCount;
 };
 
-const getAllCategories = async (pool, limit, offset) => {
+const getAllCategories = async (pool) => {
   // Check that pool is the right data type
   poolCheck(pool);
 
-  // Check that limit & offset parameters are numbers
-  if (isNaN(limit) || isNaN(offset)) {
-    throw new Error("Limit and offset must be numbers");
-  }
+  // Assign query
+  const query = "SELECT * FROM category";
 
-    // Assign query
-    const query = {
-        name: "getAllCategories",
-        text: `SELECT * FROM category LIMIT $1 OFFSET $2`,
-        values: [limit, offset],
-        };
-
-    // Pass pool & query to clientService to connect to database & execute query
-    const result = await clientService(pool, query);
-    return result.rows;
-}
+  // Pass pool & query to clientService to connect to database & execute query
+  const result = await clientService(pool, query);
+  return result.rows;
+};
 
 const updateCategory = async (pool, id, category) => {
   poolCheck(pool);
@@ -78,4 +69,9 @@ const deleteCategory = async (pool, id) => {
   return "Category Deleted";
 };
 
-export default { getAllCategories, createCategory, updateCategory, deleteCategory };
+export default {
+  getAllCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+};
