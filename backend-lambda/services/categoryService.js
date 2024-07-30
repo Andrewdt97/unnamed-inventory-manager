@@ -58,11 +58,24 @@ const updateCategory = async (pool, id, category) => {
   );
 
   await clientService(pool, query);
-  return;
+  return "Category Updated";
 };
 
-const deleteCategory = async () => {
-    
-}
+const deleteCategory = async (pool, id) => {
+  // Check pool for object type
+  poolCheck(pool);
+
+  // Format query
+  const query = {
+    name: "deleteCategory",
+    text: `DELETE FROM category WHERE category_id = $1`,
+    values: [id],
+  };
+
+  // Pass pool & query to client service to connect to database & execute query
+  await clientService(pool, query);
+
+  return "Category Deleted";
+};
 
 export default { getAllCategories, createCategory, updateCategory, deleteCategory };

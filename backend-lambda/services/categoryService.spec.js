@@ -215,4 +215,47 @@ describe("Category Service", () => {
         ).rejects.toThrow("Pool must be an object");
       });
     });
+
+    describe("Delete Category", () => {
+      it("should delete a category & release client", async () => {
+        // Setup
+        const id = 1;
+        querySpy.mockResolvedValueOnce("Category Deleted");
+  
+        // Run
+        const res = await categoryService.deleteCategory(mockPool, id);
+  
+        // Expect
+        expect(querySpy).toHaveBeenCalledWith({
+          name: "deleteCategory",
+          text: `DELETE FROM category WHERE category_id = $1`,
+          values: [id],
+        });
+        expect(res).toEqual("Category Deleted");
+        expect(releaseSpy).toHaveBeenCalled();
+      });
+  
+      it("should throw an error executing the query & release client", async () => {
+        // Setup
+        const id = 1;
+        querySpy.mockRejectedValueOnce(new Error("Error executing query:"));
+  
+        // Run & Expect
+        await expect(categoryService.deleteCategory(mockPool, id)).rejects.toThrow(
+          "Error executing query:"
+        );
+        expect(releaseSpy).toHaveBeenCalled();
+      });
+  
+      it("should throw an error if pool is not an object", async () => {
+        // Setup
+        const id = 1;
+        const poolMock = 3;
+  
+        // Run & Assert
+        await expect(categoryService.deleteCategory(poolMock, id)).rejects.toThrow(
+          "Pool must be an object"
+        );
+      });
+    });
 });
