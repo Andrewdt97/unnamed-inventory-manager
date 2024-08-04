@@ -1,6 +1,6 @@
 import format from "pg-format";
-import productServiceHelpers from "./productServiceHelpers.js";
-const { clientService, poolCheck, productCheck } = productServiceHelpers;
+import serviceHelpers from "./serviceHelpers.js";
+const { clientService, poolCheck, productCheck } = serviceHelpers;
 
 const getAllProducts = async (pool, limit, offset) => {
   // Check that pool is the right data type
