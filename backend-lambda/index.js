@@ -43,7 +43,7 @@ export const handler = async (event, context) => {
     }
   }
   // update a product
-  else if (path.startsWith("/product/") && event.pathParameters.product_id) {
+  else if (path.startsWith("/product/")) {
     if (httpMethod === "PUT") {
       const id = await validate.validateProductId(
         event.pathParameters.product_id
@@ -68,7 +68,7 @@ export const handler = async (event, context) => {
   }
 
   // update a category
-  else if (path.startsWith("/category/") && event.pathParameters.category_id) {
+  else if (path.startsWith("/category/")) {
     if ( httpMethod === "PUT") {
       const id = await validate.validateCategoryId(
         event.pathParameters.category_id
