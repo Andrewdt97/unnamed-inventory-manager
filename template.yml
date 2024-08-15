@@ -96,11 +96,11 @@ Resources:
           /category/delete/{category_id}:
             delete: *standardImplementation
 
-  # The Amazon S3 bucket into which our Single Page Application build files must be deployed
+  # The AWS S3 bucket into which our SPA build files will be deployed
   S3Bucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub 'react-cors-spa-${SimpleAPI}'
+      BucketName: !Sub 'react-cors-spa-${RestApi}'
       PublicAccessBlockConfiguration:
         BlockPublicAcls : true
         BlockPublicPolicy : true
@@ -121,7 +121,7 @@ Resources:
     Type: 'AWS::S3::BucketPolicy'
     Properties:
       PolicyDocument:
-        Id: MyPolicy
+        Id: App-Policy
         Version: 2012-10-17
         Statement:
           - Sid: PolicyForCloudFrontPrivateContent
@@ -140,7 +140,7 @@ Resources:
     #checkov:skip=CKV_AWS_18: "This bucket is private and only for storing logs"
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub 'react-cors-spa-${SimpleAPI}-logs'
+      BucketName: !Sub 'react-cors-spa-${RestApi}-logs'
       PublicAccessBlockConfiguration:
         BlockPublicAcls : true
         BlockPublicPolicy : true
@@ -228,8 +228,8 @@ Outputs:
     Description: "ARN of the Backend Lambda"
     Value: !GetAtt BackendLambda.Arn
   APIEndpoint:
-    Value: !Sub "https://${SimpleAPI}.execute-api.${AWS::Region}.amazonaws.com/v1/hello"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/v1/hello"
   BucketName:
-    Value: !Sub "react-cors-spa-${SimpleAPI}"
+    Value: !Sub "react-cors-spa-${RestApi}"
   CFDistributionURL:
     Value: !GetAtt CFDistribution.DomainName
