@@ -84,8 +84,9 @@ Resources:
             post: *standardImplementation
           /product/{product_id}:
             put: *standardImplementation
-          /product/delete/{product_id}:
             delete: *standardImplementation
+          /product/delete/{product_id}:
+            
           /users:
             get: *standardImplementation
           /categories:
@@ -93,7 +94,6 @@ Resources:
             post: *standardImplementation
           /category/{category_id}:
             put: *standardImplementation
-          /category/delete/{category_id}:
             delete: *standardImplementation
 
 Outputs:
