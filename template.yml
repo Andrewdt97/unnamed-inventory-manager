@@ -19,16 +19,20 @@ Parameters:
     Type: AWS::SSM::Parameter::Value<String>
     Description: "URL for the database connection"
     Default: "database-url"
+  Stage:
+    Type: String
+    Description: The stage you will be deploying to (dev or prod)
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
 
-# TODO: Change bucket names???
 Mappings:
   StagesMap:
-    staging:
-      ConfigBucket: "staging-bucket-name"
-      ConfigKey: "source-data-key-path"
+    dev:
+      ConfigBucket: "im-development"
     prod:
-      ConfigBucket: "prod-bucket-name"
-      ConfigKey: "source-data-key-path"
+      ConfigBucket: "im-production"
 
 Resources:
   IpAuthorizerLambda:
@@ -100,7 +104,7 @@ Resources:
   IM-React-App:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: IM-React-App
+      BucketName: !FindInMap [StagesMap, !Ref Stage, ConfigBucket]
       PublicAccessBlockConfiguration:
         BlockPublicAcls : true
         BlockPublicPolicy : true
@@ -133,14 +137,14 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${CFDistribution}
             Action: 's3:GetObject*'
-      Bucket: !Ref S3Bucket
+      Bucket: !Ref IM-React-App
 
   # The Amazon S3 bucket into which access logs from S3 (for the application) and CloudFront will be put
-  LoggingBucket:
+  IM-React-App-Logging:
     #checkov:skip=CKV_AWS_18: "This bucket is private and only for storing logs"
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: IM-React-App
+      BucketName: !FindInMap [StagesMap, !Ref Stage, ConfigBucket]
       PublicAccessBlockConfiguration:
         BlockPublicAcls : true
         BlockPublicPolicy : true
@@ -164,12 +168,12 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: !GetAtt S3Bucket.RegionalDomainName
+        - DomainName: !GetAtt IM-React-App.RegionalDomainName
           Id: myS3Origin
           S3OriginConfig:
             OriginAccessIdentity: ""
           OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
-        - DomainName: !Sub "${SimpleAPI}.execute-api.${AWS::Region}.amazonaws.com"
+        - DomainName: !Sub "${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
           Id: myAPIGTWOrigin
           CustomOriginConfig:
             OriginProtocolPolicy: https-only
@@ -207,9 +211,10 @@ Resources:
         SigningProtocol: sigv4
 
 Outputs:
+Outputs:
   ApiGatewayInvokeURL:
     Description: "Invoke URL for the API Gateway endpoint"
-    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
   IpAuthorizerLambdaFunctionArn:
     Description: "ARN of the IP authorizer Lambda"
     Value: !GetAtt IpAuthorizerLambda.Arn
@@ -217,8 +222,11 @@ Outputs:
     Description: "ARN of the Backend Lambda"
     Value: !GetAtt BackendLambda.Arn
   APIEndpoint:
-    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Description: "Base URL for the API Gateway"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
   BucketName:
-    Value: !Sub "react-cors-spa-${RestApi}"
+    Description: "Name of the S3 bucket for the React app"
+    Value: !FindInMap [StagesMap, !Ref Stage, BucketName]
   CFDistributionURL:
+    Description: "URL for the CloudFront distribution"
     Value: !GetAtt CFDistribution.DomainName
