@@ -211,7 +211,6 @@ Resources:
         SigningProtocol: sigv4
 
 Outputs:
-Outputs:
   ApiGatewayInvokeURL:
     Description: "Invoke URL for the API Gateway endpoint"
     Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
