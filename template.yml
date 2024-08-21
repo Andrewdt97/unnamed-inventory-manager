@@ -98,14 +98,14 @@ Resources:
 
   # The AWS S3 bucket into which our SPA build files will be deployed
   S3Bucket:
-    Type: "AWS::S3::Bucket"
+    Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub "react-cors-spa-${RestApi}"
+      BucketName: !Sub 'react-cors-spa-${RestApi}'
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+        BlockPublicAcls : true
+        BlockPublicPolicy : true
+        IgnorePublicAcls : true
+        RestrictPublicBuckets : true
       LoggingConfiguration:
         DestinationBucketName: !Ref LoggingBucket
         LogFilePrefix: s3-access-logs
@@ -113,12 +113,12 @@ Resources:
         Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: "AES256"
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: 'AES256'
 
   # The Amazon S3 bucket policy for securing the bucket hosting the application
   BucketPolicy:
-    Type: "AWS::S3::BucketPolicy"
+    Type: 'AWS::S3::BucketPolicy'
     Properties:
       PolicyDocument:
         Id: App-Policy
@@ -132,26 +132,26 @@ Resources:
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${CFDistribution}
-            Action: "s3:GetObject*"
+            Action: 's3:GetObject*'
       Bucket: !Ref S3Bucket
 
   # The Amazon S3 bucket into which access logs from S3 (for the application) and CloudFront will be put
   LoggingBucket:
     #checkov:skip=CKV_AWS_18: "This bucket is private and only for storing logs"
-    Type: "AWS::S3::Bucket"
+    Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub "react-cors-spa-${RestApi}-logs"
+      BucketName: !Sub 'react-cors-spa-${RestApi}-logs'
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+        BlockPublicAcls : true
+        BlockPublicPolicy : true
+        IgnorePublicAcls : true
+        RestrictPublicBuckets : true
       VersioningConfiguration:
         Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: "AES256"
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: 'AES256'
       OwnershipControls:
         Rules:
           - ObjectOwnership: BucketOwnerPreferred
@@ -160,26 +160,26 @@ Resources:
   # The Amazon CloudFront distribution exposing our Single Page Application
   CFDistribution:
     #checkov:skip=CKV_AWS_68: "For demo purposes and to reduce cost, no WAF is configured"
-    Type: "AWS::CloudFront::Distribution"
+    Type: 'AWS::CloudFront::Distribution'
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName: !GetAtt S3Bucket.RegionalDomainName
-            Id: myS3Origin
-            S3OriginConfig:
-              OriginAccessIdentity: ""
-            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
-          - DomainName: !Sub "${RestApi}.execute-api.${AWS::Region}.amazonaws.com"
-            Id: myAPIGTWOrigin
-            CustomOriginConfig:
-              OriginProtocolPolicy: https-only
-        Enabled: "true"
+        - DomainName: !GetAtt S3Bucket.RegionalDomainName
+          Id: myS3Origin
+          S3OriginConfig:
+            OriginAccessIdentity: ""
+          OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
+        - DomainName: !Sub "${SimpleAPI}.execute-api.${AWS::Region}.amazonaws.com"
+          Id: myAPIGTWOrigin
+          CustomOriginConfig:
+            OriginProtocolPolicy: https-only
+        Enabled: 'true'
         DefaultRootObject: index.html
         DefaultCacheBehavior:
           AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
+          - GET
+          - HEAD
+          - OPTIONS
           TargetOriginId: myS3Origin
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # CachingOptimized
           OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf # CORS-S3Origin
@@ -188,9 +188,9 @@ Resources:
         CacheBehaviors:
           - PathPattern: "v1/im"
             AllowedMethods:
-              - GET
-              - HEAD
-              - OPTIONS
+            - GET
+            - HEAD
+            - OPTIONS
             TargetOriginId: myAPIGTWOrigin
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # CachingDisabled
             OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac # AllViewerExceptHostHeader
@@ -199,17 +199,17 @@ Resources:
         PriceClass: PriceClass_All
         Logging:
           Bucket: !GetAtt LoggingBucket.RegionalDomainName
-          Prefix: "cloudfront-access-logs"
+          Prefix: 'cloudfront-access-logs'
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
-          MinimumProtocolVersion: "TLSv1.2_2021"
+          MinimumProtocolVersion: 'TLSv1.2_2021'
 
   # The Amazon CloudFront origin access control
   CloudFrontOriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     DependsOn:
       - S3Bucket
-    Properties:
+    Properties: 
       OriginAccessControlConfig:
         Description: Default Origin Access Control
         Name: !Ref AWS::StackName
@@ -228,7 +228,7 @@ Outputs:
     Description: "ARN of the Backend Lambda"
     Value: !GetAtt BackendLambda.Arn
   APIEndpoint:
-    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/v1/um"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com"
   BucketName:
     Value: !Sub "react-cors-spa-${RestApi}"
   CFDistributionURL:
