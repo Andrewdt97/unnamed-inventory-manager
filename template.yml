@@ -20,6 +20,15 @@ Parameters:
     Description: "URL for the database connection"
     Default: "database-url"
 
+Mappings:
+  StagesMap:
+    dev:
+      ConfigBucket: "dev-bucket-name"
+      ConfigKey: "source-data-key-path"
+    prod:
+      ConfigBucket: "prod-bucket-name"
+      ConfigKey: "source-data-key-path"
+
 Resources:
   IpAuthorizerLambda:
     Type: AWS::Serverless::Function
@@ -84,19 +93,20 @@ Resources:
             put: *standardImplementation
           /category/delete/{category_id}:
             delete: *standardImplementation
+      StageName: dev
 
   # The AWS S3 bucket into which our SPA build files will be deployed
-  IM-React-App:
+  IMReactApp:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: IM-React-App
+      BucketName: im-react-app
       PublicAccessBlockConfiguration:
         BlockPublicAcls : true
         BlockPublicPolicy : true
         IgnorePublicAcls : true
         RestrictPublicBuckets : true
       LoggingConfiguration:
-        DestinationBucketName: IM-React-App-Logging
+        DestinationBucketName: im-react-app-logging
         LogFilePrefix: s3-access-logs
       VersioningConfiguration:
         Status: Enabled
@@ -106,7 +116,7 @@ Resources:
             SSEAlgorithm: 'AES256'
 
   # The Amazon S3 bucket policy for securing the bucket hosting the application
-  IM-React-App-Policy:
+  IMReactAppPolicy:
     Type: 'AWS::S3::BucketPolicy'
     Properties:
       PolicyDocument:
@@ -115,21 +125,21 @@ Resources:
         Statement:
           - Sid: PolicyForCloudFrontPrivateContent
             Effect: Allow
-            Resource: !Sub arn:aws:s3:::${IM-React-App}/*
+            Resource: !Sub arn:aws:s3:::${IMReactApp}/*
             Principal:
               Service: cloudfront.amazonaws.com
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${CFDistribution}
             Action: 's3:GetObject*'
-      Bucket: !Ref IM-React-App
+      Bucket: !Ref IMReactApp
 
   # The Amazon S3 bucket into which access logs from S3 (for the application) and CloudFront will be put
-  IM-React-App-Logging:
+  IMReactAppLogging:
     #checkov:skip=CKV_AWS_18: "This bucket is private and only for storing logs"
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: IM-React-App-Logging
+      BucketName: im-react-app-logging
       PublicAccessBlockConfiguration:
         BlockPublicAcls : true
         BlockPublicPolicy : true
@@ -153,7 +163,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: !GetAtt IM-React-App.RegionalDomainName
+        - DomainName: !GetAtt IMReactApp.RegionalDomainName
           Id: myS3Origin
           S3OriginConfig:
             OriginAccessIdentity: ""
@@ -176,7 +186,7 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
         PriceClass: PriceClass_All
         Logging:
-          Bucket: !GetAtt LoggingBucket.RegionalDomainName
+          Bucket: !GetAtt IMReactAppLogging.RegionalDomainName
           Prefix: 'cloudfront-access-logs'
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
@@ -186,7 +196,7 @@ Resources:
   CloudFrontOriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     DependsOn:
-      - IM-React-App
+      - IMReactApp
     Properties: 
       OriginAccessControlConfig:
         Description: Default Origin Access Control
@@ -210,7 +220,7 @@ Outputs:
     Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com"
   BucketName:
     Description: "Name of the S3 bucket for the React app"
-    Value: !Ref IM-React-App
+    Value: !Ref IMReactApp
   CFDistributionURL:
     Description: "URL for the CloudFront distribution"
     Value: !GetAtt CFDistribution.DomainName
