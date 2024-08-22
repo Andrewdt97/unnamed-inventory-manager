@@ -45,6 +45,7 @@ out
 */event.json
 
 .aws-sam/
+samconfig.toml
 
 # VSCode specific stuff
 .vscode/*

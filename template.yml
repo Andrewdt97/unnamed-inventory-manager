@@ -14,11 +14,11 @@ Parameters:
   IpRange:
     Type: AWS::SSM::Parameter::Value<String>
     Description: "IP range for authorization"
-    Default: "ip-range"
+    Default: "IpRange"
   DatabaseUrl:
     Type: AWS::SSM::Parameter::Value<String>
     Description: "URL for the database connection"
-    Default: "database-url"
+    Default: "DatabaseUrl"
 
 Mappings:
   StagesMap:
