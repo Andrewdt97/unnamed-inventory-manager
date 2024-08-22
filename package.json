@@ -7,7 +7,8 @@
     "test": "test",
     "authlocalinvoke": "sam local invoke IPAuthorizerLambda --event ip-authorizer/event.json --env-vars ip-authorizer/env.json",
     "backlocalinvoke": "sam local invoke BackendLambda --event backend-lambda/event.json --env-vars backend-lambda/env.json",
-    "apilocalinvoke": "sam local start-api --env-vars backend-lambda/env.json"
+    "apilocalinvoke": "sam local start-api --env-vars backend-lambda/env.json",
+    "deploy": "sam deploy"
   },
   "author": "",
   "license": "ISC",
