@@ -8,7 +8,8 @@
     "authlocalinvoke": "sam local invoke IPAuthorizerLambda --event ip-authorizer/event.json --env-vars ip-authorizer/env.json",
     "backlocalinvoke": "sam local invoke BackendLambda --event backend-lambda/event.json --env-vars backend-lambda/env.json",
     "apilocalinvoke": "sam local start-api --env-vars backend-lambda/env.json",
-    "deploy": "sam build && sam deploy --stack-name im-sam --region us-east-1 --s3-bucket im-sam-- confirm-changeset"
+    "deploy": "sam build && sam deploy --stack-name im-sam --region us-east-1 --s3-bucket im-sam --confirm-changeset"
+
   },
   "author": "",
   "license": "ISC",
