@@ -83,8 +83,6 @@ Resources:
           /product/{product_id}:
             put: *standardImplementation
             delete: *standardImplementation
-          /product/delete/{product_id}:
-            
           /users:
             get: *standardImplementation
           /categories:
