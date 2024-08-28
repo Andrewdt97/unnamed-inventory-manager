@@ -45,4 +45,48 @@ out
 */event.json
 
 .aws-sam/
+<<<<<<< HEAD
 samconfig.toml
+=======
+samconfig.toml
+
+# VSCode specific stuff
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Build folders
+build/
+
+# Local History for Visual Studio Code
+.history/
+
+# MacOS hidden folders
+.DS_Store/
+
+>>>>>>> c1c94ebafa1ab60dfd5e843638ce2f80b7ad77eb
