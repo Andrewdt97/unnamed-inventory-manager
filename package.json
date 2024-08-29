@@ -9,7 +9,7 @@
     "backlocalinvoke": "sam local invoke BackendLambda --event backend-lambda/event.json --env-vars backend-lambda/env.json",
     "apilocalinvoke": "sam local start-api --env-vars backend-lambda/env.json",
     "deploysam": "sam build && sam deploy --stack-name im-sam --resolve-s3 --region us-east-1 --confirm-changeset",
-    "deployapp": "aws s3 sync react-cors-spa s3://im.react.app"
+    "deployapp": "cd react-cors-spa && npm run build && aws s3 sync build/ s3://im.react.app"
   },
   "author": "",
   "license": "ISC",
