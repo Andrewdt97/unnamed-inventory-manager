@@ -20,7 +20,8 @@ import logo from './logo.svg';
 import logoS3 from './logoS3.png';
 import logoCF from './logoCloudFront.png';
 import './App.css';
-import { useFetch } from "react-async"
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 const APIEndPoint = 'to be replaced with your api endpoint here'
@@ -44,12 +45,27 @@ function App() {
 }
 
 const APIResult = () => {
-  const { data, error } = useFetch(APIEndPoint, {
-    headers: { accept: "application/json" },
-  })
-  if (error) return <p>{error.message}</p>
-  if (data) return <p>{data.message}</p>
-  return null
-}
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(APIEndPoint, {
+          headers: { accept: "application/json" },
+        });
+        setData(response.data);
+      } catch (err) {
+        setError(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (error) return <p>{error.message}</p>;
+  if (data) return <p>{data.message}</p>;
+  return null;
+};
 
 export default App;

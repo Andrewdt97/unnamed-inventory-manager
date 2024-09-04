@@ -45,6 +45,9 @@ out
 */event.json
 
 .aws-sam/
+<<<<<<< HEAD
+samconfig.toml
+=======
 samconfig.toml
 
 # VSCode specific stuff
@@ -86,3 +89,4 @@ build/
 # MacOS hidden folders
 .DS_Store/
 
+>>>>>>> c1c94ebafa1ab60dfd5e843638ce2f80b7ad77eb
