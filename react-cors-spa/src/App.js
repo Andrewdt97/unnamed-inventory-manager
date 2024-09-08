@@ -26,22 +26,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = 'to be replaced with your api endpoint here'
+const APIEndPoint = 'https://api.quotable.io/random'
 
 // Create a client
 const queryClient = new QueryClient();
 
 function App() {
-  const getQuote = () => {
-    axios.get('https://api.quotable.io/random')
-    .then(response => {
-      console.log(response.data.content);
-      return response;
-    }).catch(err => {
-      console.log(err);
-      return;
-    })
-  }
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App">
@@ -56,9 +46,6 @@ function App() {
               <img src={logoS3} className="App-logoR2L" alt="logo S3" />
               <img src={logoCF} className="App-logoL2R" alt="logo CloudFront" />
           </div>
-          <div>
-            <button onClick={getQuote}>Get A Quote</button>
-          </div>
       </div>
       {/*Floating Mode running locally*/}
       {process.env.NODE_ENV === 'development' && (
@@ -71,7 +58,6 @@ function App() {
 const APIResult = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  const APIEndPoint = 'https://api.quotable.io/random';
   
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +65,7 @@ const APIResult = () => {
         const response = await axios.get(APIEndPoint, {
           headers: { accept: "application/json" },
         });
+        console.log(response);
         setData(response.data);
       } catch (err) {
         setError(err);
