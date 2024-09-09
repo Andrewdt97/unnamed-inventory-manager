@@ -41,11 +41,6 @@ function App() {
             }
             <img src={logo} className="App-MainLogo" alt="logo" />
           </header>
-          <p>This react-based application is hosted in an S3 bucket exposed through a CloudFront distribution</p>
-          <div className="logos">
-              <img src={logoS3} className="App-logoR2L" alt="logo S3" />
-              <img src={logoCF} className="App-logoL2R" alt="logo CloudFront" />
-          </div>
       </div>
       {/*Floating Mode running locally*/}
       {process.env.NODE_ENV === 'development' && (
