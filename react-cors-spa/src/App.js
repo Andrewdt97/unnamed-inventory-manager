@@ -41,6 +41,7 @@ function App() {
             }
           </header>
       </div>
+      <Todos />
       {/*Floating Mode running locally*/}
       {process.env.NODE_ENV === 'development' && (
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
@@ -48,6 +49,32 @@ function App() {
   </QueryClientProvider>
   );
 }
+
+function APIDisplay() {
+  // Access the client
+  const queryClient = useQueryClient()
+
+  // Queries
+  const query = useQuery({ queryKey: ['todos'], queryFn: getTodos })
+
+  return (
+    <div>
+      <ul>{query.data?.map((todo) => <li key={todo.id}>{todo.title}</li>)}</ul>
+
+      <button
+        onClick={() => {
+          mutation.mutate({
+            id: Date.now(),
+            title: 'Display Data',
+          })
+        }}
+      >
+        Add Todo
+      </button>
+    </div>
+  )
+}
+
 
 const APIResult = () => {
   const [data, setData] = useState(null);
@@ -75,3 +102,4 @@ const APIResult = () => {
 };
 
 export default App;
+export { APIDisplay };
