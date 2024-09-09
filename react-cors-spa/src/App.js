@@ -39,7 +39,6 @@ function App() {
             {APIEndPoint.startsWith('http') &&
               <APIResult />
             }
-            <img src={logo} className="App-MainLogo" alt="logo" />
           </header>
       </div>
       {/*Floating Mode running locally*/}
