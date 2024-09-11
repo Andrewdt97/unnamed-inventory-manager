@@ -16,29 +16,28 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER I
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import './App.css';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import "./App.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = 'https://api.quotable.io/random'
+const APIEndPoint = "https://api.quotable.io/random";
 
 function App() {
   return (
-      <div className="App">
-          <header className="App-header">
-            {APIEndPoint.startsWith('http') &&
-              <APIResult />
-            }
-          </header>
-      </div>
-  )}
+    <div className="App">
+      <header className="App-header">
+        {APIEndPoint.startsWith("http") && <APIResult />}
+      </header>
+    </div>
+  );
+}
 
 const APIResult = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,3 +60,4 @@ const APIResult = () => {
 };
 
 export default App;
+export { APIResult };
