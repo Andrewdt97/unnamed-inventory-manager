@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { APIDisplay } from "./APIDisplay";
+import { Quotes } from "./APIDisplay";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
-    <APIDisplay />
+    <Quotes />
   </React.StrictMode>
 );
