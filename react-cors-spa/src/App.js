@@ -19,40 +19,21 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { QueryClientProvider, useQuery } from '@tanstack/react-query';
-import "./App.css";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Quotes } from "./APIDisplay";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 const APIEndPoint = 'https://api.quotable.io/random'
-const queryClient = new QueryClient();
-const APIEndPoint = "https://api.quotable.io/random";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
       <div className="App">
           <header className="App-header">
             {APIEndPoint.startsWith('http') &&
               <APIResult />
             }
           </header>
+          <Quotes />
       </div>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-  )}
-
-function Quotes() {
-  const { data, status } = useQuery('quotes', fetchQuotes);
-  return (
-    <ul>
-      {APIResult.map((quote) => (
-          <li key={quote.id}>{quote.data}</li>
-      ))}
-    </ul>
   )
 }
 
