@@ -21,10 +21,15 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClientProvider, useQuery } from '@tanstack/react-query';
+import "./App.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 const APIEndPoint = 'https://api.quotable.io/random'
 const queryClient = new QueryClient();
+const APIEndPoint = "https://api.quotable.io/random";
 
 function App() {
   return (
@@ -54,7 +59,7 @@ function Quotes() {
 const APIResult = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,3 +82,4 @@ const APIResult = () => {
 };
 
 export default App;
+export { APIResult };
