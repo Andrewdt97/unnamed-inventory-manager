@@ -3,9 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import axios from 'axios';
 
 // Run axios get request for quote
-export const fetchQuotes = async () => {
+const fetchQuotes = async () => {
   const response = await axios.get('https://api.quotable.io/random');
   return response.data;
+};
+
+// Run axios get request for doge
+const fetchDoge = async () => {
+  const response = await fetch('https://dog.ceo/api/breeds/image/random');
+  const data = await response.json();
+  return data;
 };
 
 // Create quote component
@@ -32,5 +39,22 @@ function Quotes() {
   );
 }
 
-// Export Quotes to use in the main <App /> Component
-export { Quotes };
+function Doges() {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['doges'],
+    queryFn: fetchDoge
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching data</div>;
+
+  return (
+    <div>
+      <img src={data.message} alt="A dog" />
+    </div>
+  );
+}
+
+
+// Export Quotes, Doges to use in the main <App /> Component
+export { Quotes, Doges };

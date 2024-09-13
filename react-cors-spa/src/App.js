@@ -17,7 +17,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 */
 
 import axios from 'axios';
-import { Quotes } from "./ApiDisplay";
+import { Quotes, Doges } from "./ApiDisplay";
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -38,6 +38,7 @@ function App() {
           }
         </header>
       </div>
+      <Doges />
       <Quotes />
       <ReactQueryDevtools/>
     </QueryClientProvider>

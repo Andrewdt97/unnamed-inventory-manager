@@ -5,3 +5,10 @@ p {
     padding-top: 10%;
     font-size: 3rem;
 }
+
+img {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 25%
+}
