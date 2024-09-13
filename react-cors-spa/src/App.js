@@ -20,20 +20,28 @@ import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Quotes } from "./APIDisplay";
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 const APIEndPoint = 'https://api.quotable.io/random'
 
+// Create a client
+const queryClient = new QueryClient();
+
 function App() {
   return (
+    <QueryClientProvider client={queryClient}>
       <div className="App">
-          <header className="App-header">
-            {APIEndPoint.startsWith('http') &&
-              <APIResult />
-            }
-          </header>
-          <Quotes />
+        <header className="App-header">
+          {APIEndPoint.startsWith('http') &&
+            <APIResult />
+          }
+        </header>
       </div>
+    <Quotes />
+    <ReactQueryDevtools/>
+    </QueryClientProvider>
   )
 }
 
