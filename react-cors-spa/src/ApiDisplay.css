@@ -1,0 +1,7 @@
+p {
+    display: flex;
+    justify-content: center;
+    color: white;
+    padding-top: 10%;
+    font-size: 3rem;
+}

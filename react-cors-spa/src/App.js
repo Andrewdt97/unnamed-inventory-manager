@@ -16,18 +16,17 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER I
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import './App.css';
 import axios from 'axios';
+import { Quotes } from "./ApiDisplay";
 import { useState, useEffect } from 'react';
-import { Quotes } from "./APIDisplay";
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 const APIEndPoint = 'https://api.quotable.io/random'
 
-// Create a client
-const queryClient = new QueryClient();
+// Create a client for QueryClientProvider to use
+const queryClient = new QueryClient()
 
 function App() {
   return (
@@ -39,8 +38,8 @@ function App() {
           }
         </header>
       </div>
-    <Quotes />
-    <ReactQueryDevtools/>
+      <Quotes />
+      <ReactQueryDevtools/>
     </QueryClientProvider>
   )
 }
