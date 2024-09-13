@@ -1,13 +1,12 @@
 import { APIResult } from "./App";
-import { useQueryClient, useQuery, QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { useQuery, QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+// Create a client
+const queryClient = new QueryClient();
+
 function Quotes() {
-
-  // Access the client
-  const queryClient = useQueryClient()
-
-  // Queries
+  // Query
   const query = useQuery({ queryKey: ['quotes'], queryFn: APIResult})
 
   // Mutations accounted for? Will quote replace previous quote?
@@ -16,10 +15,8 @@ function Quotes() {
   return (
     <QueryClientProvider client={queryClient}>
     <div>
-      {query.data?.map((quote) => (  
-        <div key={quote.id}>         
-          <h1>{quote.title}</h1>     
-        </div>
+      {query.map((item) => (
+        <h1 key={item.id}>{item.name}</h1>
       ))}
     </div>
     <ReactQueryDevtools />
