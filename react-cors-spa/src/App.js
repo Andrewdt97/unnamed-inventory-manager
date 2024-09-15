@@ -28,6 +28,10 @@ const APIEndPoint = 'https://api.quotable.io/random'
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient()
 
+// Functional component or t/f block
+// If event.path includes 'env' or 'dev'
+// Then return <ReactQueryDevtools />
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
