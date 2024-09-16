@@ -33,20 +33,36 @@ const queryClient = new QueryClient()
 // Then return <ReactQueryDevtools />
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div className="App">
-        <header className="App-header">
-          {APIEndPoint.startsWith('http') &&
-            <APIResult />
-          }
-        </header>
-      </div>
-      <Doges />
-      <Quotes />
-      <ReactQueryDevtools/>
-    </QueryClientProvider>
-  )
+  if (APIEndPoint.includes('dev')) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="App">
+          <header className="App-header">
+            {APIEndPoint.startsWith('http') &&
+              <APIResult />
+            }
+          </header>
+        </div>
+        <Doges />
+        <Quotes />
+        <ReactQueryDevtools/>
+      </QueryClientProvider>
+    )
+  } else {
+      return (
+        <QueryClientProvider client={queryClient}>
+          <div className="App">
+            <header className="App-header">
+              {APIEndPoint.startsWith('http') &&
+                <APIResult />
+              }
+            </header>
+          </div>
+          <Doges />
+          <Quotes />
+        </QueryClientProvider>
+      )
+  }
 }
 
 const APIResult = () => {
