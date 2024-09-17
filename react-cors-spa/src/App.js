@@ -16,52 +16,48 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER I
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import axios from 'axios';
+import axios from "axios";
 import { Quotes, Doges } from "./ApiDisplay";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = 'https://api.quotable.io/random'
+const APIEndPoint = "https://api.quotable.io/random";
 
 // Create a client for QueryClientProvider to use
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 // Functional component or t/f block
 // If event.path includes 'env' or 'dev'
 // Then return <ReactQueryDevtools />
 
 function App() {
-  if (APIEndPoint.includes('dev')) {
+  if (APIEndPoint.includes("dev")) {
     return (
       <QueryClientProvider client={queryClient}>
         <div className="App">
           <header className="App-header">
-            {APIEndPoint.startsWith('http') &&
-              <APIResult />
-            }
+            {APIEndPoint.startsWith("http") && <APIResult />}
           </header>
         </div>
         <Doges />
         <Quotes />
-        <ReactQueryDevtools/>
+        <ReactQueryDevtools />
       </QueryClientProvider>
-    )
+    );
   } else {
-      return (
-        <QueryClientProvider client={queryClient}>
-          <div className="App">
-            <header className="App-header">
-              {APIEndPoint.startsWith('http') &&
-                <APIResult />
-              }
-            </header>
-          </div>
-          <Doges />
-          <Quotes />
-        </QueryClientProvider>
-      )
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="App">
+          <header className="App-header">
+            {APIEndPoint.startsWith("http") && <APIResult />}
+          </header>
+        </div>
+        <Doges />
+        <Quotes />
+      </QueryClientProvider>
+    );
   }
 }
 
@@ -91,4 +87,3 @@ const APIResult = () => {
 };
 
 export default App;
-export { APIResult };
