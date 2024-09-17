@@ -32,33 +32,26 @@ const queryClient = new QueryClient();
 // If event.path includes 'env' or 'dev'
 // Then return <ReactQueryDevtools />
 
-function App() {
-  if (APIEndPoint.includes("dev")) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <div className="App">
-          <header className="App-header">
-            {APIEndPoint.startsWith("http") && <APIResult />}
-          </header>
-        </div>
-        <Doges />
-        <Quotes />
-        <ReactQueryDevtools />
-      </QueryClientProvider>
-    );
-  } else {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <div className="App">
-          <header className="App-header">
-            {APIEndPoint.startsWith("http") && <APIResult />}
-          </header>
-        </div>
-        <Doges />
-        <Quotes />
-      </QueryClientProvider>
-    );
+function Component({ name: ComponentName, isDevtool }) {
+  if (isDevtool) {
+    return <ComponentName />;
   }
+  return null;
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <header className="App-header">
+          {APIEndPoint.startsWith("http") && <APIResult />}
+        </header>
+      </div>
+      <Doges />
+      <Quotes />
+      <Component isDevtool={false} name={ReactQueryDevtools} />
+    </QueryClientProvider>
+  );
 }
 
 const APIResult = () => {
