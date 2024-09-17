@@ -32,13 +32,6 @@ const queryClient = new QueryClient();
 // If event.path includes 'env' or 'dev'
 // Then return <ReactQueryDevtools />
 
-function Component({ name: ComponentName, isDevtool }) {
-  if (isDevtool) {
-    return <ComponentName />;
-  }
-  return null;
-}
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -49,7 +42,9 @@ function App() {
       </div>
       <Doges />
       <Quotes />
-      <Component isDevtool={false} name={ReactQueryDevtools} />
+      <div>
+        {location.href.includes('dev') && <ReactQueryDevtools />}
+      </div>
     </QueryClientProvider>
   );
 }
