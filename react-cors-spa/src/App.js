@@ -43,7 +43,7 @@ function App() {
       <Doges />
       <Quotes />
       <div>
-        {location.href.includes('dev') && <ReactQueryDevtools />}
+        {window.location.href.includes('localhost') && <ReactQueryDevtools />}
       </div>
     </QueryClientProvider>
   );
