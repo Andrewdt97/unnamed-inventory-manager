@@ -4,15 +4,18 @@ import axios from 'axios';
 
 // Run axios get request for quote
 const fetchQuotes = async () => {
-  const response = await axios.get('https://api.quotable.io/random');
+  const response = await axios.get('https://api.quotable.io/random', {
+    responseType: "json",
+});
   return response.data;
 };
 
 // Run axios get request for doge
 const fetchDoge = async () => {
-  const response = await fetch('https://dog.ceo/api/breeds/image/random');
-  const data = await response.json();
-  return data;
+  const response = await axios.get('https://dog.ceo/api/breeds/image/random', {
+    responseType: "json",
+  });
+  return response.data;
 };
 
 // Create quote component
