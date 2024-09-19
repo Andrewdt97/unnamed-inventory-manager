@@ -59,7 +59,6 @@ const APIResult = () => {
         const response = await axios.get(APIEndPoint, {
           headers: { accept: "application/json" },
         });
-        console.log(response);
         setData(response.data);
       } catch (err) {
         setError(err);
