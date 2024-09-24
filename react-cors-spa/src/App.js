@@ -16,31 +16,36 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER I
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import logo from './logo.svg';
-import logoS3 from './logoS3.png';
-import logoCF from './logoCloudFront.png';
-import './App.css';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import axios from "axios";
+import { Quotes, Doges } from "./ApiDisplay";
+import { useState, useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = 'to be replaced with your api endpoint here'
+const APIEndPoint = "https://api.quotable.io/random";
+
+// Create a client for QueryClientProvider to use
+const queryClient = new QueryClient();
+
+// Functional component or t/f block
+// If event.path includes 'env' or 'dev'
+// Then return <ReactQueryDevtools />
 
 function App() {
   return (
-    <div className="App">
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
         <header className="App-header">
-          {APIEndPoint.startsWith('http') &&
-            <APIResult />
-          }
-          <img src={logo} className="App-MainLogo" alt="logo" />
+          {APIEndPoint.startsWith("http") && <APIResult />}
         </header>
-        <p>This react-based application is hosted in an S3 bucket exposed through a CloudFront distribution</p>
-        <div className="logos">
-            <img src={logoS3} className="App-logoR2L" alt="logo S3" />
-            <img src={logoCF} className="App-logoL2R" alt="logo CloudFront" />
-        </div>
-    </div>
+      </div>
+      <Doges />
+      <Quotes />
+      <div>
+        {window.location.href.includes('localhost') && <ReactQueryDevtools />}
+      </div>
+    </QueryClientProvider>
   );
 }
 
