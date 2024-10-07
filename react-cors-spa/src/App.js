@@ -23,6 +23,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
+// IP Address of the Locally running DB is 172.18.0.2
 const APIEndPoint = "https://api.quotable.io/random";
 
 // Create a client for QueryClientProvider to use
