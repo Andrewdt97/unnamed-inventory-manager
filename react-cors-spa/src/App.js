@@ -25,7 +25,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 // IP Address of the Locally running DB is 172.18.0.2
 // Dbeaver shows that the URL is jdbc:postgresql://localhost:5432/inventory_manager, will attempt with this first before ip address
-const APIEndPoint = "https://api.quotable.io/random";
+const APIEndPoint = "jdbc:postgresql://localhost:5432/inventory_manager";
 
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient();
