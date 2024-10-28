@@ -23,7 +23,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Products from "./Products";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = "";
+const APIEndPoint = "http://127.0.0.1:3000/products?limit=5&offset=0";
 
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient();
