@@ -17,13 +17,12 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 */
 
 import axios from "axios";
-import { Quotes, Doges } from "./ApiDisplay";
 import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = "http://127.0.0.1:3000/products";
+const APIEndPoint = "http://127.0.0.1:3000/products?limit=1&offset=0";
 
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient();
@@ -40,8 +39,6 @@ function App() {
           {APIEndPoint.startsWith("http") && <APIResult />}
         </header>
       </div>
-      <Doges />
-      <Quotes />
       <div>
         {window.location.href.includes('localhost') && <ReactQueryDevtools />}
       </div>
@@ -60,6 +57,7 @@ const APIResult = () => {
           headers: { accept: "application/json" },
         });
         setData(response.data);
+        console.log(response.data);
       } catch (err) {
         setError(err);
       }
