@@ -20,9 +20,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Products from "./Products";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = "http://127.0.0.1:3000/products?limit=1&offset=0";
+const APIEndPoint = "http://127.0.0.1:3000/products?limit=5&offset=0";
 
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient();
@@ -38,6 +39,9 @@ function App() {
         <header className="App-header">
           {APIEndPoint.startsWith("http") && <APIResult />}
         </header>
+      </div>
+      <div>
+        <Products />
       </div>
       <div>
         {window.location.href.includes('localhost') && <ReactQueryDevtools />}
