@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
 function fetchProducts() {
     return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
@@ -22,7 +22,7 @@ function Products() {
     [data]);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 150 },
+        { field: 'id', headerName: 'ID', width: 150},
         { field: 'name', headerName: 'Name', width: 150 },
         { field: 'description', headerName: 'Description', width: 250},
     ];
@@ -34,7 +34,15 @@ function Products() {
             ) : error ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <DataGrid rows={rows} columns={columns} />
+                <DataGrid rows={rows} columns={columns}         
+                sx={{
+                    bgcolor: 'background.paper',
+                    boxShadow: 1,
+                    borderRadius: 2,
+                    p: 2,
+                    minWidth: 300,
+                    '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 'bold' }
+                  }}/>
             )}
         </div>
     );
