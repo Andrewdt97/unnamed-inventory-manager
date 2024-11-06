@@ -36,7 +36,7 @@ function Products() {
             ) : (
                 <DataGrid rows={rows} columns={columns}         
                 sx={{
-                    bgcolor: 'background.paper',
+                    bgcolor: '#e5e5e5',
                     boxShadow: 1,
                     borderRadius: 2,
                     p: 2,
