@@ -1,7 +1,24 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import { useMemo } from "react";
+
+
+const theme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+    components: {
+      MuiDataGrid: {
+        styleOverrides: {
+        root: {
+            backgroundColor: '#1c1c24'
+        },
+        },
+      },
+    },
+  });
 
 function fetchProducts() {
     return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
@@ -28,23 +45,18 @@ function Products() {
     ];
 
     return (
+        <ThemeProvider theme={theme} defaultMode="dark">
+        <CssBaseline />
         <div style={{ height: 400, width: '100%' }}>
             {isLoading ? (
                 <div>Loading...</div>
             ) : error ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <DataGrid rows={rows} columns={columns}         
-                sx={{
-                    bgcolor: '#e5e5e5',
-                    boxShadow: 1,
-                    borderRadius: 2,
-                    p: 2,
-                    minWidth: 300,
-                    '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 'bold' }
-                  }}/>
+                <DataGrid rows={rows} columns={columns}/>
             )}
         </div>
+        </ThemeProvider>
     );
 }
 
