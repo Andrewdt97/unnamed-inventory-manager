@@ -1,24 +1,9 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { useMemo } from "react";
-
-
-const theme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-    components: {
-      MuiDataGrid: {
-        styleOverrides: {
-        root: {
-            backgroundColor: '#1c1c24'
-        },
-        },
-      },
-    },
-  });
+import { theme } from "./ProductStyles";
 
 function fetchProducts() {
     return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
