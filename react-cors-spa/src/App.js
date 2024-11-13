@@ -21,6 +21,8 @@ import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Products from "./Products";
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from "./Theme";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
 const APIEndPoint = "http://127.0.0.1:3000/products?limit=5&offset=0";
@@ -35,6 +37,8 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={theme} defaultMode="dark">
+    <CssBaseline />
       <div className="App">
         <header className="App-header">
           {APIEndPoint.startsWith("http") && <APIResult />}
@@ -46,6 +50,7 @@ function App() {
       <div>
         {window.location.href.includes('localhost') && <ReactQueryDevtools />}
       </div>
+    </ThemeProvider>
     </QueryClientProvider>
   );
 }

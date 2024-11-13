@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
-import { ThemeProvider, CssBaseline } from '@mui/material';
 import { useMemo } from "react";
-import { theme } from "./ProductStyles";
 
 function fetchProducts() {
     return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
@@ -30,8 +28,6 @@ function Products() {
     ];
 
     return (
-        <ThemeProvider theme={theme} defaultMode="dark">
-        <CssBaseline />
         <div style={{ height: 400, width: '100%' }}>
             {isLoading ? (
                 <div>Loading...</div>
@@ -41,7 +37,6 @@ function Products() {
                 <DataGrid rows={rows} columns={columns}/>
             )}
         </div>
-        </ThemeProvider>
     );
 }
 
