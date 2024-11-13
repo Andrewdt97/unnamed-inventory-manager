@@ -30,10 +30,6 @@ const APIEndPoint = "http://127.0.0.1:3000/products?limit=5&offset=0";
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient();
 
-// Functional component or t/f block
-// If event.path includes 'env' or 'dev'
-// Then return <ReactQueryDevtools />
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
