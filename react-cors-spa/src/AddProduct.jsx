@@ -4,19 +4,24 @@ import { styled } from '@mui/material/styles';
 const AddProductButton = styled(Button)({
     color: 'white',
     backgroundColor: '#1c1c24',
-    outlineColor: 'white',
-    
+    textTransform: 'none',
+    borderColor: 'grey',
+    '&:hover': {
+    backgroundColor: '#24242e',
+  },
   });
 
 function AddProduct() {
     return (
-        <AddProductButton
-        variant="outlined" 
-        onClick={() => {
-            alert('clicked');
-        }}
-        size="large"
-        >Add Product</AddProductButton>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
+            <AddProductButton
+            variant="outlined" 
+            onClick={() => {
+                alert('clicked');
+            }}
+            size="large"
+            >Add Product</AddProductButton>
+        </div>
     )
 }
 
