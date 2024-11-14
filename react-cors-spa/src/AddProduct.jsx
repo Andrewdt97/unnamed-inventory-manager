@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 const AddProductButton = styled(Button)({
     color: 'white',
     backgroundColor: '#1c1c24',
-    textTransform: 'none',
     borderColor: 'grey',
     '&:hover': {
     backgroundColor: '#24242e',
