@@ -13,6 +13,7 @@ const AddProductButton = styled(Button)({
     borderColor: 'grey',
     '&:hover': {
     backgroundColor: '#24242e',
+    boxShadow: '0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)',
   },
   });
 
@@ -39,18 +40,22 @@ function AddProduct() {
                 aria-describedby="alert-dialog-description"
             >
             <DialogTitle id="alert-dialog-title">
-            {"Use Google's location service?"}
+            {"Add a New Product"}
             </DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                Let Google help apps determine location. This means sending anonymous
-                location data to Google, even when no apps are running.
+                <form>
+                    <label>Product Name</label><br></br>
+                    <input type='text'></input><br></br>
+                    <label>Product Description</label><br></br>
+                    <input type='text'></input><br></br>
+                </form>
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleClose}>Cancel</Button>
             <Button onClick={handleClose} autoFocus>
-                Agree
+                Submit
             </Button>
             </DialogActions>
             </Dialog>
