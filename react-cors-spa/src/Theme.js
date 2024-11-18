@@ -12,7 +12,13 @@ const theme = createTheme({
         },
       },
     },
-  },
+    MuiDialogTitle: {
+      fontSize: '1.5rem'
+    },
+    MuiDialogContentText: {
+          fontSize: '1.25rem'
+    }
+  }
 });
 
 export default theme;
