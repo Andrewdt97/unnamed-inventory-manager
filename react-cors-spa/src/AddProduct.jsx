@@ -5,10 +5,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import AddProductButton from './AddProductStyles';
+import AddProductButton from './AddProductButton';
+import "./AddProductButton.css";
+import "./ProductDialogue.css";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 function AddProduct() {
     const [open, setOpen] = React.useState(false);
+    const { register } = useForm();
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -20,7 +24,7 @@ function AddProduct() {
 
     return (
         <React.Fragment>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
+            <div class="AddProductButtonContainer">
                 <AddProductButton variant="outlined" onClick={handleClickOpen} size="large">Add Product</AddProductButton>
             </div>
             <Dialog
@@ -34,11 +38,9 @@ function AddProduct() {
             </DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                <form>
-                    <label>Product Name</label><br></br>
-                    <input type='text'></input><br></br>
-                    <label>Product Description</label><br></br>
-                    <input type='text'></input><br></br>
+                <form class='productdialogue'>
+                    <input name="name" placeholder='Name of Product' />
+                    <input name="description" placeholder='Product Description' />
                 </form>
             </DialogContentText>
             </DialogContent>

@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
 
 const AddProductButton = styled(Button)({
+    width: '15%',
     color: 'white',
     backgroundColor: '#1c1c24',
     borderColor: 'grey',
