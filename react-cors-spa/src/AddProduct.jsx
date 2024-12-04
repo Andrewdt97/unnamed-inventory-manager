@@ -8,11 +8,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddProductButton from './AddProductButton';
 import "./AddProductButton.css";
 import "./ProductDialogue.css";
-import { useForm, SubmitHandler } from "react-hook-form";
 
 function AddProduct() {
     const [open, setOpen] = React.useState(false);
-    const { register } = useForm();
 
     const handleClickOpen = () => {
       setOpen(true);
