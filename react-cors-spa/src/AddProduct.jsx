@@ -10,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
 
 import AddProductButton from './AddProductButton';
 import "./AddProductButton.css";
@@ -57,16 +59,22 @@ function AddProduct() {
                         <TextField placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <TextField placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <TextField placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <FormControl>
-                            <Select value={category} onChange={handleChange}>
-                                {categories.map((category) => (
-                                    <MenuItem key={category} value={category}>{category}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Box sx={{ minWidth: 120 , paddingTop: 1}}>
+                            <FormControl fullWidth>
+                                <Select value={category} 
+                                onChange={handleChange}
+                                displayEmpty
+                                inputProps={{ 'aria-label': 'Without label' }}
+                                >
+                                <MenuItem value="">Category</MenuItem>
+                                    {categories.map((category) => (
+                                        <MenuItem key={category} value={category}>{category}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
                         <Button type="Submit">Submit</Button>
                     </DialogActions>
             </Dialog>
