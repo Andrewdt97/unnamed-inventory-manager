@@ -7,7 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 
 import AddProductButton from './AddProductButton';
 import "./AddProductButton.css";
@@ -15,13 +17,13 @@ import "./ProductDialogue.css";
 
 function AddProduct() {
     const [open, setOpen] = React.useState(false);
-    // const categories = [
-    //     'Shirts',
-    //     'Pants',
-    //     'Shoes',
-    //     'Hat',
-    //     'Jewelry'
-    // ];
+    const categories = [
+        'Shirts',
+        'Pants',
+        'Shoes',
+        'Hats',
+        'Jewelry'
+    ];
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -30,6 +32,12 @@ function AddProduct() {
     const handleClose = () => {
       setOpen(false);
     };
+
+    const [category, setCategory] = React.useState('');
+
+    const handleChange = (event) => {
+        setCategory(event.target.value);
+    }
 
 
     // Caleb TODO:
@@ -49,6 +57,13 @@ function AddProduct() {
                         <TextField placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <TextField placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <TextField placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <FormControl>
+                            <Select value={category} onChange={handleChange}>
+                                {categories.map((category) => (
+                                    <MenuItem key={category} value={category}>{category}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
