@@ -19,13 +19,18 @@ function Products() {
             id: product.product_id,
             name: product.name,
             description: product.description,
+            sku: product.sku,
+            size: product.size,
+            sold_date: product.sold_date,
         })),
     [data]);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 150},
         { field: 'name', headerName: 'Name', width: 150 },
         { field: 'description', headerName: 'Description', width: 250},
+        { field: 'sku', headerName: 'SKU', width: 100 },
+        { field: 'size', headerName: 'Size', width: 100 },
+        { field: 'sold_date', headerName: 'Sold Date', width: 200 }
     ];
 
     return (
