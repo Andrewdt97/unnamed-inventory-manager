@@ -36,7 +36,7 @@ function AddProduct() {
     // Add list to pick the category from, checkout MUI's options that are not an ugly radio button
     return (
         <React.Fragment>
-            <div class="AddProductButtonContainer">
+            <div className="AddProductButtonContainer">
                 <AddProductButton variant="outlined" onClick={handleClickOpen} size="large">Add Product</AddProductButton>
             </div>
             <Dialog open={open} onClose={handleClose}>

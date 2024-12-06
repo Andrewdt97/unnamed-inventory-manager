@@ -34,7 +34,7 @@ function Products() {
     ];
 
     return (
-        <div class="datagrid">
+        <div className="datagrid">
             {isLoading ? (
                 <div>Loading...</div>
             ) : error ? (

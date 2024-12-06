@@ -34,7 +34,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={theme} defaultMode="dark">
+    <ThemeProvider theme={theme}>
     <CssBaseline />
       <div className="App">
         <header className="App-header">
