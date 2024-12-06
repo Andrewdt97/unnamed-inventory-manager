@@ -10,12 +10,12 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 
 import AddProductButton from './AddProductButton';
 import "./AddProductButton.css";
 import "./ProductDialogue.css";
+import "./AddProduct.css";
 
 function AddProduct() {
     const [open, setOpen] = React.useState(false);
@@ -41,16 +41,16 @@ function AddProduct() {
         setCategory(event.target.value);
     }
 
-
-    // Caleb TODO:
-    // Add list to pick the category from, checkout MUI's options that are not an ugly radio button
     return (
         <React.Fragment>
             <div className="AddProductButtonContainer">
                 <AddProductButton variant="outlined" onClick={handleClickOpen} size="large">Add Product</AddProductButton>
             </div>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Add Product</DialogTitle>
+                <div className='titleAndButton'>
+                    <DialogTitle>Add Product</DialogTitle>
+                    <Button onClick={handleClose}>X</Button>
+                </div>
                     <DialogContent>
                         <DialogContentText>
                             Enter the details of the new product below.
@@ -60,7 +60,7 @@ function AddProduct() {
                         <TextField placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <TextField placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <Box sx={{ minWidth: 120 , paddingTop: 1}}>
-                            <FormControl fullWidth>
+                            <FormControl>
                                 <Select value={category} 
                                 onChange={handleChange}
                                 displayEmpty
