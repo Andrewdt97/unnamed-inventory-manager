@@ -17,8 +17,17 @@ import "./AddProductButton.css";
 import "./ProductDialogue.css";
 import "./AddProduct.css";
 
+import { useForm } from 'react-hook-form';
+
 function AddProduct() {
     const [open, setOpen] = React.useState(false);
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     const categories = [
         'Shirts',
         'Pants',
@@ -26,20 +35,26 @@ function AddProduct() {
         'Hats',
         'Jewelry'
     ];
-
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
-
     const [category, setCategory] = React.useState('');
-
     const handleChange = (event) => {
         setCategory(event.target.value);
     }
+
+    const { register, handleSubmit, formState: {errors} } = useForm({
+        defaultValues: {
+            Name: "",
+            SKU: "",
+            Size: "",
+            Description: "",
+            Category: "Category",
+        }
+    });
+
+    console.log(errors);
+
+    // Caleb TODO:
+    // Make sure there's a clear error message displayed to the user for the minimum character
+    // count. 
 
     return (
         <React.Fragment>
@@ -55,13 +70,18 @@ function AddProduct() {
                         <DialogContentText>
                             Enter the details of the new product below.
                         </DialogContentText>
-                        <TextField placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <TextField placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <TextField placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <TextField placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <TextField {...register("Name", { required: "Required", minLength: 4 })} placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <p>{errors.Name?.message}</p>
+                        <TextField {...register("SKU", { required: "Required", minLength: 8 })} placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <p>{errors.SKU?.message}</p>
+                        <TextField {...register("Size", { required: "Required", minLength: 3 })} placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <p>{errors.Size?.message}</p>
+                        <TextField {...register("Description", { required: "Required", minLength: 10 })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <p>{errors.Description?.message}</p>
                         <Box sx={{ minWidth: 120 , paddingTop: 1}}>
                             <FormControl>
-                                <Select value={category} 
+                                <Select {...register("Category", { required: "Required" })}
+                                value={category} 
                                 onChange={handleChange}
                                 displayEmpty
                                 inputProps={{ 'aria-label': 'Without label' }}
@@ -72,10 +92,14 @@ function AddProduct() {
                                     ))}
                                 </Select>
                             </FormControl>
+                            <p>{errors.Category?.message}</p>
                         </Box>
                     </DialogContent>
                     <DialogActions>
-                        <Button type="Submit">Submit</Button>
+                        <Button type="Submit" onClick={handleSubmit((data) => {
+                            console.log(data);
+                            })}>Submit
+                        </Button>
                     </DialogActions>
             </Dialog>
         </React.Fragment>
