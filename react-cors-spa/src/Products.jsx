@@ -28,12 +28,12 @@ function Products() {
     [data]);
 
     const columns = [
-        { field: 'name', headerName: 'Name', width: 100 },
-        { field: 'description', headerName: 'Description', width: 250},
-        { field: 'sku', headerName: 'SKU', width: 100 },
-        { field: 'size', headerName: 'Size', width: 100 },
-        { field: 'sold_date', headerName: 'Sold Date', width: 500 }
-    ];
+        { field: 'name', headerName: 'Name', flex: 2 },
+        { field: 'description', headerName: 'Description', flex: 3 },
+        { field: 'sku', headerName: 'SKU', flex: 1 },
+        { field: 'size', headerName: 'Size', flex: 2 },
+        { field: 'sold_date', headerName: 'Sold Date', flex: 2 }
+    ];    
 
     return (
         <div className="datagrid" style={{ width: '100%'}}>
