@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { DataGrid } from '@mui/x-data-grid';
 import { useMemo } from "react";
 import "./Products.css";
 import Skeleton from '@mui/material/Skeleton';
+import { DataGrid } from '@mui/x-data-grid';
 
 
 function fetchProducts() {
@@ -28,21 +28,24 @@ function Products() {
     [data]);
 
     const columns = [
-        { headerClassName: 'super-app-theme--header', field: 'name', headerName: 'Name', width: 150 },
-        { headerClassName: 'super-app-theme--header', field: 'description', headerName: 'Description', width: 250},
-        { headerClassName: 'super-app-theme--header', field: 'sku', headerName: 'SKU', width: 100 },
-        { headerClassName: 'super-app-theme--header', field: 'size', headerName: 'Size', width: 100 },
-        { headerClassName: 'super-app-theme--header', field: 'sold_date', headerName: 'Sold Date', width: 200 }
+        { field: 'name', headerName: 'Name', width: 100 },
+        { field: 'description', headerName: 'Description', width: 250},
+        { field: 'sku', headerName: 'SKU', width: 100 },
+        { field: 'size', headerName: 'Size', width: 100 },
+        { field: 'sold_date', headerName: 'Sold Date', width: 500 }
     ];
 
     return (
-        <div className="datagrid">
+        <div className="datagrid" style={{ width: '100%'}}>
             {isLoading ? (
                 <Skeleton variant='rounded' width={1200} height={300} />
             ) : error ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <DataGrid rows={rows} columns={columns}/>
+            <DataGrid
+            rows={rows}
+            columns={columns}
+            />
             )}
         </div>
     );

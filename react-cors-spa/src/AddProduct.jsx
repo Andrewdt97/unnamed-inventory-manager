@@ -12,7 +12,6 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 
-import AddProductButton from './AddProductButton';
 import "./AddProductButton.css";
 import "./ProductDialogue.css";
 import "./AddProduct.css";
@@ -66,7 +65,7 @@ function AddProduct() {
 
     if(loading) {
         return (
-            <div class="addProductSkeleton">
+            <div className="addProductSkeleton">
                 <Skeleton variant="rounded" width={160} height={75} />
             </div>
         )
@@ -74,7 +73,7 @@ function AddProduct() {
     return (
         <React.Fragment>
             <div className="AddProductButtonContainer">
-                <AddProductButton variant="outlined" onClick={handleClickOpen} size="large">Add Product</AddProductButton>
+                <Button variant="outlined" onClick={handleClickOpen} size="large">Add Product</Button>
             </div>
             <Dialog open={open} onClose={handleClose}>
                 <div className='titleAndButton'>
