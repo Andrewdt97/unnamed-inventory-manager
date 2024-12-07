@@ -3,3 +3,9 @@
     justify-content: flex-end;
     padding: 10px;    
 }
+
+.addProductSkeleton {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}

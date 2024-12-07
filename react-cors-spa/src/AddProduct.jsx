@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -52,10 +52,25 @@ function AddProduct() {
 
     console.log(errors);
 
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 3000);
+    }, []);
+
     // Caleb TODO:
     // Make sure there's a clear error message displayed to the user for the minimum character
     // count. 
 
+    if(loading) {
+        return (
+            <div class="addProductSkeleton">
+                <Skeleton variant="rounded" width={150} height={80} />
+            </div>
+        )
+    }
     return (
         <React.Fragment>
             <div className="AddProductButtonContainer">
