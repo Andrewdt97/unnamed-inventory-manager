@@ -3,7 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
 import { useMemo } from "react";
 import "./Products.css";
-import { CircularProgress } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
 
 function fetchProducts() {
     return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
@@ -37,7 +39,7 @@ function Products() {
     return (
         <div className="datagrid">
             {isLoading ? (
-                <CircularProgress />
+                <Skeleton variant='rounded' width={1200} height={300} />
             ) : error ? (
                 <div>Error: {error.message}</div>
             ) : (
