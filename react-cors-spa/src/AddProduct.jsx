@@ -16,7 +16,14 @@ import "./AddProductButton.css";
 import "./ProductDialogue.css";
 import "./AddProduct.css";
 
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+
 import { useForm } from 'react-hook-form';
+
+function fetchCategories() {
+    return axios.get('http://127.0.0.1:3000/categories');
+}
 
 function AddProduct() {
     const [open, setOpen] = React.useState(false);
@@ -27,17 +34,15 @@ function AddProduct() {
       setOpen(false);
     };
 
-    const categories = [
-        'Shirts',
-        'Pants',
-        'Shoes',
-        'Hats',
-        'Jewelry'
-    ];
     const [category, setCategory] = React.useState('');
     const handleChange = (event) => {
         setCategory(event.target.value);
     }
+        
+    const { data } = useQuery({
+        queryKey: ['categoryData'],
+        queryFn: fetchCategories,
+    });
 
     const { register, handleSubmit, watch, formState: {errors} } = useForm({
         defaultValues: {
@@ -58,10 +63,6 @@ function AddProduct() {
             setLoading(false);
         }, 3000);
     }, []);
-
-    // Caleb TODO:
-    // Make sure there's a clear error message displayed to the user for the minimum character
-    // count. 
 
     if(loading) {
         return (
@@ -101,8 +102,8 @@ function AddProduct() {
                                 inputProps={{ 'aria-label': 'Without label' }}
                                 >
                                 <MenuItem value="">Category</MenuItem>
-                                    {categories.map((category) => (
-                                        <MenuItem key={category} value={category}>{category}</MenuItem>
+                                    {data?.data?.map(category => (
+                                        <MenuItem key={category.category_id} value={category.category_id}>{category.name}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
