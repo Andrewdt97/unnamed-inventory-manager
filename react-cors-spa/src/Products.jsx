@@ -4,7 +4,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useMemo } from "react";
 import "./Products.css";
 import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 
 
 function fetchProducts() {
@@ -29,11 +28,11 @@ function Products() {
     [data]);
 
     const columns = [
-        { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'description', headerName: 'Description', width: 250},
-        { field: 'sku', headerName: 'SKU', width: 100 },
-        { field: 'size', headerName: 'Size', width: 100 },
-        { field: 'sold_date', headerName: 'Sold Date', width: 200 }
+        { headerClassName: 'super-app-theme--header', field: 'name', headerName: 'Name', width: 150 },
+        { headerClassName: 'super-app-theme--header', field: 'description', headerName: 'Description', width: 250},
+        { headerClassName: 'super-app-theme--header', field: 'sku', headerName: 'SKU', width: 100 },
+        { headerClassName: 'super-app-theme--header', field: 'size', headerName: 'Size', width: 100 },
+        { headerClassName: 'super-app-theme--header', field: 'sold_date', headerName: 'Sold Date', width: 200 }
     ];
 
     return (
