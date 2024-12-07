@@ -1,0 +1,13 @@
+.AddProductButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;    
+}
+
+.addProductSkeleton {
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    padding: 10px;
+    padding-top: 20px;
+}

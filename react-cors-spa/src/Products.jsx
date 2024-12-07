@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { DataGrid } from '@mui/x-data-grid';
 import { useMemo } from "react";
+import "./Products.css";
+import Skeleton from '@mui/material/Skeleton';
+import { DataGrid } from '@mui/x-data-grid';
+
 
 function fetchProducts() {
     return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
@@ -18,23 +21,31 @@ function Products() {
             id: product.product_id,
             name: product.name,
             description: product.description,
+            sku: product.sku,
+            size: product.size,
+            sold_date: product.sold_date,
         })),
     [data]);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 150},
-        { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'description', headerName: 'Description', width: 250},
-    ];
+        { field: 'name', headerName: 'Name', flex: 2 },
+        { field: 'description', headerName: 'Description', flex: 3 },
+        { field: 'sku', headerName: 'SKU', flex: 1 },
+        { field: 'size', headerName: 'Size', flex: 2 },
+        { field: 'sold_date', headerName: 'Sold Date', flex: 2 }
+    ];    
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div className="datagrid" style={{ width: '100%'}}>
             {isLoading ? (
-                <div>Loading...</div>
+                <Skeleton variant='rounded' width={1200} height={300} />
             ) : error ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <DataGrid rows={rows} columns={columns}/>
+            <DataGrid
+            rows={rows}
+            columns={columns}
+            />
             )}
         </div>
     );
