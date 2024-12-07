@@ -67,7 +67,7 @@ function AddProduct() {
     if(loading) {
         return (
             <div class="addProductSkeleton">
-                <Skeleton variant="rounded" width={150} height={80} />
+                <Skeleton variant="rounded" width={160} height={75} />
             </div>
         )
     }
