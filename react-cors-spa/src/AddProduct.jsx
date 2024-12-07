@@ -75,7 +75,7 @@ function AddProduct() {
             <div className="AddProductButtonContainer">
                 <Button variant="outlined" onClick={handleClickOpen} size="large">Add Product</Button>
             </div>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open}>
                 <div className='titleAndButton'>
                     <DialogTitle>Add Product</DialogTitle>
                     <Button onClick={handleClose}>X</Button>
