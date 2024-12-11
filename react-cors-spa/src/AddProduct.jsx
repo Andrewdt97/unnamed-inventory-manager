@@ -26,6 +26,7 @@ function fetchCategories() {
 }
 
 function AddProduct() {
+    // Handle open/close of dialogue with useState
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
       setOpen(true);
@@ -34,16 +35,35 @@ function AddProduct() {
       setOpen(false);
     };
 
+    // Handle category selection in dialogue with useState
     const [category, setCategory] = React.useState('');
     const handleChange = (event) => {
         setCategory(event.target.value);
     }
-        
+    
+    // Populate categories from DB with useQuery
     const { data } = useQuery({
         queryKey: ['categoryData'],
         queryFn: fetchCategories,
     });
 
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    // Scroll to half-way down the page
+    const sortedCategories = data?.data?.sort((a, b) => {
+        const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+      
+        // names must be equal
+        return 0;
+      });
+
+    // Verify form completion with formState
     const { register, handleSubmit, watch, formState: {errors} } = useForm({
         defaultValues: {
             Name: "",
@@ -56,6 +76,7 @@ function AddProduct() {
 
     console.log(watch());
 
+    // When page is refreshed, initially take 3 seconds to load addProduct button
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
@@ -102,7 +123,7 @@ function AddProduct() {
                                 inputProps={{ 'aria-label': 'Without label' }}
                                 >
                                 <MenuItem value="">Category</MenuItem>
-                                    {data?.data?.map(category => (
+                                    {sortedCategories?.map(category => (
                                         <MenuItem key={category.category_id} value={category.category_id}>{category.name}</MenuItem>
                                     ))}
                                 </Select>
