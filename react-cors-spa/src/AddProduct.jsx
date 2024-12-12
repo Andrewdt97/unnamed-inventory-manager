@@ -100,13 +100,13 @@ function AddProduct() {
                         <DialogContentText>
                             Enter the details of the new product below.
                         </DialogContentText>
-                        <TextField {...register("Name", { required: "Required", minLength: { value: 4, message: "Min length is 4" } })} placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <TextField {...register("Name", { required: "Required" })} placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <p>{errors.Name?.message}</p>
-                        <TextField {...register("SKU", { required: "Required", minLength: { value: 8, message: "Min length is 8" } })} placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <TextField {...register("SKU", { required: "Required" })} placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <p>{errors.SKU?.message}</p>
-                        <TextField {...register("Size", { required: "Required", minLength: { value: 3, message: "Min length is 3" } })} placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <TextField {...register("Size", { required: "Required" })} placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <p>{errors.Size?.message}</p>
-                        <TextField {...register("Description", { required: "Required", minLength: { value: 10, message: "Min length is 10" } })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
+                        <TextField {...register("Description", { required: "Required" })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
                         <p>{errors.Description?.message}</p>
                         <Box sx={{ minWidth: 120 , paddingTop: 1}}>
                             <FormControl>
