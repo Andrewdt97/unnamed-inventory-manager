@@ -36,6 +36,15 @@ function AddProduct() {
     const handleChange = (event) => {
         setCategory(event.target.value);
     }
+
+    // When page is refreshed, initially take 3 seconds to load addProduct button
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 3000);
+    }, []);
     
     // Populate categories from DB with useQuery
     const { data } = useQuery({
@@ -69,15 +78,6 @@ function AddProduct() {
             Category: "Category",
         }
     });
-
-    // When page is refreshed, initially take 3 seconds to load addProduct button
-    const [loading, setLoading] = React.useState(true);
-
-    React.useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000);
-    }, []);
 
     if(loading) {
         return (
