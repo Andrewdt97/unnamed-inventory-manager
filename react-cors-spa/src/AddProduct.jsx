@@ -50,23 +50,21 @@ function AddProduct() {
     const { data } = useQuery({
         queryKey: ['categoryData'],
         queryFn: fetchCategories,
+        select: (data) => {
+            return data?.data?.sort((a, b) => {
+                const nameA = a.name.toUpperCase();
+                const nameB = b.name.toUpperCase();
+                if (nameA < nameB) {
+                  return -1;
+                }
+                if (nameA > nameB) {
+                  return 1;
+                }
+              
+                return 0;
+              });        
+        }
     });
-
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-    // Scroll to half-way down the page
-    const sortedCategories = data?.data?.sort((a, b) => {
-        const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-      
-        // names must be equal
-        return 0;
-      });
 
     // Verify form completion with formState
     const { register, handleSubmit, formState: {errors} } = useForm({
@@ -117,7 +115,7 @@ function AddProduct() {
                                 inputProps={{ 'aria-label': 'Without label' }}
                                 >
                                 <MenuItem value="">Category</MenuItem>
-                                    {sortedCategories?.map(category => (
+                                    {data?.map(category => (
                                         <MenuItem key={category.category_id} value={category.category_id}>{category.name}</MenuItem>
                                     ))}
                                 </Select>
