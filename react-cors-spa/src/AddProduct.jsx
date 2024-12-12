@@ -69,7 +69,7 @@ function AddProduct() {
       });
 
     // Verify form completion with formState
-    const { register, handleSubmit, watch, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: {errors} } = useForm({
         defaultValues: {
             Name: "",
             SKU: "",
