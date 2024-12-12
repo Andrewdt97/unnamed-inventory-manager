@@ -11,19 +11,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
+import fetchCategories from './services/CategoriesService';
 
 import "./AddProductButton.css";
 import "./ProductDialogue.css";
 import "./AddProduct.css";
 
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
 import { useForm } from 'react-hook-form';
-
-function fetchCategories() {
-    return axios.get('http://127.0.0.1:3000/categories');
-}
 
 function AddProduct() {
     // Handle open/close of dialogue with useState
