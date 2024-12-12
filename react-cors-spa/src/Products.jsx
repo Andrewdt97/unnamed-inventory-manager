@@ -4,11 +4,7 @@ import { useMemo } from "react";
 import "./Products.css";
 import Skeleton from '@mui/material/Skeleton';
 import { DataGrid } from '@mui/x-data-grid';
-
-
-function fetchProducts() {
-    return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
-}
+import fetchProducts from './services/ProductsService';
 
 function Products() {
     const { isLoading, error, data } = useQuery({
