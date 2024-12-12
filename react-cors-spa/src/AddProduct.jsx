@@ -70,8 +70,6 @@ function AddProduct() {
         }
     });
 
-    console.log(watch());
-
     // When page is refreshed, initially take 3 seconds to load addProduct button
     const [loading, setLoading] = React.useState(true);
 
