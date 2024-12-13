@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button, Skeleton } from "@mui/material";
+import { Button } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,15 +36,6 @@ function AddProduct() {
     const handleChange = (event) => {
         setCategory(event.target.value);
     }
-
-    // When page is refreshed, initially take 3 seconds to load addProduct button
-    const [loading, setLoading] = React.useState(true);
-
-    React.useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000);
-    }, []);
     
     // Populate categories from DB with useQuery
     const { data } = useQuery({
@@ -77,13 +68,10 @@ function AddProduct() {
         }
     });
 
-    if(loading) {
-        return (
-            <div className="addProductSkeleton">
-                <Skeleton variant="rounded" width={160} height={75} />
-            </div>
-        )
-    }
+    // <div className="addProductSkeleton">
+    //     <Skeleton variant="rounded" width={160} height={75} />
+    // </div>
+
     return (
         <React.Fragment>
             <div className="AddProductButtonContainer">

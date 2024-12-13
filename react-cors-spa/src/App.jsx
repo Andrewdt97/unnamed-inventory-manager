@@ -21,7 +21,6 @@ import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Products from "./Products";
-import AddProduct from "./AddProduct";
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from "./Theme";
 
@@ -42,7 +41,6 @@ function App() {
         </header>
       </div>
       <div>
-        <AddProduct />
         <Products />
       </div>
       <div>
