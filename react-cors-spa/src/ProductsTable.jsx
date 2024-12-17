@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import "./ProductsTable.css";
 import Skeleton from '@mui/material/Skeleton';
 import { DataGrid } from '@mui/x-data-grid';
@@ -10,6 +10,14 @@ function ProductsTable({ onLoading }) {
     const { isLoading, error, data } = useQuery({
       queryKey: ['products'],
       queryFn: fetchProducts,
+      select: (data) => data?.data.map((product) => ({
+        id: product.product_id,
+        name: product.name,
+        description: product.description,
+        sku: product.sku,
+        size: product.size,
+        sold_date: product.sold_date,
+        }))
     });
 
     useEffect(() => {
@@ -17,17 +25,6 @@ function ProductsTable({ onLoading }) {
             onLoading();
         }
     }, [isLoading, onLoading]);
-
-    const rows = useMemo(() => 
-        data?.data.map((product) => ({
-            id: product.product_id,
-            name: product.name,
-            description: product.description,
-            sku: product.sku,
-            size: product.size,
-            sold_date: product.sold_date,
-        })),
-    [data]);
 
     const columns = [
         { field: 'name', headerName: 'Name', flex: 2 },
@@ -49,7 +46,7 @@ function ProductsTable({ onLoading }) {
                 </Box>
             ) : (
             <DataGrid
-            rows={rows}
+            rows={data}
             columns={columns}
             />
             )}
