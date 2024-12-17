@@ -1,0 +1,9 @@
+.productdialogue {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+input {
+    font-size: 1rem;
+}
