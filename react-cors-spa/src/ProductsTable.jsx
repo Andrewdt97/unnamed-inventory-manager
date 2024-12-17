@@ -4,6 +4,7 @@ import "./ProductsTable.css";
 import Skeleton from '@mui/material/Skeleton';
 import { DataGrid } from '@mui/x-data-grid';
 import fetchProducts from './services/ProductsService';
+import { Box, Typography } from '@mui/material';
 
 function ProductsTable({ onLoading }) {
     const { isLoading, error, data } = useQuery({
@@ -37,18 +38,22 @@ function ProductsTable({ onLoading }) {
     ];    
 
     return (
-        <div className="datagrid" style={{ width: '100%'}}>
+        <Box className="datagrid" style={{ width: '100%'}}>
             {isLoading ? (
                 <Skeleton variant='rounded' width={1200} height={300} />
             ) : error ? (
-                <div>Error: {error.message}</div>
+                <Box>
+                    <Typography variant='body1'>
+                        Error: {error.message}
+                    </Typography>
+                </Box>
             ) : (
             <DataGrid
             rows={rows}
             columns={columns}
             />
             )}
-        </div>
+        </Box>
     );
 }
 

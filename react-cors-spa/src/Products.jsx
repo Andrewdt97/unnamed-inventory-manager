@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import ProductsTable from './ProductsTable';
 import AddProduct from './AddProduct';
 import Skeleton from '@mui/material/Skeleton';
+import { Box } from '@mui/material';
 
 function Products() {
     const [loading, setLoading] = useState(true);
@@ -11,13 +12,13 @@ function Products() {
     }, []);
 
     return (
-        <div>
+        <Box>
             {loading ? 
-            <div className="addProductSkeleton">
+            <Box className="addProductSkeleton">
                 <Skeleton variant="rounded" width={160} height={75} />
-            </div> : <AddProduct />}
+            </Box> : <AddProduct />}
             <ProductsTable onLoading={handleLoading} />
-        </div>
+        </Box>
     )
 }
 

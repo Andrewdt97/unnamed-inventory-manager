@@ -21,7 +21,7 @@ import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Products from "./Products";
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box, Typography } from '@mui/material';
 import theme from "./Theme";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
@@ -40,9 +40,9 @@ function App() {
           {APIEndPoint.startsWith("http") && <APIResult />}
         </header>
       </div>
-      <div>
+      <Box>
         <Products />
-      </div>
+      </Box>
       <div>
         {window.location.href.includes('localhost') && <ReactQueryDevtools />}
       </div>
@@ -71,8 +71,8 @@ const APIResult = () => {
     fetchData();
   }, []);
 
-  if (error) return <p>{error.message}</p>;
-  if (data) return <p>{data.message}</p>;
+  if (error) return <Typography variant='body2'>{error.message}</Typography>;
+  if (data) return <Typography variant='body2'>{data.message}</Typography>;
   return null;
 };
 

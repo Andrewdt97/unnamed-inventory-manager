@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -70,26 +70,26 @@ function AddProduct() {
 
     return (
         <React.Fragment>
-            <div className="AddProductButtonContainer">
+            <Box className="AddProductButtonContainer">
                 <Button variant="outlined" onClick={handleClickOpen} size="large">Add Product</Button>
-            </div>
+            </Box>
             <Dialog open={open}>
-                <div className='titleAndButton'>
+                <Box className='titleAndButton'>
                     <DialogTitle>Add Product</DialogTitle>
                     <Button onClick={handleClose}>X</Button>
-                </div>
+                </Box>
                     <DialogContent>
                         <DialogContentText>
                             Enter the details of the new product below.
                         </DialogContentText>
                         <TextField {...register("Name", { required: "Required" })} placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <p>{errors.Name?.message}</p>
+                        <Typography variant='body1'>{errors.Name?.message}</Typography>
                         <TextField {...register("SKU", { required: "Required" })} placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <p>{errors.SKU?.message}</p>
+                        <Typography variant='body1'>{errors.SKU?.message}</Typography>
                         <TextField {...register("Size", { required: "Required" })} placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <p>{errors.Size?.message}</p>
+                        <Typography variant='body1'>{errors.Size?.message}</Typography>
                         <TextField {...register("Description", { required: "Required" })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
-                        <p>{errors.Description?.message}</p>
+                        <Typography variant='body1'>{errors.Description?.message}</Typography>
                         <Box sx={{ minWidth: 120 , paddingTop: 1}}>
                             <FormControl>
                                 <Select {...register("Category", { required: "Required" })}
@@ -104,7 +104,7 @@ function AddProduct() {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <p>{errors.Category?.message}</p>
+                            <Typography variant='body1'>{errors.Category?.message}</Typography>
                         </Box>
                     </DialogContent>
                     <DialogActions>
