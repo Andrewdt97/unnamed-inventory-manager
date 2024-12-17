@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import fetchCategories from './services/CategoriesService';
@@ -17,12 +16,6 @@ import { Button, Typography, Box } from "@mui/material";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 function ProductDialogue({ onDialogue }) {
-    // Handle category selection in dialogue with useState
-    const [category, setCategory] = React.useState('');
-    const handleChange = (event) => {
-        setCategory(event.target.value);
-    }
-
     // Populate categories from DB with useQuery
     const { data } = useQuery({
         queryKey: ['categoryData'],
@@ -75,12 +68,10 @@ function ProductDialogue({ onDialogue }) {
                 <Box sx={{ minWidth: 120 , paddingTop: 1}}>
                     <FormControl>
                         <Select {...register("Category", { required: "Required" })}
-                        value={category} 
-                        onChange={handleChange}
+                        defaultValue=""
                         displayEmpty
-                        inputProps={{ 'aria-label': 'Without label' }}
                         >
-                        <MenuItem value="">Category</MenuItem>
+                        <MenuItem value="" disabled>Category</MenuItem>
                             {data?.map(category => (
                                 <MenuItem key={category.category_id} value={category.category_id}>{category.name}</MenuItem>
                             ))}
