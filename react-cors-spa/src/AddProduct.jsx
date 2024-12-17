@@ -12,6 +12,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import fetchCategories from './services/CategoriesService';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 import "./AddProductButton.css";
 import "./ProductDialogue.css";
@@ -76,7 +77,7 @@ function AddProduct() {
             <Dialog open={open}>
                 <Box className='titleAndButton'>
                     <DialogTitle>Add Product</DialogTitle>
-                    <Button onClick={handleClose}>X</Button>
+                    <CloseOutlinedIcon className='exitButton' onClick={handleClose}></CloseOutlinedIcon>
                 </Box>
                     <DialogContent>
                         <DialogContentText>
