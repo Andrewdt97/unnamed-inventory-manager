@@ -15,7 +15,6 @@ import fetchCategories from './services/CategoriesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 import "./AddProductButton.css";
-import "./ProductDialogue.css";
 import "./AddProduct.css";
 
 import { useQuery } from '@tanstack/react-query';
