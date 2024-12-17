@@ -15,7 +15,7 @@ function ProductsTable({ onLoading }) {
         if (!isLoading) {
             onLoading();
         }
-    }, [isLoading])
+    }, [isLoading, onLoading]);
 
     const rows = useMemo(() => 
         data?.data.map((product) => ({

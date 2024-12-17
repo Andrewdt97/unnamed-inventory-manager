@@ -68,10 +68,6 @@ function AddProduct() {
         }
     });
 
-    // <div className="addProductSkeleton">
-    //     <Skeleton variant="rounded" width={160} height={75} />
-    // </div>
-
     return (
         <React.Fragment>
             <div className="AddProductButtonContainer">
