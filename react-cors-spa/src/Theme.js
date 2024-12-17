@@ -29,27 +29,28 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {
-          color: '#ffffff',
-        },
+        root: ({ theme }) => ({
+          color: theme.palette.text.primary,
+        }),
       },
     },
     MuiDataGrid: {
       styleOverrides: {
-        root: {
-          backgroundColor: "#1a4348",
-        },
-        columnHeader: {
-          backgroundColor: '#996d1f',
-        },
-        row: {
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
+        }),
+        columnHeader: ({ theme }) => ({
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.text.primary,
+        }),
+        row: ({ theme }) => ({
           '&:hover': {
-            backgroundColor: '#4a3134',
+            backgroundColor: theme.palette.secondary.main,
           },
-        },
-        footerContainer: {
-          backgroundColor: '#996d1f',
-        },
+        }),
+        footerContainer: ({ theme }) => ({
+          backgroundColor: theme.palette.primary.main,
+        }),
       },
     },
   },
