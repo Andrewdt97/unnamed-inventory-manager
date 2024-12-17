@@ -14,15 +14,23 @@ function Products() {
         setLoading(false);
     }, []);
 
+    const handleDialogue = () => {
+        if(!dialogue) {
+            setDialogue(true);
+        } else {
+            setDialogue(false);
+        }
+    }
+
     return (
         <Box>
             {loading ? 
             <Box className="addProductSkeleton">
                 <Skeleton variant="rounded" width={160} height={75} />
             </Box>
-            : <AddProduct onDialogue={() => setDialogue(true)}/>}
+            : <AddProduct onDialogue={handleDialogue}/>}
             <ProductsTable onLoading={handleLoading} />
-            {dialogue && <ProductDialogue onDialogue={() => setDialogue(false)}/>}
+            {dialogue && <ProductDialogue onDialogue={handleDialogue}/>}
         </Box>
     )
 }
