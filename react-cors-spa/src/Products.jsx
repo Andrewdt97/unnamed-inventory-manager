@@ -8,14 +8,14 @@ import { Box } from '@mui/material';
 
 function Products() {
     const [loading, setLoading] = useState(true);
-    const [dialogue, setDialogue] = useState(false);
+    const [isDialogOpen, setDialogue] = useState(false);
 
     const handleLoading = useCallback(() => {
         setLoading(false);
     }, []);
 
-    const handleDialogue = () => {
-        if(!dialogue) {
+    const handleDialog = () => {
+        if(!isDialogOpen) {
             setDialogue(true);
         } else {
             setDialogue(false);
@@ -28,9 +28,9 @@ function Products() {
             <Box className="addProductSkeleton">
                 <Skeleton variant="rounded" width={160} height={75} />
             </Box>
-            : <AddProduct onDialogue={handleDialogue}/>}
+            : <AddProduct onDialogOpen={handleDialog}/>}
             <ProductsTable onLoading={handleLoading} />
-            {dialogue && <ProductDialogue onDialogue={handleDialogue}/>}
+            {isDialogOpen && <ProductDialogue onDialogClose={handleDialog}/>}
         </Box>
     )
 }

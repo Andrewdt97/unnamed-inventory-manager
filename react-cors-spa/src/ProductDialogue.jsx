@@ -15,7 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import { Button, Typography, Box } from "@mui/material";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
-function ProductDialogue({ onDialogue }) {
+function ProductDialogue({ onDialogClose }) {
     // Populate categories from DB with useQuery
     const { data } = useQuery({
         queryKey: ['categoryData'],
@@ -51,7 +51,7 @@ function ProductDialogue({ onDialogue }) {
         <Dialog open>
         <Box className='titleAndButton'>
             <DialogTitle>Add Product</DialogTitle>
-            <CloseOutlinedIcon className='exitButton' onClick={onDialogue}></CloseOutlinedIcon>
+            <CloseOutlinedIcon className='exitButton' onClick={onDialogClose}></CloseOutlinedIcon>
         </Box>
             <DialogContent>
                 <DialogContentText>
