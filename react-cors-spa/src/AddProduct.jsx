@@ -1,13 +1,11 @@
-import { Button } from "@mui/material";
-import Box from '@mui/material/Box';
-
+import { Box, Button } from "@mui/material";
 import "./AddProductButton.css";
 import "./AddProduct.css";
 
-function AddProduct({ onDialogOpen }) {
+function AddProduct({ triggerDialog }) {
     return (
         <Box className="AddProductButtonContainer">
-            <Button variant="outlined" size="large" onClick={onDialogOpen}>Add Product</Button>
+            <Button variant="outlined" size="large" onClick={triggerDialog}>Add Product</Button>
         </Box>
     )
 }

@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from "react";
-import "./ProductsTable.css";
-import Skeleton from '@mui/material/Skeleton';
-import { DataGrid } from '@mui/x-data-grid';
 import fetchProducts from './services/ProductsService';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { useEffect } from "react";
+import { useQuery } from '@tanstack/react-query';
+import "./ProductsTable.css";
 
 function ProductsTable({ onLoading }) {
     const { isLoading, error, data } = useQuery({

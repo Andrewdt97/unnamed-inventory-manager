@@ -1,25 +1,19 @@
-import { useState, useCallback } from 'react';
-import ProductsTable from './ProductsTable';
 import AddProduct from './AddProduct';
-import ProductDialogue from './ProductDialogue';
-
-import Skeleton from '@mui/material/Skeleton';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
+import ProductDialog from './ProductDialog';
+import ProductsTable from './ProductsTable';
+import { useCallback, useState } from 'react';
 
 function Products() {
     const [loading, setLoading] = useState(true);
-    const [isDialogOpen, setDialogue] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleLoading = useCallback(() => {
         setLoading(false);
     }, []);
 
-    const handleDialog = () => {
-        if(!isDialogOpen) {
-            setDialogue(true);
-        } else {
-            setDialogue(false);
-        }
+    const toggleDialogOpen = () => {
+        setIsDialogOpen(!isDialogOpen);
     }
 
     return (
@@ -28,9 +22,9 @@ function Products() {
             <Box className="addProductSkeleton">
                 <Skeleton variant="rounded" width={160} height={75} />
             </Box>
-            : <AddProduct onDialogOpen={handleDialog}/>}
+            : <AddProduct triggerDialog={toggleDialogOpen}/>}
             <ProductsTable onLoading={handleLoading} />
-            {isDialogOpen && <ProductDialogue onDialogClose={handleDialog}/>}
+            <ProductDialog openDialog={isDialogOpen} closeDialog={toggleDialogOpen}/>
         </Box>
     )
 }

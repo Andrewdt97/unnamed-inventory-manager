@@ -1,21 +1,27 @@
+import fetchCategories from './services/CategoriesService';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography
+  } from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import fetchCategories from './services/CategoriesService';
-import "./ProductDialogue.css";
+import "./ProductDialog.css";
+  
+  
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import { Button, Typography, Box } from "@mui/material";
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-
-function ProductDialogue({ onDialogClose }) {
+function ProductDialog({ openDialog, closeDialog }) {
     // Populate categories from DB with useQuery
     const { data } = useQuery({
         queryKey: ['categoryData'],
@@ -48,10 +54,10 @@ function ProductDialogue({ onDialogClose }) {
     });
 
     return(
-        <Dialog open>
+        <Dialog open={openDialog}>
         <Box className='titleAndButton'>
             <DialogTitle>Add Product</DialogTitle>
-            <CloseOutlinedIcon className='exitButton' onClick={onDialogClose}></CloseOutlinedIcon>
+            <CloseOutlinedIcon className='exitButton' onClick={closeDialog}></CloseOutlinedIcon>
         </Box>
             <DialogContent>
                 <DialogContentText>
@@ -65,13 +71,14 @@ function ProductDialogue({ onDialogClose }) {
                 <Typography variant='body1'>{errors.Size?.message}</Typography>
                 <TextField {...register("Description", { required: "Required" })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
                 <Typography variant='body1'>{errors.Description?.message}</Typography>
-                <Box sx={{ minWidth: 120 , paddingTop: 1}}>
-                    <FormControl>
+                <Box>
+                    <FormControl variant="standard" className='categoryField'>
+                        <InputLabel id="dialogCategoryLabel">Category</InputLabel>
                         <Select {...register("Category", { required: "Required" })}
+                        labelId='dialogCategoryLabel'
                         defaultValue=""
                         displayEmpty
                         >
-                        <MenuItem value="" disabled>Category</MenuItem>
                             {data?.map(category => (
                                 <MenuItem key={category.category_id} value={category.category_id}>{category.name}</MenuItem>
                             ))}
@@ -90,4 +97,4 @@ function ProductDialogue({ onDialogClose }) {
     );
 }
 
-export default ProductDialogue;
+export default ProductDialog;

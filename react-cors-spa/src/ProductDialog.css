@@ -7,3 +7,7 @@
 input {
     font-size: 1rem;
 }
+
+.categoryField {
+    width: 160px;
+}
