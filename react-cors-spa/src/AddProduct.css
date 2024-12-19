@@ -1,0 +1,8 @@
+.titleAndButton {
+    display: flex;
+    justify-content: space-between;
+}
+
+.exitButton {
+    margin: 10px;
+}
