@@ -1,4 +1,5 @@
 import fetchCategories from './services/CategoryServices';
+import createProduct from './services/ProductServices';
 import {
     Box,
     Button,
@@ -89,7 +90,7 @@ function ProductDialog({ openDialog, closeDialog }) {
             </DialogContent>
             <DialogActions>
                 <Button type="Submit" onClick={handleSubmit((data) => {
-                    console.log(data);
+                    createProduct(data);
                     })}>Submit
                 </Button>
             </DialogActions>
