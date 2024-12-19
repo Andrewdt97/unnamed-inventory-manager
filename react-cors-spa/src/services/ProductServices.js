@@ -12,7 +12,7 @@ const createProduct = async (productData) => {
             'Content-Type': 'application/json'
         }
     });
-    return data; // Optionally return the data if needed
+    return data;
 };
 
 // name: productData.Name,
