@@ -1,4 +1,5 @@
 import fetchCategories from './services/CategoryServices';
+import { createProduct } from './services/ProductServices';
 import {
     Box,
     Button,
@@ -15,8 +16,8 @@ import {
     Typography
   } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import "./ProductDialog.css";
   
   
@@ -41,6 +42,12 @@ function ProductDialog({ openDialog, closeDialog }) {
                 });        
         }
     });
+
+    const mutation = useMutation({
+        mutationFn: (data) => {
+            return createProduct(data)
+        }
+    })
 
     // Verify form completion with formState
     const { register, handleSubmit, formState: {errors} } = useForm({
@@ -88,8 +95,8 @@ function ProductDialog({ openDialog, closeDialog }) {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button type="Submit" onClick={handleSubmit((data) => {
-                    console.log(data);
+            <Button type="Submit" onClick={handleSubmit((data) => {
+                    mutation.mutate({...data});
                     })}>Submit
                 </Button>
             </DialogActions>
