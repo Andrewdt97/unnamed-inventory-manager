@@ -1,4 +1,4 @@
-import fetchCategories from './services/CategoriesService';
+import fetchCategories from './services/CategoryServices';
 import {
     Box,
     Button,
