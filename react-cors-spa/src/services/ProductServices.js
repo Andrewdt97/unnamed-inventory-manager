@@ -7,9 +7,11 @@ function fetchProducts() {
 const APIEndPoint = 'http://127.0.0.1:3000/products';
 
 const createProduct = async (productData) => {
+    console.log(productData);
     const { data } = await axios.post(APIEndPoint, productData, {
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': 'http://127.0.0.1:3000/products',
         }
     });
     return data;

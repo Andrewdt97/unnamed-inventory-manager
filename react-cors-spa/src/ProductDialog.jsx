@@ -44,8 +44,8 @@ function ProductDialog({ openDialog, closeDialog }) {
     });
 
     const mutation = useMutation({
-        mutationFn: (data) => {
-            return createProduct(data)
+        mutationFn: (productData) => {
+            return createProduct(productData)
         }
     })
 
@@ -95,8 +95,8 @@ function ProductDialog({ openDialog, closeDialog }) {
                 </Box>
             </DialogContent>
             <DialogActions>
-            <Button type="Submit" onClick={handleSubmit((data) => {
-                    mutation.mutate({...data});
+            <Button type="Submit" onClick={handleSubmit((productData) => {
+                    mutation.mutate({...productData});
                     })}>Submit
                 </Button>
             </DialogActions>
