@@ -1,21 +1,15 @@
 import axios from 'axios';
 
-function fetchProducts() {
-    return axios.get('http://127.0.0.1:3000/products?limit=5&offset=0');
-}
+const APIENDPOINT = 'http://127.0.0.1:3000/products';
 
-const APIEndPoint = 'http://127.0.0.1:3000/products';
+function fetchProducts() {
+    return axios.get(APIENDPOINT);
+}
 
 const createProduct = async (productData) => {
     console.log(productData);
-    const { data } = await axios.post(APIEndPoint, productData);
+    const { data } = await axios.post(APIENDPOINT, productData);
     return data;
 };
-
-// name: productData.Name,
-// sku: productData.SKU,
-// size: productData.Size,
-// description: productData.Description,
-// category: productData.Category,
 
 export { fetchProducts, createProduct };

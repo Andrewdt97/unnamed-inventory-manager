@@ -40,51 +40,51 @@ Resources:
         Variables:
           IP_RANGE: !Ref IpRange
 
-  OptionHandler:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: options.handler
-      Runtime: nodejs20.x
-      CodeUri: ./
-      Architectures:
-        - arm64
-      Timeout: 30
-      Events:
-        Method1APIOptions:
-          Type: Api
-          Properties:
-            Path: /products
-            Method: options
-            RestApiId:
-              Ref: RestApi
-        Method2APIOptions:
-          Type: Api
-          Properties:
-            Path: /product/{product_id}
-            Method: options
-            RestApiId:
-              Ref: RestApi
-        Method3APIOptions:
-          Type: Api
-          Properties:
-            Path: /users
-            Method: options
-            RestApiId:
-              Ref: RestApi
-        Method4APIOptions:
-          Type: Api
-          Properties:
-            Path: /categories
-            Method: options
-            RestApiId:
-              Ref: RestApi
-        Method5APIOptions:
-          Type: Api
-          Properties:
-            Path: /category/{category_id}
-            Method: options
-            RestApiId:
-              Ref: RestApi
+  # OptionHandler:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: options.handler
+  #     Runtime: nodejs20.x
+  #     CodeUri: ./
+  #     Architectures:
+  #       - arm64
+  #     Timeout: 30
+  #     Events:
+  #       Method1APIOptions:
+  #         Type: Api
+  #         Properties:
+  #           Path: /products
+  #           Method: options
+  #           RestApiId:
+  #             Ref: RestApi
+  #       Method2APIOptions:
+  #         Type: Api
+  #         Properties:
+  #           Path: /product/{product_id}
+  #           Method: options
+  #           RestApiId:
+  #             Ref: RestApi
+  #       Method3APIOptions:
+  #         Type: Api
+  #         Properties:
+  #           Path: /users
+  #           Method: options
+  #           RestApiId:
+  #             Ref: RestApi
+  #       Method4APIOptions:
+  #         Type: Api
+  #         Properties:
+  #           Path: /categories
+  #           Method: options
+  #           RestApiId:
+  #             Ref: RestApi
+  #       Method5APIOptions:
+  #         Type: Api
+  #         Properties:
+  #           Path: /category/{category_id}
+  #           Method: options
+  #           RestApiId:
+  #             Ref: RestApi
 
   BackendLambda:
     Type: AWS::Serverless::Function
