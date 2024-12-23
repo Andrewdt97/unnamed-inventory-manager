@@ -40,6 +40,52 @@ Resources:
         Variables:
           IP_RANGE: !Ref IpRange
 
+  OptionHandler:
+  Type: AWS::Serverless::Function
+  Properties:
+    Handler: options.handler
+    Runtime: nodejs20.x
+    CodeUri: ./
+    Architectures:
+      - arm64
+    Timeout: 2
+  #   Events:
+  #     Method1APIOptions:
+  #       Type: Api
+  #       Properties:
+  #         Path: /products
+  #         Method: options
+  #         RestApiId:
+  #           Ref: ApiGatewayApi
+  #     Method2APIOptions:
+  #       Type: Api
+  #       Properties:
+  #         Path: /product/{product_id}
+  #         Method: options
+  #         RestApiId:
+  #           Ref: ApiGatewayApi
+  #     Method3APIOptions:
+  #       Type: Api
+  #       Properties:
+  #         Path: /users
+  #         Method: options
+  #         RestApiId:
+  #           Ref: ApiGatewayApi
+  #     Method4APIOptions:
+  #       Type: Api
+  #       Properties:
+  #         Path: /categories
+  #         Method: options
+  #         RestApiId:
+  #           Ref: ApiGatewayApi
+  #     Method5APIOptions:
+  #       Type: Api
+  #       Properties:
+  #         Path: /category/{category_id}
+  #         Method: options
+  #         RestApiId:
+  #           Ref: ApiGatewayApi
+
   BackendLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -92,6 +138,11 @@ Resources:
             put: *standardImplementation
             delete: *standardImplementation
       StageName: dev
+      Cors:
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        AllowCredentials: "'*'"
+        AllowMethods: "'*'"
 
   # The AWS S3 bucket into which our SPA build files will be deployed
   ImReactApp:
