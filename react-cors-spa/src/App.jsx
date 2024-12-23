@@ -31,6 +31,17 @@ const APIEndPoint = "http://127.0.0.1:3000/products?limit=5&offset=0";
 const queryClient = new QueryClient();
 
 function App() {
+  axios.interceptors.request.use(
+    async (request) => {
+      console.info('request.headers', request.headers);
+      request.headers['Content-Type'] = 'application/json';
+      return request;
+    },
+    (error) => {
+      console.error('API error', error);
+    },
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={theme}>
