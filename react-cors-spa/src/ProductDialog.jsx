@@ -52,11 +52,11 @@ function ProductDialog({ openDialog, closeDialog }) {
     // Verify form completion with formState
     const { register, handleSubmit, formState: {errors} } = useForm({
         defaultValues: {
-            Name: "",
-            SKU: "",
-            Size: "",
-            Description: "",
-            Category: "Category",
+            name: "",
+            sku: "",
+            size: "",
+            description: "",
+            category_id: "Category",
         }
     });
 
@@ -70,18 +70,18 @@ function ProductDialog({ openDialog, closeDialog }) {
                 <DialogContentText>
                     Enter the details of the new product below.
                 </DialogContentText>
-                <TextField {...register("Name", { required: "Required" })} placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
-                <Typography variant='body1'>{errors.Name?.message}</Typography>
-                <TextField {...register("SKU", { required: "Required" })} placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
-                <Typography variant='body1'>{errors.SKU?.message}</Typography>
-                <TextField {...register("Size", { required: "Required" })} placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
-                <Typography variant='body1'>{errors.Size?.message}</Typography>
-                <TextField {...register("Description", { required: "Required" })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
-                <Typography variant='body1'>{errors.Description?.message}</Typography>
+                <TextField {...register("name", { required: "Required" })} placeholder='Name' autoFocus required margin="dense" fullWidth variant="standard"/>
+                <Typography variant='body1'>{errors.name?.message}</Typography>
+                <TextField {...register("sku", { required: "Required" })} placeholder='SKU' autoFocus required margin="dense" fullWidth variant="standard"/>
+                <Typography variant='body1'>{errors.sku?.message}</Typography>
+                <TextField {...register("size", { required: "Required" })} placeholder='Size' autoFocus required margin="dense" fullWidth variant="standard"/>
+                <Typography variant='body1'>{errors.size?.message}</Typography>
+                <TextField {...register("description", { required: "Required" })} placeholder='Description' autoFocus required margin="dense" fullWidth variant="standard"/>
+                <Typography variant='body1'>{errors.description?.message}</Typography>
                 <Box>
                     <FormControl variant="standard" className='categoryField'>
                         <InputLabel id="dialogCategoryLabel">Category</InputLabel>
-                        <Select {...register("Category", { required: "Required" })}
+                        <Select {...register("category_id", { required: "Required" })}
                         labelId='dialogCategoryLabel'
                         defaultValue=""
                         displayEmpty
@@ -91,7 +91,7 @@ function ProductDialog({ openDialog, closeDialog }) {
                             ))}
                         </Select>
                     </FormControl>
-                    <Typography variant='body1'>{errors.Category?.message}</Typography>
+                    <Typography variant='body1'>{errors.category?.message}</Typography>
                 </Box>
             </DialogContent>
             <DialogActions>

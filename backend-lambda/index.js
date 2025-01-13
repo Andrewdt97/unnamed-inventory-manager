@@ -6,7 +6,10 @@ import validate from "./validation/validation.js";
 let pool;
 
 const headers = {
+  "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "*",
+  "Accept": '*/*',
   "Content-Type": "application/json",
 };
 
