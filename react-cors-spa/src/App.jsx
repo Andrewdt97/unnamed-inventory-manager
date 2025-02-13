@@ -33,7 +33,6 @@ const queryClient = new QueryClient();
 function App() {
   axios.interceptors.request.use(
     async (request) => {
-      console.info('request.headers', request.headers);
       request.headers['Content-Type'] = 'application/json';
       return request;
     },
