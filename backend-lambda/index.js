@@ -6,7 +6,10 @@ import validate from "./validation/validation.js";
 let pool;
 
 const headers = {
+  "Access-Control-Allow-Headers": "*",
   "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "*",
+  "Accept": '*/*',
   "Content-Type": "application/json",
 };
 
@@ -33,8 +36,8 @@ export const handler = async (event, context) => {
   if (path === "/products") {
     // get all products
     if (httpMethod === "GET") {
-      const limit = event.queryStringParameters.limit;
-      const offset = event.queryStringParameters.offset;
+      const limit = event.queryStringParameters?.limit;
+      const offset = event.queryStringParameters?.offset;
       response = await productService.getAllProducts(pool, limit, offset);
     }
     // create a product

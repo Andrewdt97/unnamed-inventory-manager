@@ -5,18 +5,16 @@ const { clientService, poolCheck, productCheck } = serviceHelpers;
 const getAllProducts = async (pool, limit, offset) => {
   // Check that pool is the right data type
   poolCheck(pool);
+  let query = {};
+  query.name = "getAllProducts";
 
   // Check that limit & offset parameters are numbers
   if (isNaN(limit) || isNaN(offset)) {
-    throw new Error("Limit and offset must be numbers");
+    query.text = `SELECT * FROM product`
+  } else {
+    query.text =`SELECT * FROM product LIMIT $1 OFFSET $2`;
+    query.values = [limit, offset];
   }
-
-  // Assign query
-  const query = {
-    name: "getAllProducts",
-    text: `SELECT * FROM product LIMIT $1 OFFSET $2`,
-    values: [limit, offset],
-  };
 
   // Pass pool & query to clientService to connect to database & execute query
   const result = await clientService(pool, query);

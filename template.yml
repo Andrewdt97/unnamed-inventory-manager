@@ -6,6 +6,11 @@ Description: >
   Create cloud formation stack for restapi, ip authorizer lambda, backend lambda, s3 bucket for the react-app
 
 Globals:
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
   Function:
     Timeout: 30
     MemorySize: 256
@@ -80,18 +85,48 @@ Resources:
                 httpMethod: "POST"
                 type: "aws_proxy"
             post: *standardImplementation
+            options: &optionsImplementation
+              responses:
+                "200":
+                  description: "Successful response"
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: |
+                    {
+                      "statusCode" : 200
+                    }
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-datadog-trace-id,x-datadog-parent-id,x-datadog-origin,x-datadog-sampling-priority'''
+                      method.response.header.Access-Control-Allow-Methods: '''*'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: |
+                        {}
           /product/{product_id}:
             put: *standardImplementation
             delete: *standardImplementation
+            options: *optionsImplementation
           /users:
             get: *standardImplementation
+            options: *optionsImplementation
           /categories:
             get: *standardImplementation
             post: *standardImplementation
+            options: *optionsImplementation
           /category/{category_id}:
             put: *standardImplementation
             delete: *standardImplementation
+            options: *optionsImplementation
       StageName: dev
+      Cors:
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        AllowCredentials: "'*'"
+        AllowMethods: "'*'"
 
   # The AWS S3 bucket into which our SPA build files will be deployed
   ImReactApp:

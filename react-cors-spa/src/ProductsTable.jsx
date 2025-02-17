@@ -1,4 +1,4 @@
-import fetchProducts from './services/ProductsService';
+import { fetchProducts } from './services/ProductServices';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect } from "react";
