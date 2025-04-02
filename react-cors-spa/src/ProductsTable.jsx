@@ -12,6 +12,7 @@ function ProductsTable({ onLoading }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   function toggleEditDialog() {
+    console.log(editDialogOpen);
     setEditDialogOpen(!editDialogOpen);
   }
 
@@ -48,12 +49,7 @@ function ProductsTable({ onLoading }) {
       sortable: false,
       filterable: false, // Disable filtering
       disableColumnMenu: true, // Remove menu options
-      renderCell: () => (
-        <EditProductIcon
-          editDialogOpen={editDialogOpen}
-          toggleEditDialog={toggleEditDialog}
-        />
-      ),
+      renderCell: () => <EditProductIcon toggleEditDialog={toggleEditDialog} />,
     },
   ];
 
@@ -69,7 +65,10 @@ function ProductsTable({ onLoading }) {
       )}
       {data && <DataGrid rows={data} columns={columns} />}
       {editDialogOpen && (
-        <EditProductDialog toggleEditDialog={toggleEditDialog} />
+        <EditProductDialog
+          toggleEditDialog={toggleEditDialog}
+          editDialogOpen={editDialogOpen}
+        />
       )}
     </Box>
   );
