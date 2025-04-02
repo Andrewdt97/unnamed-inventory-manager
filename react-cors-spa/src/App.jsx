@@ -25,7 +25,7 @@ import { ThemeProvider, CssBaseline, Box, Typography } from "@mui/material";
 import theme from "./Theme";
 
 // To be replaced by the endpoint of the API deployed through the CloudFormation Template
-const APIEndPoint = "http://127.0.0.1:3000/products";
+const APIEndPoint = "http://127.0.0.1:3000/products?limit=5&offset=0";
 
 // Create a client for QueryClientProvider to use
 const queryClient = new QueryClient();

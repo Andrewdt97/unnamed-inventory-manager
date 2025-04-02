@@ -3,6 +3,7 @@ import { Box, Skeleton, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import EditProduct from "./EditProduct";
 import "./ProductsTable.css";
 
 function ProductsTable({ onLoading }) {
@@ -32,6 +33,15 @@ function ProductsTable({ onLoading }) {
     { field: "sku", headerName: "SKU", flex: 1 },
     { field: "size", headerName: "Size", flex: 2 },
     { field: "sold_date", headerName: "Sold Date", flex: 2 },
+    {
+      field: "edit",
+      headerName: "",
+      flex: 0.25,
+      sortable: false,
+      filterable: false, // Disable filtering
+      disableColumnMenu: true, // Remove menu options
+      renderCell: (params) => <EditProduct />,
+    },
   ];
 
   return (
