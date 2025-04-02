@@ -8,3 +8,12 @@
   cursor: pointer;
   margin-right: 24px;
 }
+
+.dialog-content {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}

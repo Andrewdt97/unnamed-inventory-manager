@@ -17,10 +17,13 @@ import "./EditProductDialog.css";
 
 function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
   const [name, setName] = useState("");
+  const [sku, setSku] = useState(null);
+  const [size, setSize] = useState("");
+  const [description, setDescription] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(name);
+    console.log({ name, sku, size, description });
     toggleEditDialog();
   }
 
@@ -45,13 +48,41 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
             onClick={toggleEditDialog}
           ></CloseOutlinedIcon>
         </Box>
-        <DialogContent>
+        <DialogContent className="dialog-content">
           <DialogContentText>
             To edit a product, fill out the fields below and click to save.
           </DialogContentText>
           <TextField
+            placeholder="Name"
+            required
             value={name}
+            fullWidth
+            variant="standard"
             onChange={(e) => setName(e.target.value)}
+          ></TextField>
+          <TextField
+            placeholder="SKU"
+            required
+            value={sku}
+            fullWidth
+            variant="standard"
+            onChange={(e) => setSku(Number(e.target.value))}
+          ></TextField>
+          <TextField
+            placeholder="Size"
+            required
+            value={size}
+            fullWidth
+            variant="standard"
+            onChange={(e) => setSize(e.target.value)}
+          ></TextField>
+          <TextField
+            placeholder="Description"
+            required
+            value={description}
+            fullWidth
+            variant="standard"
+            onChange={(e) => setDescription(e.target.value)}
           ></TextField>
         </DialogContent>
         <DialogActions>
