@@ -64,12 +64,11 @@ function ProductsTable({ onLoading }) {
         </Box>
       )}
       {data && <DataGrid rows={data} columns={columns} />}
-      {editDialogOpen && (
-        <EditProductDialog
-          toggleEditDialog={toggleEditDialog}
-          editDialogOpen={editDialogOpen}
-        />
-      )}
+      {/* Conditional rendering with MUI is handled within the Dialog component, check the 'open' prop */}
+      <EditProductDialog
+        toggleEditDialog={toggleEditDialog}
+        editDialogOpen={editDialogOpen}
+      />
     </Box>
   );
 }

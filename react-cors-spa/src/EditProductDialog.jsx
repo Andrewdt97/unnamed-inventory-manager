@@ -9,21 +9,40 @@ import {
   DialogActions,
   Button,
   Box,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 import "./EditProductDialog.css";
 
+const testCategories = [
+  "shirts",
+  "shoes",
+  "hats",
+  "pants",
+  "jewelry",
+  "glasses",
+  "pins",
+  "dresses",
+  "skirts",
+  "scarfs",
+  "coats",
+  "jackets",
+];
+
 function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
   const [name, setName] = useState("");
-  const [sku, setSku] = useState(null);
+  const [sku, setSku] = useState("");
   const [size, setSize] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log({ name, sku, size, description });
+    console.log({ name, sku, size, description, category });
     toggleEditDialog();
   }
 
@@ -66,7 +85,7 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
             value={sku}
             fullWidth
             variant="standard"
-            onChange={(e) => setSku(Number(e.target.value))}
+            onChange={(e) => setSku(e.target.value)}
           ></TextField>
           <TextField
             placeholder="Size"
@@ -84,6 +103,19 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
             variant="standard"
             onChange={(e) => setDescription(e.target.value)}
           ></TextField>
+          <Box>
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              {testCategories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button type="submit" onClick={handleSubmit}>
