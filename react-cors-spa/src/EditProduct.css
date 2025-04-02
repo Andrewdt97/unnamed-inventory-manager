@@ -1,3 +1,6 @@
 .edit-icon {
-  text-align: center;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 100%; /* Make sure the container has height to center vertically */
 }
