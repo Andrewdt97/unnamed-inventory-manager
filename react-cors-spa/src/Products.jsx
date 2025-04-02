@@ -16,8 +16,6 @@ function Products() {
     setIsDialogOpen(!isDialogOpen);
   }
 
-  console.log(loading, isDialogOpen);
-
   return (
     <Box>
       {loading ? (

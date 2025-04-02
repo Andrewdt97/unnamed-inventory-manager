@@ -1,7 +1,7 @@
-import "./EditProduct.css";
+import "./EditProductIcon.css";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-function EditProduct() {
+function EditProductIcon({ toggleEditDialog }) {
   return (
     <div className="edit-icon">
       <EditOutlinedIcon
@@ -12,9 +12,10 @@ function EditProduct() {
           */
           fontSize: "medium",
         }}
+        onClick={toggleEditDialog}
       />
     </div>
   );
 }
 
-export default EditProduct;
+export default EditProductIcon;

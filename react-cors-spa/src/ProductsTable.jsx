@@ -3,10 +3,18 @@ import { Box, Skeleton, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import EditProduct from "./EditProduct";
+import EditProductIcon from "./EditProductIcon";
+import EditProductDialog from "./EditProductDialog";
 import "./ProductsTable.css";
+import { useState } from "react";
 
 function ProductsTable({ onLoading }) {
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+
+  function toggleEditDialog() {
+    setEditDialogOpen(!editDialogOpen);
+  }
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
@@ -40,7 +48,12 @@ function ProductsTable({ onLoading }) {
       sortable: false,
       filterable: false, // Disable filtering
       disableColumnMenu: true, // Remove menu options
-      renderCell: (params) => <EditProduct />,
+      renderCell: () => (
+        <EditProductIcon
+          editDialogOpen={editDialogOpen}
+          toggleEditDialog={toggleEditDialog}
+        />
+      ),
     },
   ];
 
@@ -55,6 +68,9 @@ function ProductsTable({ onLoading }) {
         </Box>
       )}
       {data && <DataGrid rows={data} columns={columns} />}
+      {editDialogOpen && (
+        <EditProductDialog toggleEditDialog={toggleEditDialog} />
+      )}
     </Box>
   );
 }
