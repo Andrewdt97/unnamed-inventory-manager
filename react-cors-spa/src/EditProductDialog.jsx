@@ -8,7 +8,12 @@ import {
   TextField,
   DialogActions,
   Button,
+  Box,
 } from "@mui/material";
+
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
+import "./EditProductDialog.css";
 
 function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
   const [number, setNumber] = useState(0);
@@ -33,7 +38,13 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
   return (
     <React.Fragment>
       <Dialog open={editDialogOpen}>
-        <DialogTitle>Edit Product</DialogTitle>
+        <Box className="title-and-close">
+          <DialogTitle>Edit Product</DialogTitle>
+          <CloseOutlinedIcon
+            className="closed-icon"
+            onClick={toggleEditDialog}
+          ></CloseOutlinedIcon>
+        </Box>
         <DialogContent>
           <DialogContentText>
             To edit a product, fill out the fields below and click to save.

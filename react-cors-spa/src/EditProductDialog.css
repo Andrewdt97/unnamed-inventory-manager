@@ -1,0 +1,13 @@
+.title-and-close {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closed-icon {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+}
