@@ -6,8 +6,5 @@
 
 .closed-icon {
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 15px;
+  margin-right: 24px;
 }

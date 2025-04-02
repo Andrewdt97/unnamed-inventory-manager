@@ -16,11 +16,11 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import "./EditProductDialog.css";
 
 function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
-  const [number, setNumber] = useState(0);
+  const [name, setName] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(number);
+    console.log(name);
     toggleEditDialog();
   }
 
@@ -50,9 +50,8 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
             To edit a product, fill out the fields below and click to save.
           </DialogContentText>
           <TextField
-            type="number"
-            value={number}
-            onChange={(e) => setNumber(Number(e.target.value))}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           ></TextField>
         </DialogContent>
         <DialogActions>
