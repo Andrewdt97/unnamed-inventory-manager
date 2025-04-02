@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from "@mui/material";
 
 /*
 COLOR GUIDE
@@ -10,20 +10,20 @@ Red - #b35090
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     background: {
-      default: '#133236',
-      paper: '#1a4348',
+      default: "#133236",
+      paper: "#1a4348",
     },
     primary: {
-      main: '#996d1f',
+      main: "#996d1f",
     },
     secondary: {
-      main: '##4a3134',
+      main: "##4a3134",
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#ffffff',
+      primary: "#ffffff",
+      secondary: "#ffffff",
     },
   },
   components: {
@@ -44,7 +44,7 @@ const theme = createTheme({
           color: theme.palette.text.primary,
         }),
         row: ({ theme }) => ({
-          '&:hover': {
+          "&:hover": {
             backgroundColor: theme.palette.secondary.main,
           },
         }),

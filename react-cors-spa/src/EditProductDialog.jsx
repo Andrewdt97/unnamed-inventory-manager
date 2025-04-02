@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  FormControl,
 } from "@mui/material";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -103,18 +104,21 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
             variant="standard"
             onChange={(e) => setDescription(e.target.value)}
           ></TextField>
-          <Box>
-            <InputLabel>Category</InputLabel>
-            <Select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              {testCategories.map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </Select>
+          <Box className="select-box">
+            <FormControl className="select-form-control" fullWidth>
+              <InputLabel>Category</InputLabel>
+              <Select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                label="Category"
+              >
+                {testCategories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
