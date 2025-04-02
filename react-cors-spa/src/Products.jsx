@@ -12,12 +12,8 @@ function Products() {
     setLoading(false);
   }, []);
 
-  function toggleDialogOpen() {
-    setIsDialogOpen(true);
-  }
-
-  function toggleDialogClose() {
-    setIsDialogOpen(false);
+  function toggleDialog() {
+    setIsDialogOpen(!isDialogOpen);
   }
 
   console.log(loading, isDialogOpen);
@@ -29,12 +25,12 @@ function Products() {
           <Skeleton variant="rounded" width={160} height={75} />
         </Box>
       ) : (
-        <AddProduct toggleDialogOpen={toggleDialogOpen} />
+        <AddProduct toggleDialogOpen={toggleDialog} />
       )}
       <ProductsTable onLoading={handleLoading} />
       <ProductDialog
         isDialogOpen={isDialogOpen}
-        toggleDialogClose={toggleDialogClose}
+        toggleDialogClose={toggleDialog}
       />
     </Box>
   );
