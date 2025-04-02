@@ -20,18 +20,18 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import "./EditProductDialog.css";
 
 const testCategories = [
-  "shirts",
-  "shoes",
-  "hats",
-  "pants",
-  "jewelry",
-  "glasses",
-  "pins",
-  "dresses",
-  "skirts",
-  "scarfs",
-  "coats",
-  "jackets",
+  "Shirts",
+  "Shoes",
+  "Hats",
+  "Pants",
+  "Jewelry",
+  "Glasses",
+  "Pins",
+  "Dresses",
+  "Skirts",
+  "Scarfs",
+  "Coats",
+  "Jackets",
 ];
 
 function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
@@ -41,22 +41,26 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
 
+  // Verify form completion with formState
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm({
+  //   defaultValues: {
+  //     name: "",
+  //     sku: "",
+  //     size: "",
+  //     description: "",
+  //     category_id: "Category",
+  //   },
+  // });
+
   function handleSubmit(e) {
     e.preventDefault();
     console.log({ name, sku, size, description, category });
     toggleEditDialog();
   }
-
-  /* <p>Testing</p>
-      <form method="dialog" onSubmit={handleSubmit}>
-        <label>Enter a number</label>
-        <input
-          type="number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
-        />
-        <button type="submit">OK</button>
-      </form> */
 
   return (
     <React.Fragment>
