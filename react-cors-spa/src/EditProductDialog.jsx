@@ -57,6 +57,7 @@ function EditProductDialog({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -72,6 +73,11 @@ function EditProductDialog({
     toggleEditDialog();
   }
 
+  function CloseDialog() {
+    reset();
+    toggleEditDialog();
+  }
+
   return (
     <Fragment>
       <Dialog open={editDialogOpen}>
@@ -79,7 +85,7 @@ function EditProductDialog({
           <DialogTitle>Edit Product</DialogTitle>
           <CloseOutlinedIcon
             className="closed-icon"
-            onClick={toggleEditDialog}
+            onClick={CloseDialog}
           ></CloseOutlinedIcon>
         </Box>
         <DialogContent className="dialog-content">
@@ -96,7 +102,9 @@ function EditProductDialog({
           <Typography variant="body1" className="current-value">
             Current Name: {name}
           </Typography>
-          <Typography variant="body1">{errors.name?.message}</Typography>
+          <Typography variant="body1" className="errors">
+            {errors.name?.message}
+          </Typography>
           <TextField
             {...register("description", { required: "Required" })}
             placeholder="Description"
@@ -107,7 +115,9 @@ function EditProductDialog({
           <Typography variant="body1" className="current-value">
             Current Description: {description}
           </Typography>
-          <Typography variant="body1">{errors.description?.message}</Typography>
+          <Typography variant="body1" className="errors">
+            {errors.description?.message}
+          </Typography>
           <TextField
             {...register("sku", { required: "Required" })}
             placeholder="SKU"
@@ -118,7 +128,9 @@ function EditProductDialog({
           <Typography variant="body1" className="current-value">
             Current SKU: {sku}
           </Typography>
-          <Typography variant="body1">{errors.sku?.message}</Typography>
+          <Typography variant="body1" className="errors">
+            {errors.sku?.message}
+          </Typography>
           <TextField
             {...register("size", { required: "Required" })}
             placeholder="Size"
@@ -129,7 +141,9 @@ function EditProductDialog({
           <Typography variant="body1" className="current-value">
             Current Size: {size}
           </Typography>
-          <Typography variant="body1">{errors.size?.message}</Typography>
+          <Typography variant="body1" className="errors">
+            {errors.size?.message}
+          </Typography>
           <Box className="select-box">
             <FormControl className="select-form-control" fullWidth>
               <InputLabel>Category</InputLabel>
@@ -151,7 +165,9 @@ function EditProductDialog({
                 ))}
               </Select>
             </FormControl>
-            <Typography variant="body1">{errors.category?.message}</Typography>
+            <Typography variant="body1" className="errors">
+              {errors.category?.message}
+            </Typography>
           </Box>
         </DialogContent>
         <DialogActions>

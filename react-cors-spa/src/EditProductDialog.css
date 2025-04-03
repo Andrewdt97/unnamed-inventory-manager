@@ -26,3 +26,7 @@
 .current-value {
   color: rgba(255, 255, 255, 0.5);
 }
+
+.errors {
+  font-style: italic;
+}
