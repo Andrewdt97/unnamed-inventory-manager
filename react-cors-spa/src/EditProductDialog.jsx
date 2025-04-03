@@ -21,18 +21,18 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import "./EditProductDialog.css";
 
 const testCategories = [
-  "Shirts",
-  "Shoes",
-  "Hats",
-  "Pants",
-  "Jewelry",
-  "Glasses",
-  "Pins",
-  "Dresses",
-  "Skirts",
-  "Scarfs",
-  "Coats",
-  "Jackets",
+  { name: "Shirts", id: 1 },
+  { name: "Shoes", id: 2 },
+  { name: "Hats", id: 3 },
+  { name: "Pants", id: 4 },
+  { name: "Jewelry", id: 5 },
+  { name: "Glasses", id: 6 },
+  { name: "Pins", id: 7 },
+  { name: "Dresses", id: 8 },
+  { name: "Skirts", id: 9 },
+  { name: "Scarfs", id: 10 },
+  { name: "Coats", id: 11 },
+  { name: "Jackets", id: 12 },
 ];
 
 function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
@@ -116,9 +116,9 @@ function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
                 */
                 defaultValue=""
               >
-                {testCategories.map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category}
+                {testCategories.map((cat) => (
+                  <MenuItem key={cat.name} value={cat.id}>
+                    {cat.name}
                   </MenuItem>
                 ))}
               </Select>
