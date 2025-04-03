@@ -96,6 +96,14 @@ function EditProductDialog({
           ></TextField>
           <Typography variant="body1">{errors.name?.message}</Typography>
           <TextField
+            {...register("description", { required: "Required" })}
+            placeholder="Description"
+            required
+            fullWidth
+            variant="standard"
+          ></TextField>
+          <Typography variant="body1">{errors.description?.message}</Typography>
+          <TextField
             {...register("sku", { required: "Required" })}
             placeholder="SKU"
             required
@@ -111,14 +119,6 @@ function EditProductDialog({
             variant="standard"
           ></TextField>
           <Typography variant="body1">{errors.size?.message}</Typography>
-          <TextField
-            {...register("description", { required: "Required" })}
-            placeholder="Description"
-            required
-            fullWidth
-            variant="standard"
-          ></TextField>
-          <Typography variant="body1">{errors.description?.message}</Typography>
           <Box className="select-box">
             <FormControl className="select-form-control" fullWidth>
               <InputLabel>Category</InputLabel>
