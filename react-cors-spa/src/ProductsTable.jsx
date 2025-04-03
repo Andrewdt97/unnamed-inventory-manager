@@ -12,7 +12,6 @@ function ProductsTable({ onLoading }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   function toggleEditDialog() {
-    console.log(editDialogOpen);
     setEditDialogOpen(!editDialogOpen);
   }
 
