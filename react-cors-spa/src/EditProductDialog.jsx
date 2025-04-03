@@ -41,6 +41,18 @@ function EditProductDialog({
   selectedProduct,
 }) {
   console.log(selectedProduct);
+  /*
+  Example of selectProduct object being passed
+  Object { 
+    id: 6, 
+    name: "hat", 
+    description: "pirates baseball cap", 
+    sku: 95959595, 
+    size: "Men's Large", 
+    sold_date: null 
+  }
+  */
+  const { id, name, sku, size, description } = selectedProduct;
 
   const {
     register,
@@ -48,16 +60,16 @@ function EditProductDialog({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
-      sku: "",
-      size: "",
-      description: "",
+      name: name,
+      sku: sku,
+      size: size,
+      description: description,
       category: "",
     },
   });
 
   function Submit(productData) {
-    console.log({ ...productData });
+    console.log({ id: id, ...productData });
     toggleEditDialog();
   }
 
