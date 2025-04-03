@@ -10,9 +10,16 @@ import { useState } from "react";
 
 function ProductsTable({ onLoading }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({});
 
-  function toggleEditDialog() {
-    setEditDialogOpen(!editDialogOpen);
+  function toggleEditDialog(product) {
+    if (editDialogOpen) {
+      setEditDialogOpen(false);
+      setSelectedProduct({});
+    } else if (!editDialogOpen && Object.keys(product).length > 0) {
+      setSelectedProduct(product);
+      setEditDialogOpen(true);
+    }
   }
 
   const { isLoading, error, data } = useQuery({
@@ -48,7 +55,11 @@ function ProductsTable({ onLoading }) {
       sortable: false,
       filterable: false, // Disable filtering
       disableColumnMenu: true, // Remove menu options
-      renderCell: () => <EditProductIcon toggleEditDialog={toggleEditDialog} />,
+      renderCell: (params) => (
+        <EditProductIcon
+          toggleEditDialog={() => toggleEditDialog(params.row)}
+        />
+      ),
     },
   ];
 
@@ -67,6 +78,7 @@ function ProductsTable({ onLoading }) {
       <EditProductDialog
         toggleEditDialog={toggleEditDialog}
         editDialogOpen={editDialogOpen}
+        selectedProduct={selectedProduct}
       />
     </Box>
   );

@@ -35,7 +35,13 @@ const testCategories = [
   { name: "Jackets", id: 12 },
 ];
 
-function EditProductDialog({ toggleEditDialog, editDialogOpen }) {
+function EditProductDialog({
+  toggleEditDialog,
+  editDialogOpen,
+  selectedProduct,
+}) {
+  console.log(selectedProduct);
+
   const {
     register,
     handleSubmit,
