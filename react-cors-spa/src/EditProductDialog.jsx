@@ -52,7 +52,7 @@ function EditProductDialog({
     sold_date: null 
   }
   */
-  const { id, name, sku, size, description } = selectedProduct;
+  const { id, name, description, sku, size } = selectedProduct;
 
   const {
     register,
@@ -60,11 +60,10 @@ function EditProductDialog({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: name,
-      sku: sku,
-      size: size,
-      description: description,
-      category: "",
+      name: "",
+      description: "",
+      sku: "",
+      size: "",
     },
   });
 
@@ -94,6 +93,9 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
+          <Typography variant="body1" className="current-value">
+            Current Name: {name}
+          </Typography>
           <Typography variant="body1">{errors.name?.message}</Typography>
           <TextField
             {...register("description", { required: "Required" })}
@@ -102,6 +104,9 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
+          <Typography variant="body1" className="current-value">
+            Current Description: {description}
+          </Typography>
           <Typography variant="body1">{errors.description?.message}</Typography>
           <TextField
             {...register("sku", { required: "Required" })}
@@ -110,6 +115,9 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
+          <Typography variant="body1" className="current-value">
+            Current SKU: {sku}
+          </Typography>
           <Typography variant="body1">{errors.sku?.message}</Typography>
           <TextField
             {...register("size", { required: "Required" })}
@@ -118,6 +126,9 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
+          <Typography variant="body1" className="current-value">
+            Current Size: {size}
+          </Typography>
           <Typography variant="body1">{errors.size?.message}</Typography>
           <Box className="select-box">
             <FormControl className="select-form-control" fullWidth>
@@ -132,7 +143,6 @@ function EditProductDialog({
                 Consider providing a value that matches 
                 one of the available options or ''."
                 */
-                defaultValue=""
               >
                 {testCategories.map((cat) => (
                   <MenuItem key={cat.name} value={cat.id}>
