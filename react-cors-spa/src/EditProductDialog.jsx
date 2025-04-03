@@ -70,6 +70,7 @@ function EditProductDialog({
 
   function Submit(productData) {
     console.log({ id: id, ...productData });
+    reset();
     toggleEditDialog();
   }
 
