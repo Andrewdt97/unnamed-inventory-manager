@@ -90,7 +90,7 @@ function EditProductDialog({
           ></CloseOutlinedIcon>
         </Box>
         <DialogContent className="dialog-content">
-          <DialogContentText>
+          <DialogContentText className="intro">
             To edit a product, fill out the fields below and click to save.
           </DialogContentText>
           <TextField
@@ -151,7 +151,10 @@ function EditProductDialog({
               <Select
                 {...register("category", { required: "Required" })}
                 label="Category"
+                variant="standard"
+                defaultValue=""
                 /* React requires a default value for this component
+                set as a prop and not within useForm,
                 otherwise you will receive the error, 
                 "You have provided an out-of-range value undefined for 
                 the select (name="category") component.
@@ -166,13 +169,19 @@ function EditProductDialog({
                 ))}
               </Select>
             </FormControl>
-            <Typography variant="body1" className="errors">
-              {errors.category?.message}
-            </Typography>
           </Box>
+          <Typography variant="body1" className="errors">
+            {errors.category?.message}
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button type="Submit" onClick={handleSubmit(Submit)}>
+          <Button
+            type="Submit"
+            /* Margin-right does not work with this MUI component
+            in an external CSS file */
+            sx={{ marginRight: "20px", marginBottom: "16px" }}
+            onClick={handleSubmit(Submit)}
+          >
             Save
           </Button>
         </DialogActions>

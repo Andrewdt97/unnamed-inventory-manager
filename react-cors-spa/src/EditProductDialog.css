@@ -9,6 +9,10 @@
   margin-right: 24px;
 }
 
+.intro {
+  height: 50px;
+}
+
 .dialog-content {
   width: 350px;
   display: flex;
@@ -20,13 +24,8 @@
 
 .select-box {
   min-width: 100%;
-  margin-top: 10px;
 }
 
 .current-value {
   color: rgba(255, 255, 255, 0.5);
-}
-
-.errors {
-  font-style: italic;
 }

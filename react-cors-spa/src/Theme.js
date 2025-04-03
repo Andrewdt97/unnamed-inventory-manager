@@ -5,7 +5,7 @@ COLOR GUIDE
 Dark teal - #133236
 Not as dark teal - #1a4348
 Yellow - #996d1f
-Red - #b35090
+Red - #4a3134
 */
 
 const theme = createTheme({
@@ -19,7 +19,7 @@ const theme = createTheme({
       main: "#996d1f",
     },
     secondary: {
-      main: "##4a3134",
+      main: "#4a3134",
     },
     text: {
       primary: "#ffffff",
@@ -31,6 +31,10 @@ const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.main,
+          "&:hover": {
+            backgroundColor: theme.palette.primary.main, // Adjust as needed
+          },
         }),
       },
     },
@@ -50,6 +54,16 @@ const theme = createTheme({
         }),
         footerContainer: ({ theme }) => ({
           backgroundColor: theme.palette.primary.main,
+        }),
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          "&.errors": {
+            color: theme.palette.primary.main,
+            fontStyle: "italic",
+          },
         }),
       },
     },
