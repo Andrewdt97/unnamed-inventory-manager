@@ -1,4 +1,4 @@
-import { fetchProducts } from "./services/ProductServices";
+import { fetchProducts } from "./services/ProductsService";
 import { Box, Skeleton, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
@@ -33,6 +33,7 @@ function ProductsTable({ onLoading }) {
         sku: product.sku,
         size: product.size,
         sold_date: product.sold_date,
+        category_id: product.category_id,
       })),
   });
 

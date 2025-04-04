@@ -15,45 +15,17 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-
+import { useQuery, useMutation } from "@tanstack/react-query";
+import fetchCategories from "./services/CategoryServices";
+import modifyProduct from "./services/ProductService";
 import "./EditProductDialog.css";
-
-const testCategories = [
-  { name: "Shirts", id: 1 },
-  { name: "Shoes", id: 2 },
-  { name: "Hats", id: 3 },
-  { name: "Pants", id: 4 },
-  { name: "Jewelry", id: 5 },
-  { name: "Glasses", id: 6 },
-  { name: "Pins", id: 7 },
-  { name: "Dresses", id: 8 },
-  { name: "Skirts", id: 9 },
-  { name: "Scarfs", id: 10 },
-  { name: "Coats", id: 11 },
-  { name: "Jackets", id: 12 },
-];
 
 function EditProductDialog({
   toggleEditDialog,
   editDialogOpen,
   selectedProduct,
 }) {
-  console.log(selectedProduct);
-  /*
-  Example of selectProduct object being passed
-  Object { 
-    id: 6, 
-    name: "hat", 
-    description: "pirates baseball cap", 
-    sku: 95959595, 
-    size: "Men's Large", 
-    sold_date: null 
-  }
-  */
-  const { id, name, description, sku, size } = selectedProduct;
-
   const {
     register,
     handleSubmit,
@@ -68,10 +40,19 @@ function EditProductDialog({
     },
   });
 
+  const { id, name, description, sku, size } = selectedProduct;
+
+  const submitProductMutation = useMutation({
+    mutationFn: (productData) => {
+      return modifyProduct(productData);
+    },
+  });
+
   // Caleb TODOs:
   // Add category.id in query in products table
   function Submit(productData) {
-    console.log({ id: id, ...productData });
+    console.log({ product_id: id, ...productData });
+    submitProductMutation.mutate({ product_id: Number(id), ...productData });
     reset();
     toggleEditDialog();
   }
@@ -84,6 +65,26 @@ function EditProductDialog({
   useEffect(() => {
     reset({ name, description, sku, size });
   }, [name, description, sku, size, reset]);
+
+  // Populate categories from DB with useQuery
+  const { data } = useQuery({
+    queryKey: ["categoryData"],
+    queryFn: fetchCategories,
+    select: (data) => {
+      return data?.data?.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        return 0;
+      });
+    },
+  });
 
   return (
     <Fragment>
@@ -120,7 +121,10 @@ function EditProductDialog({
             {errors.description?.message}
           </Typography>
           <TextField
-            {...register("sku", { required: "Required" })}
+            {...register("sku", {
+              required: "Required",
+              setValueAs: (value) => Number(value), // This will convert the value to a number
+            })}
             placeholder="SKU"
             required
             fullWidth
@@ -143,7 +147,7 @@ function EditProductDialog({
             <FormControl className="select-form-control" fullWidth>
               <InputLabel>Category</InputLabel>
               <Select
-                {...register("category", { required: "Required" })}
+                {...register("category_id", { required: "Required" })}
                 label="Category"
                 variant="standard"
                 defaultValue=""
@@ -156,8 +160,8 @@ function EditProductDialog({
                 one of the available options or ''."
                 */
               >
-                {testCategories.map((cat) => (
-                  <MenuItem key={cat.name} value={cat.id}>
+                {data?.map((cat) => (
+                  <MenuItem key={cat.category_id} value={cat.category_id}>
                     {cat.name}
                   </MenuItem>
                 ))}

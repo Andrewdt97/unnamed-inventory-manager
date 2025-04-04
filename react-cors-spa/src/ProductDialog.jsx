@@ -1,5 +1,5 @@
 import fetchCategories from "./services/CategoryServices";
-import { createProduct } from "./services/ProductServices";
+import { createProduct } from "./services/ProductsService";
 import {
   Box,
   Button,
