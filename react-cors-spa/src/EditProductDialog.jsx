@@ -33,6 +33,7 @@ function EditProductDialog({
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -45,6 +46,7 @@ function EditProductDialog({
   });
 
   const { id, name, description, sku, size, category_id } = selectedProduct;
+  const watchedCategory = watch("category");
 
   const submitProductMutation = useMutation({
     mutationFn: (productData) => {
@@ -164,7 +166,7 @@ function EditProductDialog({
                 {...register("category", { required: "Required" })}
                 label="Category"
                 variant="standard"
-                value={category_id ?? ""}
+                value={watchedCategory}
                 onChange={(e) => setValue("category", e.target.value)}
               >
                 {data?.map((cat) => (
