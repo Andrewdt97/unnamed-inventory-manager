@@ -55,7 +55,7 @@ function ProductDialog({ isDialogOpen, toggleDialogClose }) {
   } = useForm({
     defaultValues: {
       name: "",
-      sku: "",
+      sku: 0,
       size: "",
       description: "",
       category_id: "Category",

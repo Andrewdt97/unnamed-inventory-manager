@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -68,6 +68,8 @@ function EditProductDialog({
     },
   });
 
+  // Caleb TODOs:
+  // Add category.id in query in products table
   function Submit(productData) {
     console.log({ id: id, ...productData });
     reset();
@@ -78,6 +80,10 @@ function EditProductDialog({
     reset();
     toggleEditDialog();
   }
+
+  useEffect(() => {
+    reset({ name, description, sku, size });
+  }, [name, description, sku, size, reset]);
 
   return (
     <Fragment>
@@ -100,9 +106,6 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
-          <Typography variant="body1" className="current-value">
-            Current Name: {name}
-          </Typography>
           <Typography variant="body1" className="errors">
             {errors.name?.message}
           </Typography>
@@ -113,9 +116,6 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
-          <Typography variant="body1" className="current-value">
-            Current Description: {description}
-          </Typography>
           <Typography variant="body1" className="errors">
             {errors.description?.message}
           </Typography>
@@ -126,9 +126,6 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
-          <Typography variant="body1" className="current-value">
-            Current SKU: {sku}
-          </Typography>
           <Typography variant="body1" className="errors">
             {errors.sku?.message}
           </Typography>
@@ -139,9 +136,6 @@ function EditProductDialog({
             fullWidth
             variant="standard"
           ></TextField>
-          <Typography variant="body1" className="current-value">
-            Current Size: {size}
-          </Typography>
           <Typography variant="body1" className="errors">
             {errors.size?.message}
           </Typography>
