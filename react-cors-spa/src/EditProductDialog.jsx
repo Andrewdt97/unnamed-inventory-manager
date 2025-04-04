@@ -179,30 +179,38 @@ function EditProductDialog({
             {errors.category?.message}
           </Typography>
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          /* External CSS does not work on DialogActions */
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {!sure && (
-            <Button
-              onClick={() => setSure(true)}
-              /* Margin-right does not work with this MUI component
-            in an external CSS file */
-              sx={{ marginRight: "20px", marginBottom: "16px" }}
-            >
-              Save
-            </Button>
-          )}
-          {sure && (
-            <>
-              <Typography variant="body1">
-                Are you sure you want to make changes?
-              </Typography>
+            <Box className="init-save-btn">
               <Button
-                type="Submit"
-                onClick={handleSubmit(Submit)}
+                onClick={() => setSure(true)}
+                /* Margin-right does not work with this MUI component
+              in an external CSS file */
                 sx={{ marginRight: "20px", marginBottom: "16px" }}
               >
                 Save
               </Button>
-            </>
+            </Box>
+          )}
+          {sure && (
+            <Box className="sure-box">
+              <Typography variant="body1">
+                Are you sure you want to make changes?
+              </Typography>
+              <Box className="sure-yes-no">
+                <Button type="Submit" onClick={handleSubmit(Submit)}>
+                  Save
+                </Button>
+                <Button onClick={() => setSure(false)}>Cancel</Button>
+              </Box>
+            </Box>
           )}
         </DialogActions>
       </Dialog>
