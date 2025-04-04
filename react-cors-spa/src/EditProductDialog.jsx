@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -26,10 +26,11 @@ function EditProductDialog({
   editDialogOpen,
   selectedProduct,
 }) {
+  const [sure, setSure] = useState(false);
+
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     reset,
     formState: { errors },
@@ -43,7 +44,6 @@ function EditProductDialog({
     },
   });
 
-  const category = watch("category");
   const { id, name, description, sku, size, category_id } = selectedProduct;
 
   const submitProductMutation = useMutation({
@@ -58,11 +58,13 @@ function EditProductDialog({
     submitProductMutation.mutate({ product_id: Number(id), ...productData });
     reset();
     toggleEditDialog();
+    setSure(false);
   }
 
   function CloseDialog() {
     reset();
     toggleEditDialog();
+    setSure(false);
   }
 
   // Populate categories from DB with useQuery
@@ -162,7 +164,7 @@ function EditProductDialog({
                 {...register("category", { required: "Required" })}
                 label="Category"
                 variant="standard"
-                value={category ?? ""}
+                value={category_id ?? ""}
                 onChange={(e) => setValue("category", e.target.value)}
               >
                 {data?.map((cat) => (
@@ -178,15 +180,30 @@ function EditProductDialog({
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            type="Submit"
-            /* Margin-right does not work with this MUI component
+          {!sure && (
+            <Button
+              onClick={() => setSure(true)}
+              /* Margin-right does not work with this MUI component
             in an external CSS file */
-            sx={{ marginRight: "20px", marginBottom: "16px" }}
-            onClick={handleSubmit(Submit)}
-          >
-            Save
-          </Button>
+              sx={{ marginRight: "20px", marginBottom: "16px" }}
+            >
+              Save
+            </Button>
+          )}
+          {sure && (
+            <>
+              <Typography variant="body1">
+                Are you sure you want to make changes?
+              </Typography>
+              <Button
+                type="Submit"
+                onClick={handleSubmit(Submit)}
+                sx={{ marginRight: "20px", marginBottom: "16px" }}
+              >
+                Save
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </Fragment>
