@@ -100,9 +100,9 @@ Resources:
                   default:
                     statusCode: "200"
                     responseParameters:
-                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-datadog-trace-id,x-datadog-parent-id,x-datadog-origin,x-datadog-sampling-priority'''
-                      method.response.header.Access-Control-Allow-Methods: '''*'''
-                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-datadog-trace-id,x-datadog-parent-id,x-datadog-origin,x-datadog-sampling-priority'"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
                     responseTemplates:
                       application/json: |
                         {}
@@ -130,14 +130,14 @@ Resources:
 
   # The AWS S3 bucket into which our SPA build files will be deployed
   ImReactApp:
-    Type: 'AWS::S3::Bucket'
+    Type: "AWS::S3::Bucket"
     Properties:
       BucketName: im.react.app
       PublicAccessBlockConfiguration:
-        BlockPublicAcls : true
-        BlockPublicPolicy : true
-        IgnorePublicAcls : true
-        RestrictPublicBuckets : true
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       LoggingConfiguration:
         DestinationBucketName: im.react.app.logging
         LogFilePrefix: s3-access-logs
@@ -145,12 +145,12 @@ Resources:
         Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
-        - ServerSideEncryptionByDefault:
-            SSEAlgorithm: 'AES256'
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: "AES256"
 
   # The Amazon S3 bucket policy for securing the bucket hosting the application
   ImReactAppPolicy:
-    Type: 'AWS::S3::BucketPolicy'
+    Type: "AWS::S3::BucketPolicy"
     Properties:
       PolicyDocument:
         Id: App-Policy
@@ -164,26 +164,26 @@ Resources:
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${CFDistribution}
-            Action: 's3:GetObject*'
+            Action: "s3:GetObject*"
       Bucket: !Ref ImReactApp
 
   # The Amazon S3 bucket into which access logs from S3 (for the application) and CloudFront will be put
   ImReactAppLogging:
     #checkov:skip=CKV_AWS_18: "This bucket is private and only for storing logs"
-    Type: 'AWS::S3::Bucket'
+    Type: "AWS::S3::Bucket"
     Properties:
       BucketName: im.react.app.logging
       PublicAccessBlockConfiguration:
-        BlockPublicAcls : true
-        BlockPublicPolicy : true
-        IgnorePublicAcls : true
-        RestrictPublicBuckets : true
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       VersioningConfiguration:
         Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
-        - ServerSideEncryptionByDefault:
-            SSEAlgorithm: 'AES256'
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: "AES256"
       OwnershipControls:
         Rules:
           - ObjectOwnership: BucketOwnerPreferred
@@ -192,26 +192,26 @@ Resources:
   # The Amazon CloudFront distribution exposing our Single Page Application
   CFDistribution:
     #checkov:skip=CKV_AWS_68: "For demo purposes and to reduce cost, no WAF is configured"
-    Type: 'AWS::CloudFront::Distribution'
+    Type: "AWS::CloudFront::Distribution"
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: !GetAtt ImReactApp.RegionalDomainName
-          Id: myS3Origin
-          S3OriginConfig:
-            OriginAccessIdentity: ""
-          OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
-        - DomainName: !Sub "${RestApi}.execute-api.${AWS::Region}.amazonaws.com"
-          Id: myAPIGTWOrigin
-          CustomOriginConfig:
-            OriginProtocolPolicy: https-only
-        Enabled: 'true'
+          - DomainName: !GetAtt ImReactApp.RegionalDomainName
+            Id: myS3Origin
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
+          - DomainName: !Sub "${RestApi}.execute-api.${AWS::Region}.amazonaws.com"
+            Id: myAPIGTWOrigin
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        Enabled: "true"
         DefaultRootObject: index.html
         DefaultCacheBehavior:
           AllowedMethods:
-          - GET
-          - HEAD
-          - OPTIONS
+            - GET
+            - HEAD
+            - OPTIONS
           TargetOriginId: myS3Origin
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # CachingOptimized
           OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf # CORS-S3Origin
@@ -220,17 +220,17 @@ Resources:
         PriceClass: PriceClass_All
         Logging:
           Bucket: !GetAtt ImReactAppLogging.RegionalDomainName
-          Prefix: 'cloudfront-access-logs'
+          Prefix: "cloudfront-access-logs"
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
-          MinimumProtocolVersion: 'TLSv1.2_2021'
+          MinimumProtocolVersion: "TLSv1.2_2021"
 
   # The Amazon CloudFront origin access control
   CloudFrontOriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     DependsOn:
       - ImReactApp
-    Properties: 
+    Properties:
       OriginAccessControlConfig:
         Description: Default Origin Access Control
         Name: !Ref AWS::StackName
