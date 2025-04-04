@@ -29,6 +29,8 @@ function EditProductDialog({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
@@ -37,10 +39,12 @@ function EditProductDialog({
       description: "",
       sku: "",
       size: "",
+      category: "",
     },
   });
 
-  const { id, name, description, sku, size } = selectedProduct;
+  const category = watch("category");
+  const { id, name, description, sku, size, category_id } = selectedProduct;
 
   const submitProductMutation = useMutation({
     mutationFn: (productData) => {
@@ -51,7 +55,6 @@ function EditProductDialog({
   // Caleb TODOs:
   // Add category.id in query in products table
   function Submit(productData) {
-    console.log({ product_id: id, ...productData });
     submitProductMutation.mutate({ product_id: Number(id), ...productData });
     reset();
     toggleEditDialog();
@@ -61,10 +64,6 @@ function EditProductDialog({
     reset();
     toggleEditDialog();
   }
-
-  useEffect(() => {
-    reset({ name, description, sku, size });
-  }, [name, description, sku, size, reset]);
 
   // Populate categories from DB with useQuery
   const { data } = useQuery({
@@ -85,6 +84,19 @@ function EditProductDialog({
       });
     },
   });
+
+  // const selectedCategoryId = category_id ?? "";
+
+  useEffect(() => {
+    let product = {
+      name,
+      description,
+      sku,
+      size,
+      category: category_id,
+    };
+    reset(product);
+  }, [reset, name, description, sku, size, category_id]);
 
   return (
     <Fragment>
@@ -147,18 +159,11 @@ function EditProductDialog({
             <FormControl className="select-form-control" fullWidth>
               <InputLabel>Category</InputLabel>
               <Select
-                {...register("category_id", { required: "Required" })}
+                {...register("category", { required: "Required" })}
                 label="Category"
                 variant="standard"
-                defaultValue=""
-                /* React requires a default value for this component
-                set as a prop and not within useForm,
-                otherwise you will receive the error, 
-                "You have provided an out-of-range value undefined for 
-                the select (name="category") component.
-                Consider providing a value that matches 
-                one of the available options or ''."
-                */
+                value={category ?? ""}
+                onChange={(e) => setValue("category", e.target.value)}
               >
                 {data?.map((cat) => (
                   <MenuItem key={cat.category_id} value={cat.category_id}>
