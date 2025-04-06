@@ -22,7 +22,7 @@ function ProductsTable({ onLoading }) {
     }
   }
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
     select: (data) =>
@@ -80,6 +80,7 @@ function ProductsTable({ onLoading }) {
         toggleEditDialog={toggleEditDialog}
         editDialogOpen={editDialogOpen}
         selectedProduct={selectedProduct}
+        refetchProducts={refetch}
       />
     </Box>
   );

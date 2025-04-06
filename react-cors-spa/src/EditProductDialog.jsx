@@ -21,6 +21,7 @@ function EditProductDialog({
   toggleEditDialog,
   editDialogOpen,
   selectedProduct,
+  refetchProducts,
 }) {
   const [sure, setSure] = useState(false);
 
@@ -42,7 +43,9 @@ function EditProductDialog({
   // Caleb TODOs:
   // Add category.id in query in products table
   function Submit(productData) {
+    console.log(productData);
     submitProductMutation.mutate({ product_id: Number(id), ...productData });
+    refetchProducts();
     reset();
     toggleEditDialog();
     setSure(false);
@@ -121,7 +124,10 @@ function EditProductDialog({
           <Typography variant="body1" className="errors">
             {errors.size?.message}
           </Typography>
-          <SelectCategory category_id={category_id} />
+          <SelectCategory
+            {...register("category_id")}
+            category_id={category_id}
+          />
           <Typography variant="body1" className="errors">
             {errors.category?.message}
           </Typography>
