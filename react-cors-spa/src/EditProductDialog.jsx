@@ -8,18 +8,14 @@ import {
   DialogActions,
   Button,
   Box,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import fetchCategories from "./services/CategoryServices";
+import { useMutation } from "@tanstack/react-query";
 import modifyProduct from "./services/ProductService";
 import "./EditProductDialog.css";
+import SelectCategory from "./SelectCategory";
 
 function EditProductDialog({
   toggleEditDialog,
@@ -28,25 +24,14 @@ function EditProductDialog({
 }) {
   const [sure, setSure] = useState(false);
 
+  const { id, name, description, sku, size, category_id } = selectedProduct;
+
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
-    watch,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      name: "",
-      description: "",
-      sku: "",
-      size: "",
-      category: "",
-    },
-  });
-
-  const { id, name, description, sku, size, category_id } = selectedProduct;
-  const watchedCategory = watch("category");
+  } = useForm();
 
   const submitProductMutation = useMutation({
     mutationFn: (productData) => {
@@ -69,38 +54,15 @@ function EditProductDialog({
     setSure(false);
   }
 
-  // Populate categories from DB with useQuery
-  const { data } = useQuery({
-    queryKey: ["categoryData"],
-    queryFn: fetchCategories,
-    select: (data) => {
-      return data?.data?.sort((a, b) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        return 0;
-      });
-    },
-  });
-
-  // const selectedCategoryId = category_id ?? "";
-
   useEffect(() => {
-    let product = {
+    const product = {
       name,
       description,
       sku,
       size,
-      category: category_id,
     };
     reset(product);
-  }, [reset, name, description, sku, size, category_id]);
+  }, [reset, name, description, sku, size]);
 
   return (
     <Fragment>
@@ -159,24 +121,7 @@ function EditProductDialog({
           <Typography variant="body1" className="errors">
             {errors.size?.message}
           </Typography>
-          <Box className="select-box">
-            <FormControl className="select-form-control" fullWidth>
-              <InputLabel>Category</InputLabel>
-              <Select
-                {...register("category", { required: "Required" })}
-                label="Category"
-                variant="standard"
-                value={watchedCategory}
-                onChange={(e) => setValue("category", e.target.value)}
-              >
-                {data?.map((cat) => (
-                  <MenuItem key={cat.category_id} value={cat.category_id}>
-                    {cat.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+          <SelectCategory category_id={category_id} />
           <Typography variant="body1" className="errors">
             {errors.category?.message}
           </Typography>
