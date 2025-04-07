@@ -80,7 +80,7 @@ function ProductsTable({ onLoading }) {
         toggleEditDialog={toggleEditDialog}
         editDialogOpen={editDialogOpen}
         selectedProduct={selectedProduct}
-        refetchProducts={refetch}
+        refetch={refetch}
       />
     </Box>
   );

@@ -21,7 +21,7 @@ function EditProductDialog({
   toggleEditDialog,
   editDialogOpen,
   selectedProduct,
-  refetchProducts,
+  refetch,
 }) {
   const [sure, setSure] = useState(false);
 
@@ -44,8 +44,8 @@ function EditProductDialog({
   // Add category.id in query in products table
   function Submit(productData) {
     console.log(productData);
+    refetch();
     submitProductMutation.mutate({ product_id: Number(id), ...productData });
-    refetchProducts();
     reset();
     toggleEditDialog();
     setSure(false);
