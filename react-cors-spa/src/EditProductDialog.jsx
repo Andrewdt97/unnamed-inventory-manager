@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import modifyProduct from "./services/ProductService";
 import "./EditProductDialog.css";
 import SelectCategory from "./SelectCategory";
@@ -27,6 +27,8 @@ function EditProductDialog({
 
   const [sure, setSure] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -39,6 +41,7 @@ function EditProductDialog({
     mutationFn: (productData) => {
       return modifyProduct(productData);
     },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] }),
   });
 
   function Submit(productData) {

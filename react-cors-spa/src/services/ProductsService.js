@@ -7,8 +7,8 @@ function fetchProducts() {
 }
 
 const createProduct = async (productData) => {
-  const { data } = await axios.post(APIENDPOINT, productData);
-  return data;
+  const response = await axios.post(APIENDPOINT, productData);
+  return await response.json();
 };
 
 export { fetchProducts, createProduct };
