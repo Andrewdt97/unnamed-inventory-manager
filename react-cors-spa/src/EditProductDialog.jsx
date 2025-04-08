@@ -41,14 +41,7 @@ function EditProductDialog({
     },
   });
 
-  // Caleb TODOs:
-  // Add category.id in query in products table
   function Submit(productData) {
-    console.log({
-      product_id: Number(id),
-      ...productData,
-      category_id: productData.category_id,
-    });
     refetch();
     submitProductMutation.mutate({
       product_id: Number(id),

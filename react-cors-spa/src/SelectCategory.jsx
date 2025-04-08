@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Controller } from "react-hook-form";
 
 function SelectCategory({ category_id, control }) {
-  // Populate categories from DB with useQuery
   const { data } = useQuery({
     queryKey: ["categoryData"],
     queryFn: fetchCategories,
@@ -31,13 +30,13 @@ function SelectCategory({ category_id, control }) {
         <Controller
           name="category_id"
           control={control}
-          defaultValue={category_id || ""} // Default value passed to Controller
+          defaultValue={category_id || ""}
           render={({ field }) => (
             <Select
               label="Category"
               variant="standard"
-              value={field.value} // Controlled value
-              onChange={(e) => e.target.value} // Update form value
+              value={field.value}
+              onChange={(e) => field.onChange(e)} // requires field.onChange method and not just field.value
             >
               {data?.map((cat) => (
                 <MenuItem key={cat.category_id} value={cat.category_id}>
