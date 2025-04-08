@@ -23,13 +23,14 @@ function EditProductDialog({
   selectedProduct,
   refetch,
 }) {
-  const [sure, setSure] = useState(false);
-
   const { id, name, description, sku, size, category_id } = selectedProduct;
+
+  const [sure, setSure] = useState(false);
 
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors },
   } = useForm();
@@ -43,9 +44,17 @@ function EditProductDialog({
   // Caleb TODOs:
   // Add category.id in query in products table
   function Submit(productData) {
-    console.log(productData);
+    console.log({
+      product_id: Number(id),
+      ...productData,
+      category_id: productData.category_id,
+    });
     refetch();
-    submitProductMutation.mutate({ product_id: Number(id), ...productData });
+    submitProductMutation.mutate({
+      product_id: Number(id),
+      ...productData,
+      category_id: productData.category_id,
+    });
     reset();
     toggleEditDialog();
     setSure(false);
@@ -63,9 +72,10 @@ function EditProductDialog({
       description,
       sku,
       size,
+      category_id,
     };
     reset(product);
-  }, [reset, name, description, sku, size]);
+  }, [reset, name, description, sku, size, category_id]);
 
   return (
     <Fragment>
@@ -124,10 +134,7 @@ function EditProductDialog({
           <Typography variant="body1" className="errors">
             {errors.size?.message}
           </Typography>
-          <SelectCategory
-            {...register("category_id")}
-            category_id={category_id}
-          />
+          <SelectCategory category_id={category_id} control={control} />
           <Typography variant="body1" className="errors">
             {errors.category?.message}
           </Typography>
@@ -154,14 +161,12 @@ function EditProductDialog({
           )}
           {sure && (
             <Box className="sure-box">
-              <Typography variant="body1">
-                Are you sure you want to make changes?
-              </Typography>
+              <Typography variant="body1">Confirm Changes?</Typography>
               <Box className="sure-yes-no">
                 <Button type="Submit" onClick={handleSubmit(Submit)}>
-                  Save
+                  Yes
                 </Button>
-                <Button onClick={() => setSure(false)}>Cancel</Button>
+                <Button onClick={() => setSure(false)}>No</Button>
               </Box>
             </Box>
           )}

@@ -1,8 +1,9 @@
 import fetchCategories from "./services/CategoryServices";
 import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { Controller } from "react-hook-form";
 
-function SelectCategory({ category_id }) {
+function SelectCategory({ category_id, control }) {
   // Populate categories from DB with useQuery
   const { data } = useQuery({
     queryKey: ["categoryData"],
@@ -27,17 +28,25 @@ function SelectCategory({ category_id }) {
     <Box className="select-box">
       <FormControl className="select-form-control" fullWidth>
         <InputLabel>Category</InputLabel>
-        <Select
-          label="Category"
-          variant="standard"
-          defaultValue={category_id ?? ""}
-        >
-          {data?.map((cat) => (
-            <MenuItem key={cat.category_id} value={cat.category_id}>
-              {cat.name}
-            </MenuItem>
-          ))}
-        </Select>
+        <Controller
+          name="category_id"
+          control={control}
+          defaultValue={category_id || ""} // Default value passed to Controller
+          render={({ field }) => (
+            <Select
+              label="Category"
+              variant="standard"
+              value={field.value} // Controlled value
+              onChange={(e) => e.target.value} // Update form value
+            >
+              {data?.map((cat) => (
+                <MenuItem key={cat.category_id} value={cat.category_id}>
+                  {cat.name}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
       </FormControl>
     </Box>
   );
