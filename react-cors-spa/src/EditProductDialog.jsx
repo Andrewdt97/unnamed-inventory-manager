@@ -23,7 +23,14 @@ function EditProductDialog({
   selectedProduct,
   refetch,
 }) {
-  const { id, name, description, sku, size, category_id } = selectedProduct;
+  const {
+    id = null,
+    name,
+    description,
+    size,
+    sku,
+    category_id,
+  } = selectedProduct;
 
   const [sure, setSure] = useState(false);
 
@@ -38,18 +45,27 @@ function EditProductDialog({
   } = useForm();
 
   const submitProductMutation = useMutation({
-    mutationFn: (productData) => {
-      return modifyProduct(productData);
+    mutationFn: ({ product_id, productData }) => {
+      return modifyProduct(product_id, productData);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] }),
   });
 
   function Submit(productData) {
     refetch();
+    console.log({
+      product_id: id,
+      productData: {
+        ...productData,
+        category_id: productData.category_id,
+      },
+    });
     submitProductMutation.mutate({
-      product_id: Number(id),
-      ...productData,
-      category_id: productData.category_id,
+      product_id: id,
+      productData: {
+        ...productData,
+        category_id: productData.category_id,
+      },
     });
     reset();
     toggleEditDialog();
@@ -159,7 +175,10 @@ function EditProductDialog({
             <Box className="sure-box">
               <Typography variant="body1">Confirm Changes?</Typography>
               <Box className="sure-yes-no">
-                <Button type="Submit" onClick={handleSubmit(Submit)}>
+                <Button
+                  type="Submit"
+                  onClick={handleSubmit((data) => Submit(data))}
+                >
                   Yes
                 </Button>
                 <Button onClick={() => setSure(false)}>No</Button>

@@ -18,9 +18,9 @@ import {
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import "./ProductDialog.css";
+import "./AddProductDialog.css";
 
-function ProductDialog({ isDialogOpen, toggleDialogClose }) {
+function AddProductDialog({ isDialogOpen, toggleDialogClose }) {
   // Populate categories from DB with useQuery
   const { data } = useQuery({
     queryKey: ["categoryData"],
@@ -151,4 +151,4 @@ function ProductDialog({ isDialogOpen, toggleDialogClose }) {
   );
 }
 
-export default ProductDialog;
+export default AddProductDialog;

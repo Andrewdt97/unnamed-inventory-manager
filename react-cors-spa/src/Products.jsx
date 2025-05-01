@@ -1,6 +1,6 @@
 import AddProduct from "./AddProduct";
 import { Box, Skeleton } from "@mui/material";
-import ProductDialog from "./ProductDialog";
+import AddProductDialog from "./AddProductDialog";
 import ProductsTable from "./ProductsTable";
 import { useCallback, useState } from "react";
 
@@ -26,7 +26,7 @@ function Products() {
         <AddProduct toggleDialogOpen={toggleDialog} />
       )}
       <ProductsTable onLoading={handleLoading} />
-      <ProductDialog
+      <AddProductDialog
         isDialogOpen={isDialogOpen}
         toggleDialogClose={toggleDialog}
       />

@@ -11,11 +11,9 @@ Mounting BackendLambda at http://127.0.0.1:3000/products [GET, POST, OPTIONS]
 
 const APIENDPOINT = "http://127.0.0.1:3000/product";
 
-const modifyProduct = async (productData) => {
-  const { data } = await axios.put(
-    `${APIENDPOINT}/${productData.product_id}`,
-    productData
-  );
+const modifyProduct = async (product_id, productData) => {
+  console.log(product_id);
+  const { data } = await axios.put(`${APIENDPOINT}/${product_id}`, productData);
   return data;
 };
 
