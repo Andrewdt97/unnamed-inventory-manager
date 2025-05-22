@@ -87,7 +87,7 @@ function EditProductDialog({
       category_id,
     };
     reset(product);
-  }, [reset, name, description, sku, size, category_id]);
+  }, [name, description, sku, size, category_id]);
 
   return (
     <Fragment>
