@@ -7,6 +7,7 @@ import EditProductIcon from "./EditProductIcon";
 import EditProductDialog from "./EditProductDialog";
 import "./ProductsTable.css";
 import { useState } from "react";
+import { isNumber } from "@mui/x-data-grid/internals";
 
 function ProductsTable({ onLoading }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -22,6 +23,19 @@ function ProductsTable({ onLoading }) {
     }
   }
 
+  function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+  }
+
+  function getRandomDate() {
+    const date = new Date();
+    date.setDate(getRandomIntInclusive(1, 28));
+
+    return date.toLocaleDateString("en-US");
+  }
+
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
@@ -34,6 +48,7 @@ function ProductsTable({ onLoading }) {
         size: product.size,
         sold_date: product.sold_date,
         category_id: product.category_id,
+        date_created: getRandomDate(),
       })),
   });
 
