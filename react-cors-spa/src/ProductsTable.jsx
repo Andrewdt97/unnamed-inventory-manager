@@ -7,7 +7,6 @@ import EditProductIcon from "./EditProductIcon";
 import EditProductDialog from "./EditProductDialog";
 import "./ProductsTable.css";
 import { useState } from "react";
-import { isNumber } from "@mui/x-data-grid/internals";
 
 function ProductsTable({ onLoading }) {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
