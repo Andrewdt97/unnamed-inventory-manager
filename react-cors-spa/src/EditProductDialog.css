@@ -1,0 +1,51 @@
+.title-and-close {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closed-icon {
+  cursor: pointer;
+  margin-right: 24px;
+}
+
+.intro {
+  height: 50px;
+}
+
+.dialog-content {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.select-box {
+  min-width: 100%;
+}
+
+.init-save-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.sure-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 65%;
+}
+
+.sure-yes-no {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}

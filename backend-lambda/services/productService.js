@@ -10,9 +10,9 @@ const getAllProducts = async (pool, limit, offset) => {
 
   // Check that limit & offset parameters are numbers
   if (isNaN(limit) || isNaN(offset)) {
-    query.text = `SELECT * FROM product`
+    query.text = `SELECT * FROM product`;
   } else {
-    query.text =`SELECT * FROM product LIMIT $1 OFFSET $2`;
+    query.text = `SELECT * FROM product LIMIT $1 OFFSET $2`;
     query.values = [limit, offset];
   }
 
@@ -45,7 +45,7 @@ const updateProduct = async (pool, id, product) => {
   );
 
   await clientService(pool, query);
-  return;
+  return "Product Updated";
 };
 
 // NOTE: This function is untested against cockroach
