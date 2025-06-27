@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize-cockroachdb");
+const { Sequelize, DataTypes } = require("sequelize");
 
 const attributes = {
   product_id: {
@@ -44,12 +44,17 @@ const attributes = {
   price_history: {
     type: Sequelize.JSON,
   },
+  date_created: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    allowNull: false,
+  },
 };
 
 const getOptions = (sequelize) => ({
   sequelize,
   freezeTableName: true,
-  createdAt: "created_at",
+  createdAt: false,
   updatedAt: false,
   indexes: [{ fields: ["sku"] }, { fields: ["sold_date"] }],
 });
