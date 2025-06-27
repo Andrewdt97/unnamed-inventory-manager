@@ -34,6 +34,9 @@ function ProductsTable({ onLoading }) {
         size: product.size,
         sold_date: product.sold_date,
         category_id: product.category_id,
+        date_created: new Date(product.date_created).toLocaleDateString(
+          "en-US"
+        ),
       })),
   });
 
@@ -49,6 +52,7 @@ function ProductsTable({ onLoading }) {
     { field: "sku", headerName: "SKU", flex: 1 },
     { field: "size", headerName: "Size", flex: 2 },
     { field: "sold_date", headerName: "Sold Date", flex: 2 },
+    { field: "date_created", headerName: "Date Created", flex: 1.5 },
     {
       field: "edit",
       headerName: "",

@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize-cockroachdb');
+const { Sequelize, DataTypes } = require("sequelize");
 
 const attributes = {
   product_id: {
@@ -9,15 +9,15 @@ const attributes = {
   business_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'business',
-      key: 'business_id',
+      model: "business",
+      key: "business_id",
     },
   },
   category_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'category',
-      key: 'category_id',
+      model: "category",
+      key: "category_id",
     },
   },
   name: {
@@ -33,18 +33,22 @@ const attributes = {
     type: Sequelize.STRING,
   },
   sold_date: {
-    type: Sequelize.DATE
+    type: Sequelize.DATE,
   },
   s3_key: {
     type: Sequelize.STRING,
   },
   listing_history: {
-    type: Sequelize.JSON
+    type: Sequelize.JSON,
   },
   price_history: {
-    type: Sequelize.JSON
-  }
-
+    type: Sequelize.JSON,
+  },
+  date_created: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    allowNull: false,
+  },
 };
 
 const getOptions = (sequelize) => ({
@@ -52,11 +56,11 @@ const getOptions = (sequelize) => ({
   freezeTableName: true,
   createdAt: false,
   updatedAt: false,
-  indexes: [{fields: ['sku']}, {fields: ['sold_date']}]
+  indexes: [{ fields: ["sku"] }, { fields: ["sold_date"] }],
 });
 
 const getProductModel = (sequelize) => {
-  return sequelize.define('product', attributes, getOptions(sequelize));
+  return sequelize.define("product", attributes, getOptions(sequelize));
 };
 
 module.exports = getProductModel;
